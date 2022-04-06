@@ -7,23 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55E1BD6927E1955900F7ECC6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD6827E1955900F7ECC6 /* AppDelegate.swift */; };
-		55E1BD6B27E1955900F7ECC6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD6A27E1955900F7ECC6 /* SceneDelegate.swift */; };
+		11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */; };
+		555B7AB827ED8D5A00196098 /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 555B7AB727ED8D5A00196098 /* ElegantCalendar */; };
+		55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */; };
+		55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FC027E1A8DF00379E8D /* awsconfiguration.json */; };
+		55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A13FC227E1B09200379E8D /* SessionManager.swift */; };
+		55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */; };
+		55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */; };
 		55E1BD6D27E1955900F7ECC6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD6C27E1955900F7ECC6 /* ViewController.swift */; };
 		55E1BD7027E1955900F7ECC6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD6E27E1955900F7ECC6 /* Main.storyboard */; };
 		55E1BD7227E1955B00F7ECC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD7127E1955B00F7ECC6 /* Assets.xcassets */; };
 		55E1BD7527E1955B00F7ECC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD7327E1955B00F7ECC6 /* LaunchScreen.storyboard */; };
+		55E1BD7D27E1957300F7ECC6 /* PrettyModifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */; };
+		55E1BD8127E195C100F7ECC6 /* AuthenticatedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */; };
+		55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8227E195D000F7ECC6 /* SignUpView.swift */; };
+		55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */; };
+		55E1BD8727E195EB00F7ECC6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8627E195EB00F7ECC6 /* LoginView.swift */; };
+		55E1BD8927E195F400F7ECC6 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8827E195F400F7ECC6 /* SessionView.swift */; };
+		A5E670DD6FF7357A5D0946BF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F171AF5D5F067E724ACE3503 /* awsconfiguration.json */; };
+		F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-authenticated.debug.xcconfig"; path = "Target Support Files/Pods-authenticated/Pods-authenticated.debug.xcconfig"; sourceTree = "<group>"; };
+		55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = SOURCE_ROOT; };
+		55A13FC027E1A8DF00379E8D /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
+		55A13FC227E1B09200379E8D /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmResetPasswordView.swift; sourceTree = "<group>"; };
 		55E1BD6527E1955900F7ECC6 /* authenticated.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = authenticated.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		55E1BD6827E1955900F7ECC6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		55E1BD6A27E1955900F7ECC6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		55E1BD6C27E1955900F7ECC6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		55E1BD6F27E1955900F7ECC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		55E1BD7127E1955B00F7ECC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55E1BD7427E1955B00F7ECC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55E1BD7627E1955B00F7ECC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrettyModifierExtension.swift; sourceTree = "<group>"; };
+		55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedApp.swift; sourceTree = "<group>"; };
+		55E1BD8227E195D000F7ECC6 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		55E1BD8627E195EB00F7ECC6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		55E1BD8827E195F400F7ECC6 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
+		58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
+		8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_authenticated.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E63B7B4E6552DD623BF7F587 /* Pods-authenticated.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-authenticated.release.xcconfig"; path = "Target Support Files/Pods-authenticated/Pods-authenticated.release.xcconfig"; sourceTree = "<group>"; };
+		F171AF5D5F067E724ACE3503 /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
+				555B7AB827ED8D5A00196098 /* ElegantCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +71,9 @@
 			children = (
 				55E1BD6727E1955900F7ECC6 /* authenticated */,
 				55E1BD6627E1955900F7ECC6 /* Products */,
+				A0362CF16D2959F9047B429B /* Pods */,
+				BA4809BC38C4EDB9F5E7FD2F /* AmplifyConfig */,
+				FC638D31D55DF1B89D3C462B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,8 +88,17 @@
 		55E1BD6727E1955900F7ECC6 /* authenticated */ = {
 			isa = PBXGroup;
 			children = (
-				55E1BD6827E1955900F7ECC6 /* AppDelegate.swift */,
-				55E1BD6A27E1955900F7ECC6 /* SceneDelegate.swift */,
+				55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */,
+				55A13FC027E1A8DF00379E8D /* awsconfiguration.json */,
+				55E1BD8627E195EB00F7ECC6 /* LoginView.swift */,
+				55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */,
+				55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */,
+				55A13FC227E1B09200379E8D /* SessionManager.swift */,
+				55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */,
+				55E1BD8227E195D000F7ECC6 /* SignUpView.swift */,
+				55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */,
+				55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */,
+				55E1BD8827E195F400F7ECC6 /* SessionView.swift */,
 				55E1BD6C27E1955900F7ECC6 /* ViewController.swift */,
 				55E1BD6E27E1955900F7ECC6 /* Main.storyboard */,
 				55E1BD7127E1955B00F7ECC6 /* Assets.xcassets */,
@@ -67,6 +108,32 @@
 			path = authenticated;
 			sourceTree = "<group>";
 		};
+		A0362CF16D2959F9047B429B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */,
+				E63B7B4E6552DD623BF7F587 /* Pods-authenticated.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BA4809BC38C4EDB9F5E7FD2F /* AmplifyConfig */ = {
+			isa = PBXGroup;
+			children = (
+				F171AF5D5F067E724ACE3503 /* awsconfiguration.json */,
+				58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */,
+			);
+			name = AmplifyConfig;
+			sourceTree = "<group>";
+		};
+		FC638D31D55DF1B89D3C462B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,15 +141,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55E1BD7927E1955B00F7ECC6 /* Build configuration list for PBXNativeTarget "authenticated" */;
 			buildPhases = (
+				B6DCC1E5C5B5C2FEF0F5691A /* [CP] Check Pods Manifest.lock */,
 				55E1BD6127E1955900F7ECC6 /* Sources */,
 				55E1BD6227E1955900F7ECC6 /* Frameworks */,
 				55E1BD6327E1955900F7ECC6 /* Resources */,
+				4DB92503B278FF28BFC995D7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = authenticated;
+			packageProductDependencies = (
+				555B7AB727ED8D5A00196098 /* ElegantCalendar */,
+			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +183,9 @@
 				Base,
 			);
 			mainGroup = 55E1BD5C27E1955900F7ECC6;
+			packageReferences = (
+				555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */,
+			);
 			productRefGroup = 55E1BD6627E1955900F7ECC6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,21 +201,74 @@
 			buildActionMask = 2147483647;
 			files = (
 				55E1BD7527E1955B00F7ECC6 /* LaunchScreen.storyboard in Resources */,
+				55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */,
+				55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */,
 				55E1BD7227E1955B00F7ECC6 /* Assets.xcassets in Resources */,
 				55E1BD7027E1955900F7ECC6 /* Main.storyboard in Resources */,
+				A5E670DD6FF7357A5D0946BF /* awsconfiguration.json in Resources */,
+				11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4DB92503B278FF28BFC995D7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-authenticated/Pods-authenticated-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-authenticated/Pods-authenticated-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-authenticated/Pods-authenticated-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6DCC1E5C5B5C2FEF0F5691A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-authenticated-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55E1BD6127E1955900F7ECC6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55E1BD7D27E1957300F7ECC6 /* PrettyModifierExtension.swift in Sources */,
+				55E1BD8127E195C100F7ECC6 /* AuthenticatedApp.swift in Sources */,
+				55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */,
+				55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */,
 				55E1BD6D27E1955900F7ECC6 /* ViewController.swift in Sources */,
-				55E1BD6927E1955900F7ECC6 /* AppDelegate.swift in Sources */,
-				55E1BD6B27E1955900F7ECC6 /* SceneDelegate.swift in Sources */,
+				55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */,
+				55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */,
+				55E1BD8727E195EB00F7ECC6 /* LoginView.swift in Sources */,
+				55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */,
+				55E1BD8927E195F400F7ECC6 /* SessionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +333,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -265,7 +393,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -284,6 +412,7 @@
 		};
 		55E1BD7A27E1955B00F7ECC6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -297,6 +426,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,6 +442,7 @@
 		};
 		55E1BD7B27E1955B00F7ECC6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E63B7B4E6552DD623BF7F587 /* Pods-authenticated.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -325,6 +456,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -360,6 +492,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ThasianX/ElegantCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		555B7AB727ED8D5A00196098 /* ElegantCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */;
+			productName = ElegantCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 55E1BD5D27E1955900F7ECC6 /* Project object */;
 }
