@@ -234,7 +234,7 @@ struct SessionView: View{
 struct SessionView_Previews: PreviewProvider{
     private struct DummyUser: AuthUser{
         let userId: String = "1"
-        let username: String = "dummy"
+        let username: String = "dummy-new"
     }
 
     static var previews: some View{
