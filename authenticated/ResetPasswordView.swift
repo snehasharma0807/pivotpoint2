@@ -19,7 +19,9 @@ struct ResetPasswordView: View{
             }).pretty()
             
             Spacer()
-            Button("Back to home", action: sessionManager.showLogin)
+            Button("Back to home", action: {
+                sessionManager.showLogin(error: "")
+            })
         }
         .padding()
     }

@@ -26,7 +26,9 @@ struct SignUpView: View{
             }).pretty()
             
             Spacer()
-            Button("Already have an account? Log in.", action: sessionManager.showLogin)
+            Button("Already have an account? Log in.", action: {
+                sessionManager.showLogin(error: "")}
+            )
         }
         .padding()
     }

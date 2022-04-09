@@ -4,8 +4,10 @@ struct LoginView: View{
     
     @EnvironmentObject var sessionManager: SessionManager
     
+    let error : String
     @State var username = ""
     @State var password = ""
+    
     
     var body: some View{
         VStack{
@@ -15,6 +17,8 @@ struct LoginView: View{
                 .aspectRatio(contentMode: .fit)
             Spacer()
             
+            Text(error)
+                
             TextField("Username", text: $username).pretty()
             SecureField("Password", text: $password).pretty()
             Button("Login", action: {
@@ -25,6 +29,7 @@ struct LoginView: View{
             Button("Don't have an account? Sign up.", action: {
                 sessionManager.showSignup()
             })
+
         }
         .padding()
     }
@@ -32,6 +37,6 @@ struct LoginView: View{
 
 struct LoginView_Previews: PreviewProvider{
     static var previews: some View{
-        LoginView()
+        LoginView(error: "")
     }
 }

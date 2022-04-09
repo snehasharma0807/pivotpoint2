@@ -22,7 +22,10 @@ struct ConfirmResetPasswordView: View{
                 sessionManager.confirmResetPassword(username: username, newPassword: newPassword, confirmationCode: confirmationCode); print(newPassword)}).pretty()
             
             Spacer()
-            Button("Already have an account? Log in.", action: sessionManager.showLogin)
+            Button("Already have an account? Log in.", action: {
+                sessionManager.showLogin(error: "")
+                
+            })
         }
         .padding()
     }

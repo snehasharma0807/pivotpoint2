@@ -10,26 +10,26 @@ import Combine
 import Foundation
 enum AuthState{
     case signUp
-    case login
+    case login(error: String)
     case confirmCode(username: String)
     case session(user: AuthUser)
     case resetPassword
     case confirmResetPassword
 }
 final class SessionManager: ObservableObject{
-    @Published var authState: AuthState = .login
+    @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
         if let user = Amplify.Auth.getCurrentUser(){
             authState = .session(user: user)
         } else {
-            authState = .login
+            authState = .login(error: "")
         }
     }
     func showSignup(){
         authState = .signUp
     }
-    func showLogin(){
-        authState = .login
+    func showLogin(error: String){
+        authState = .login(error: error)
     }
     func showResetPassword(){
         authState = .resetPassword
@@ -80,7 +80,7 @@ final class SessionManager: ObservableObject{
                 print(confirmResult)
                 if confirmResult.isSignupComplete{
                     DispatchQueue.main.async {
-                        self?.showLogin()
+                        self?.showLogin(error: "")
                     }
                 }
             case .failure(let error):
@@ -105,7 +105,10 @@ final class SessionManager: ObservableObject{
                 }
                 
             case .failure(let error):
-                print("Login error: ", error)
+                print("Error: " , error.errorDescription)
+                    DispatchQueue.main.async {
+                        self?.showLogin(error: error.errorDescription)
+                    }
             }
         }
     }
@@ -135,7 +138,7 @@ final class SessionManager: ObservableObject{
 
                 case .done:
                     DispatchQueue.main.async {
-                        self?.showLogin()
+                        self?.showLogin(error: "")
                     }
 
                 }
@@ -162,7 +165,7 @@ func confirmResetPassword(
         recieveValue: do {
             print("Password reset confirmed.")
             DispatchQueue.main.async {
-                self?.showLogin()
+                self?.showLogin(error: "")
             }
         }
             
@@ -170,4 +173,3 @@ func confirmResetPassword(
     }
 
 }
-

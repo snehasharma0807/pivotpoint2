@@ -23,8 +23,8 @@ struct AuthenticaterApp: App{
     var body: some Scene{
         WindowGroup{
             switch sessionManager.authState{
-            case .login:
-                LoginView()
+            case .login(let error):
+                LoginView(error: error)
                     .environmentObject(sessionManager)
             case .signUp:
                 SignUpView()
