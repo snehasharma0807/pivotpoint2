@@ -35,8 +35,8 @@ struct AuthenticaterApp: App{
             case .session(let user):
                 SessionView(user: user)
                     .environmentObject(sessionManager)
-            case .resetPassword:
-                ResetPasswordView()
+            case .resetPassword(let resetPasswordError):
+                ResetPasswordView(resetPasswordError: resetPasswordError)
                     .environmentObject(sessionManager)
             case .confirmResetPassword:
                 ConfirmResetPasswordView()

@@ -8,6 +8,7 @@ struct LoginView: View{
     @State var username = ""
     @State var password = ""
     
+
     
     var body: some View{
         VStack{
@@ -18,6 +19,8 @@ struct LoginView: View{
             Spacer()
             
             Text(error)
+                .bold()
+                .foregroundColor(.red)
                 
             TextField("Username", text: $username).pretty()
             SecureField("Password", text: $password).pretty()
@@ -25,7 +28,7 @@ struct LoginView: View{
                 sessionManager.login(username: username, password: password)
             }).pretty()
             Spacer()
-            Button("Don't remember your password? Reset it here.", action: {sessionManager.showResetPassword()})
+            Button("Don't remember your password? Reset it here.", action: {sessionManager.showResetPassword(resetPasswordError: "")})
             Button("Don't have an account? Sign up.", action: {
                 sessionManager.showSignup()
             })

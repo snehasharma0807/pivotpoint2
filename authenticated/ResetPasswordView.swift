@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct ResetPasswordView: View{
-    
+    let resetPasswordError: String
     @EnvironmentObject var sessionManager: SessionManager
     @EnvironmentObject var error: SessionManager
     
@@ -11,6 +11,14 @@ struct ResetPasswordView: View{
     
     var body: some View{
         VStack{
+            Spacer()
+            if (!resetPasswordError.isEmpty){
+                Text(resetPasswordError)
+                    .bold()
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+            }
+
             Spacer()
             Text("Enter your username here. If you don't remember it, please make a new account.").header()
             TextField("Username", text: $username).pretty()
@@ -30,6 +38,6 @@ struct ResetPasswordView: View{
 
 struct ResetPasswordView_Previews: PreviewProvider{
     static var previews: some View{
-        ResetPasswordView()
+        ResetPasswordView(resetPasswordError: "")
     }
 }

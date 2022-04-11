@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct ConfirmResetPasswordView: View{
-    
+    let confirmResetPasswordError: String
     @EnvironmentObject var sessionManager: SessionManager
 
     
@@ -34,6 +34,6 @@ struct ConfirmResetPasswordView: View{
 
 struct ConfirmResetPasswordView_Previews: PreviewProvider{
     static var previews: some View{
-        SignUpView()
+        ConfirmResetPasswordView(confirmResetPasswordError: "")
     }
 }

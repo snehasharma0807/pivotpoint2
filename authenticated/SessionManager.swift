@@ -13,8 +13,8 @@ enum AuthState{
     case login(error: String)
     case confirmCode(username: String)
     case session(user: AuthUser)
-    case resetPassword
-    case confirmResetPassword
+    case resetPassword(resetPasswordError: String)
+    case confirmResetPassword(confirmResetPasswordError: String)
 }
 final class SessionManager: ObservableObject{
     @Published var authState: AuthState = .login(error: "")
@@ -31,11 +31,11 @@ final class SessionManager: ObservableObject{
     func showLogin(error: String){
         authState = .login(error: error)
     }
-    func showResetPassword(){
-        authState = .resetPassword
+    func showResetPassword(resetPasswordError: String){
+        authState = .resetPassword(resetPasswordError: resetPasswordError)
     }
-    func showConfirmResetPassword(){
-        authState = .confirmResetPassword
+    func showConfirmResetPassword(confirmResetPasswordError: String){
+        authState = .confirmResetPassword(confirmResetPasswordError: confirmResetPasswordError)
     }
 
     
@@ -105,9 +105,15 @@ final class SessionManager: ObservableObject{
                 }
                 
             case .failure(let error):
+                var the_error: String = ""
                 print("Error: " , error.errorDescription)
+                if error.errorDescription == "Username is required to signIn"{
+                    the_error = "Username is required to sign in"
+                } else{
+                    the_error = error.errorDescription
+                }
                     DispatchQueue.main.async {
-                        self?.showLogin(error: error.errorDescription)
+                        self?.showLogin(error: the_error)
                     }
             }
         }
@@ -134,7 +140,7 @@ final class SessionManager: ObservableObject{
                 switch resetResult.nextStep {
                 case .confirmResetPasswordWithCode(let deliveryDetails, let info):
                     print("Confirm reset password with code send to - \(deliveryDetails) \(String(describing: info) )")
-                    self?.showConfirmResetPassword()
+                    self?.showConfirmResetPassword(confirmResetPasswordError: "")
 
                 case .done:
                     DispatchQueue.main.async {
@@ -142,9 +148,21 @@ final class SessionManager: ObservableObject{
                     }
 
                 }
-            case .failure(let error):
-                print("Reset password failed with error \(error)")
+            case .failure(let resetPasswordError):
+                var the_error: String = ""
+                print("Error: " , resetPasswordError.errorDescription)
+                if resetPasswordError.errorDescription == "username is required to resetPassword"{
+                    the_error = "Username is required to reset your password"
+                } else if resetPasswordError.errorDescription == "Username/client id combination not found."{
+                    the_error = "Username not found"
+                } else{
+                    the_error = resetPasswordError.errorDescription
+                }
+                DispatchQueue.main.async {
+                    self?.showResetPassword(resetPasswordError: the_error)
+                }
             }
+            
         }
         
     }
