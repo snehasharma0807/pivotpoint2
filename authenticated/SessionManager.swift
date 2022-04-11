@@ -176,16 +176,47 @@ func confirmResetPassword(
             with: newPassword,
             confirmationCode: confirmationCode
         ){[weak self] result in
-            if case let .failure(authError) = result{
-                print("Reset password failed with error \(authError)")
-                return
+            
+            switch result{
+            case .success(let confirmResult):
+                print(confirmResult)
+                print("Password reset confirmed.")
+                DispatchQueue.main.async {
+                    self?.showLogin(error: "")
+                }
+            case .failure(let authError):
+                print("Password reset failed with error \(authError)")
+                var the_error:String = ""
+                the_error=authError.errorDescription
+                switch the_error{
+                case "Username/client id combination not found.":
+                    the_error = "Username not found"
+                case "username is required to confirmResetPassword":
+                    the_error = "Please input your username, password, and confirmation code"
+                case "newPassword is required to confirmResetPassword":
+                    the_error = "Please input your username, password, and confirmation code"
+                case "confirmationCode is required to confirmResetPassword":
+                    the_error = "Please input your username, password, and confirmation code"
+                case "Password does not conform to policy: Password not long enough":
+                    the_error = "Please input a password that is longer than eight characters"
+                default:
+                    the_error = ""
+                }
+
+                DispatchQueue.main.async {
+                    self?.showConfirmResetPassword(confirmResetPasswordError: the_error)
+                }
             }
-        recieveValue: do {
-            print("Password reset confirmed.")
-            DispatchQueue.main.async {
-                self?.showLogin(error: "")
-            }
-        }
+//            if case let .failure(authError) = result{
+//                print("Reset password failed with error \(authError)")
+//                return
+//            }
+//        recieveValue: do {
+//            print("Password reset confirmed.")
+//            DispatchQueue.main.async {
+//                self?.showLogin(error: "")
+//            }
+//        }
             
         }
     }

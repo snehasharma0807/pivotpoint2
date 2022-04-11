@@ -14,6 +14,15 @@ struct ConfirmResetPasswordView: View{
     var body: some View{
         VStack{
             Spacer()
+            if (!confirmResetPasswordError.isEmpty){
+                Text(confirmResetPasswordError)
+                    .bold()
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+
+            }
+            Spacer()
+
             Text("Check your email for a confirmation code.").header()
             TextField("Username", text: $username).pretty()
             TextField("Password", text: $newPassword).pretty()
