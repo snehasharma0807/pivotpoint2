@@ -6,20 +6,28 @@ import SwiftUI
 struct SessionView: View{
 
     @EnvironmentObject var sessionManager: SessionManager
-
-
+    @State var currentDate: Date = Date()
     let user: AuthUser
-
+    
     var body: some View{
         VStack{
             Spacer()
             Text("Welcome \(user.username)!!")
                 .font(.largeTitle)
                 .multilineTextAlignment(.center)
-            Spacer()
+            ScrollView(.vertical, showsIndicators: false){
+                VStack(spacing: 20){
+                    //Custom date picker
+                    CustomDatePicker(currentDate: $currentDate)
+                }
+            }
             Button("Sign Out", action: sessionManager.signOut)
         }
+
+
     }
+
+
 }
 
 struct SessionView_Previews: PreviewProvider{
