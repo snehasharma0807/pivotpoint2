@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CustomDatePicker: View{
+    @EnvironmentObject var sessionManager: SessionManager
+
     
     @Binding var currentDate: Date
     
@@ -71,8 +73,62 @@ struct CustomDatePicker: View{
             LazyVGrid(columns: columns, spacing: 15) {
                 ForEach(extractDate()){ value in
                     CardView(value: value)
+                        .background(
+                        Capsule()
+                            .fill(Color("GreyGreen"))
+                            .padding(.horizontal, 8)
+                            .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1:0)
+                        )
+                        .onTapGesture {
+                            currentDate = value.date
+                        }
+                        
                 }
             }
+            VStack(spacing: 15){
+               Text("Tasks")
+                    .font(.title2.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 20)
+
+                
+                if let task = tasks.first(where: { task in
+                    return isSameDay(date1: task.taskDate, date2: currentDate)
+                }){
+                    
+                    ForEach(task.task){task in
+                        VStack(alignment: .leading, spacing: 10) {
+                            //for custom timing
+                            Button {
+                                sessionManager.showSignUpForEvent()
+                            } label: {
+                                Text(task.time
+                                    .addingTimeInterval(CGFloat.random(in: 0...5000)), style: .time)
+                                Text("  |  ")
+                                Text(task.title)
+                                    .font(.title2.bold())
+
+                            }
+
+                        }
+                        .foregroundColor(.white)
+                        .font(.title2.bold())
+                        .padding(.vertical, 10)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            Color("LightGrey")
+                                .opacity(0.5)
+                                .cornerRadius(10)
+                        )
+                    }
+                    
+                    
+                } else{
+                    Text("No event found")
+                }
+            }
+            .padding()
         }
         .onChange(of: currentMonth) { newValue in
             //updating month
@@ -86,12 +142,40 @@ struct CustomDatePicker: View{
         
         VStack{
             if value.day != -1{
-                Text("\(value.day)")
-                    .font(.title3.bold())
+                if let task = tasks.first(where: {task in
+                    
+                    return isSameDay(date1: task.taskDate, date2: value.date)
+                }) {
+                    Text("\(value.day)")
+                        .font(.title3.bold())
+                        .foregroundColor(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary)
+                        .frame(maxWidth:  .infinity)
+
+                    Spacer()
+                    
+                    Circle()
+                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white: Color("GreyGreen"))
+                        .frame(width: 8, height: 8)
+                } else{
+                    Text("\(value.day)")
+                        .font(.title3.bold())
+                        .foregroundColor(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary)
+                        .frame(maxWidth:  .infinity)
+                    
+                    Spacer()
+                }
             }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 9)
         .frame(height: 60, alignment: .top)
+    }
+    
+    //checking dates
+    
+    func isSameDay(date1: Date, date2: Date)->Bool{
+        let calendar = Calendar.current
+        
+        return calendar.isDate(date1, inSameDayAs: date2)
     }
     
     //extracting date and month for display
@@ -143,13 +227,6 @@ struct CustomDatePicker: View{
 
 
 
-//struct CustomeDatePicker_Preview: PreviewProvider{
-//    static var previews: some View{
-//        SessionView(user: AuthUser)
-//    }
-//}
-
-
 //Extending date to get current month date
 
 extension Date{
@@ -174,4 +251,52 @@ struct DateValue: Identifiable{
     var day: Int
     var date: Date
     
+}
+
+struct Task: Identifiable{
+    var id = UUID().uuidString
+    var title: String
+    var time: Date = Date()
+}
+
+//total task meta view
+struct TaskMetaData: Identifiable{
+    var id = UUID().uuidString
+    var task: [Task]
+    var taskDate: Date
+}
+
+//sample date for testing
+func getSampleDate(offset: Int)->Date{
+    let calendar = Calendar.current
+    let date = calendar.date(byAdding: .day, value: offset, to: Date())
+    return date ?? Date()
+}
+
+
+//sample tasks
+var tasks: [TaskMetaData] = [
+    TaskMetaData(task: [
+    
+        Task(title: "Meeting 1"),
+        Task(title: "Meeting 2"),
+        Task(title: "Eat some food")
+             ], taskDate: getSampleDate(offset: 1)),
+        TaskMetaData(task: [
+             Task(title: "Meeting 3")
+             ], taskDate: getSampleDate(offset: -3)),
+        TaskMetaData(task: [
+            Task(title: "Meeting 4")
+            ], taskDate: getSampleDate(offset: -8))
+]
+
+func addTask(taskName: String, date: Date) -> (){
+    
+}
+
+
+struct Previews_Custom_Date_Picker_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
 }

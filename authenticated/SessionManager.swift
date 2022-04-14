@@ -15,6 +15,8 @@ enum AuthState{
     case session(user: AuthUser)
     case resetPassword(resetPasswordError: String)
     case confirmResetPassword(confirmResetPasswordError: String)
+    case signUpForEvent
+    case sessionView(user: AuthUser)
 }
 final class SessionManager: ObservableObject{
     @Published var authState: AuthState = .login(error: "")
@@ -37,6 +39,17 @@ final class SessionManager: ObservableObject{
     func showConfirmResetPassword(confirmResetPasswordError: String){
         authState = .confirmResetPassword(confirmResetPasswordError: confirmResetPasswordError)
     }
+    func showSignUpForEvent(){
+        authState = .signUpForEvent
+    }
+    func showSessionView(){
+        if let user = Amplify.Auth.getCurrentUser(){
+            authState = .session(user: user)
+        } else {
+            authState = .login(error: "")
+        }
+    }
+    
 
     
     func signUp(username: String, email: String, password: String){

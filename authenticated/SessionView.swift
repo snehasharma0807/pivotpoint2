@@ -1,4 +1,4 @@
-//what you see when you log into the app
+//what you see when you log into the app (calendar)
 
 import Amplify
 import SwiftUI
@@ -6,25 +6,46 @@ import SwiftUI
 struct SessionView: View{
 
     @EnvironmentObject var sessionManager: SessionManager
-    @State var currentDate: Date = Date()
     let user: AuthUser
+    @State var currentDate: Date = Date()
     
     var body: some View{
-        VStack{
-            Spacer()
-            Text("Welcome \(user.username)!!")
-                .font(.largeTitle)
-                .multilineTextAlignment(.center)
-            ScrollView(.vertical, showsIndicators: false){
-                VStack(spacing: 20){
-                    //Custom date picker
-                    CustomDatePicker(currentDate: $currentDate)
+        ScrollView(.vertical, showsIndicators: false){
+            VStack(spacing: 20){
+                Text("\(user.username)")
+                //Custom date picker
+                CustomDatePicker(currentDate: $currentDate)
+            }
+            .padding(.vertical)
+        }
+        //Safe area view
+        
+        .safeAreaInset(edge: .bottom){
+            HStack{
+                Button{
+                } label: {
+                    Text("Add Task")
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color( "DarkGreyBlue"), in: Capsule())
+                        .foregroundColor(.white)
+                }
+
+                Button{
+                } label: {
+                    Text("Add Reminder")
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color( "LightGrey"), in: Capsule())
+                        .foregroundColor(.white)
                 }
             }
-            Button("Sign Out", action: sessionManager.signOut)
+            .padding(.horizontal)
+            .padding(.top, 10)
+            .background(.ultraThinMaterial)
         }
-
-
     }
 
 
