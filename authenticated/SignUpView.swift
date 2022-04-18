@@ -13,6 +13,14 @@ struct SignUpView: View{
     var body: some View{
         VStack{
             Spacer()
+            Text("When setting your username, please remember to set your username as your official name (first AND last).")
+                .foregroundColor(Color("DarkGreyBlue"))
+                .fontWeight(.semibold)
+                .font(.title2)
+                .multilineTextAlignment(.center)
+
+                
+            Spacer()
             
             TextField("Username", text: $username).pretty()
             TextField("Email", text: $email).pretty()
@@ -27,7 +35,7 @@ struct SignUpView: View{
             
             Spacer()
             Button("Already have an account? Log in.", action: {
-                sessionManager.showLogin(error: "")}
+                sessionManager.changeAuthStateToLogin(error: "")}
             )
         }
         .padding()

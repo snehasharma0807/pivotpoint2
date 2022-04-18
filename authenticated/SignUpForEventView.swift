@@ -16,7 +16,7 @@ struct SignUpForEventView: View{
     var body: some View{
         Text("Hello!")
         Button {
-            sessionManager.showSessionView()
+            sessionManager.changeAuthStateToSession()
         } label: {
             Text("Go back to calendar")
         }

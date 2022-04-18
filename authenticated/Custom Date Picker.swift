@@ -100,7 +100,7 @@ struct CustomDatePicker: View{
                         VStack(alignment: .leading, spacing: 10) {
                             //for custom timing
                             Button {
-                                sessionManager.showSignUpForEvent()
+                                sessionManager.changeAuthStateToEventDetails()
                             } label: {
                                 Text(task.time
                                     .addingTimeInterval(CGFloat.random(in: 0...5000)), style: .time)

@@ -12,39 +12,41 @@ enum AuthState{
     case signUp
     case login(error: String)
     case confirmCode(username: String)
-    case session(user: AuthUser)
+    case calendar(user: AuthUser)
     case resetPassword(resetPasswordError: String)
     case confirmResetPassword(confirmResetPasswordError: String)
     case signUpForEvent
-    case sessionView(user: AuthUser)
+    case calendarView(user: AuthUser)
 }
 final class SessionManager: ObservableObject{
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
         if let user = Amplify.Auth.getCurrentUser(){
-            authState = .session(user: user)
+            authState = .calendar(user: user)
         } else {
             authState = .login(error: "")
+            print("authstate has changed to login")
         }
     }
-    func showSignup(){
+    func changeAuthStateToSignUp(){
         authState = .signUp
     }
-    func showLogin(error: String){
+    func changeAuthStateToLogin(error: String){
         authState = .login(error: error)
+        print("authstate changed to login")
     }
-    func showResetPassword(resetPasswordError: String){
+    func changeAuthStateToResetPassword(resetPasswordError: String){
         authState = .resetPassword(resetPasswordError: resetPasswordError)
     }
-    func showConfirmResetPassword(confirmResetPasswordError: String){
+    func changeAuthStateToConfirmResetPassword(confirmResetPasswordError: String){
         authState = .confirmResetPassword(confirmResetPasswordError: confirmResetPasswordError)
     }
-    func showSignUpForEvent(){
+    func changeAuthStateToEventDetails(){
         authState = .signUpForEvent
     }
-    func showSessionView(){
+    func changeAuthStateToSession(){
         if let user = Amplify.Auth.getCurrentUser(){
-            authState = .session(user: user)
+            authState = .calendar(user: user)
         } else {
             authState = .login(error: "")
         }
@@ -93,7 +95,7 @@ final class SessionManager: ObservableObject{
                 print(confirmResult)
                 if confirmResult.isSignupComplete{
                     DispatchQueue.main.async {
-                        self?.showLogin(error: "")
+                        self?.changeAuthStateToLogin(error: "")
                     }
                 }
             case .failure(let error):
@@ -126,7 +128,7 @@ final class SessionManager: ObservableObject{
                     the_error = error.errorDescription
                 }
                     DispatchQueue.main.async {
-                        self?.showLogin(error: the_error)
+                        self?.changeAuthStateToLogin(error: the_error)
                     }
             }
         }
@@ -153,11 +155,11 @@ final class SessionManager: ObservableObject{
                 switch resetResult.nextStep {
                 case .confirmResetPasswordWithCode(let deliveryDetails, let info):
                     print("Confirm reset password with code send to - \(deliveryDetails) \(String(describing: info) )")
-                    self?.showConfirmResetPassword(confirmResetPasswordError: "")
+                    self?.changeAuthStateToConfirmResetPassword(confirmResetPasswordError: "")
 
                 case .done:
                     DispatchQueue.main.async {
-                        self?.showLogin(error: "")
+                        self?.changeAuthStateToLogin(error: "")
                     }
 
                 }
@@ -172,7 +174,7 @@ final class SessionManager: ObservableObject{
                     the_error = resetPasswordError.errorDescription
                 }
                 DispatchQueue.main.async {
-                    self?.showResetPassword(resetPasswordError: the_error)
+                    self?.changeAuthStateToResetPassword(resetPasswordError: the_error)
                 }
             }
             
@@ -195,7 +197,7 @@ func confirmResetPassword(
                 print(confirmResult)
                 print("Password reset confirmed.")
                 DispatchQueue.main.async {
-                    self?.showLogin(error: "")
+                    self?.changeAuthStateToLogin(error: "")
                 }
             case .failure(let authError):
                 print("Password reset failed with error \(authError)")
@@ -217,7 +219,7 @@ func confirmResetPassword(
                 }
 
                 DispatchQueue.main.async {
-                    self?.showConfirmResetPassword(confirmResetPasswordError: the_error)
+                    self?.changeAuthStateToConfirmResetPassword(confirmResetPasswordError: the_error)
                 }
             }
 //            if case let .failure(authError) = result{

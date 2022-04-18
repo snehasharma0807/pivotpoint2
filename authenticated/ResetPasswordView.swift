@@ -28,7 +28,7 @@ struct ResetPasswordView: View{
             
             Spacer()
             Button("Back to home", action: {
-                sessionManager.showLogin(error: "")
+                sessionManager.changeAuthStateToLogin(error: "")
             })
         }
         .padding()

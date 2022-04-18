@@ -1,9 +1,16 @@
+//
+//  CalendarView.swift
+//  authenticated
+//
+//  Created by Sneha Sharma on 4/13/22.
+//
+
 //what you see when you log into the app (calendar)
 
 import Amplify
 import SwiftUI
 
-struct SessionView: View{
+struct CalendarView: View{
 
     @EnvironmentObject var sessionManager: SessionManager
     let user: AuthUser
@@ -31,7 +38,17 @@ struct SessionView: View{
                         .background(Color( "DarkGreyBlue"), in: Capsule())
                         .foregroundColor(.white)
                 }
-
+                Button{
+                    print("button clicked")
+                    sessionManager.changeAuthStateToLogin(error: "")
+                } label: {
+                    Text("Log out")
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color( "LightGrey"), in: Capsule())
+                        .foregroundColor(.white)
+                }
                 Button{
                 } label: {
                     Text("Add Reminder")
@@ -41,6 +58,7 @@ struct SessionView: View{
                         .background(Color( "LightGrey"), in: Capsule())
                         .foregroundColor(.white)
                 }
+
             }
             .padding(.horizontal)
             .padding(.top, 10)
@@ -51,13 +69,13 @@ struct SessionView: View{
 
 }
 
-struct SessionView_Previews: PreviewProvider{
+struct CalendarView_Previews: PreviewProvider{
     private struct DummyUser: AuthUser{
         let userId: String = "2"
         let username: String = "dummy-add"
     }
 
     static var previews: some View{
-        SessionView(user: DummyUser())
+        CalendarView(user: DummyUser())
     }
 }

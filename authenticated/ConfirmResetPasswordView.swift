@@ -32,7 +32,7 @@ struct ConfirmResetPasswordView: View{
             
             Spacer()
             Button("Already have an account? Log in.", action: {
-                sessionManager.showLogin(error: "")
+                sessionManager.changeAuthStateToLogin(error: "")
                 
             })
         }

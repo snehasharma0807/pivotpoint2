@@ -3,7 +3,6 @@ import SwiftUI
 struct LoginView: View{
     
     @EnvironmentObject var sessionManager: SessionManager
-    
     let error : String
     @State var username = ""
     @State var password = ""
@@ -28,9 +27,9 @@ struct LoginView: View{
                 sessionManager.login(username: username, password: password)
             }).pretty()
             Spacer()
-            Button("Don't remember your password? Reset it here.", action: {sessionManager.showResetPassword(resetPasswordError: "")})
+            Button("Don't remember your password? Reset it here.", action: {sessionManager.changeAuthStateToResetPassword(resetPasswordError: "")})
             Button("Don't have an account? Sign up.", action: {
-                sessionManager.showSignup()
+                sessionManager.changeAuthStateToSignUp()
             })
 
         }

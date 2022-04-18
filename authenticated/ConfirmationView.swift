@@ -18,7 +18,7 @@ struct ConfirmationView: View{
                 sessionManager.confirm(username: username, code: confirmationCode)
             }).pretty()
             Button("Go to home", action: {
-                sessionManager.showLogin(error: "")
+                sessionManager.changeAuthStateToLogin(error: "")
             }).pretty()
         }
         .padding()
