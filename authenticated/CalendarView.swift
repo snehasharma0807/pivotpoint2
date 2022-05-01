@@ -29,18 +29,21 @@ struct CalendarView: View{
         
         .safeAreaInset(edge: .bottom){
             HStack{
-                Button{
-                } label: {
-                    Text("Add Task")
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color( "DarkGreyBlue"), in: Capsule())
-                        .foregroundColor(.white)
-                }
+//                if sessionManager.checkAdmin(username: user.username) == true{
+//                    Button{
+//                    } label: {
+//                        Text("Add Task")
+//                            .fontWeight(.bold)
+//                            .padding()
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color( "DarkGreyBlue"), in: Capsule())
+//                            .foregroundColor(.white)
+//                    }
+//                }
+                
                 Button{
                     print("button clicked")
-                    sessionManager.changeAuthStateToLogin(error: "")
+                    sessionManager.signOut()
                 } label: {
                     Text("Log out")
                         .fontWeight(.bold)
@@ -64,10 +67,11 @@ struct CalendarView: View{
             .padding(.top, 10)
             .background(.ultraThinMaterial)
         }
+
+        }
     }
 
 
-}
 
 struct CalendarView_Previews: PreviewProvider{
     private struct DummyUser: AuthUser{

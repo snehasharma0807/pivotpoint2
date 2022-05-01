@@ -5,9 +5,17 @@
 //  Created by Sneha Sharma on 3/15/22.
 //
 
+//import AWSCognitoIdentity
+//import ClientRuntime
+//import AWSClientRuntime
+
 import Amplify
+import AmplifyPlugins
 import Combine
 import Foundation
+import AWSPluginsCore
+
+
 enum AuthState{
     case signUp
     case login(error: String)
@@ -26,6 +34,7 @@ final class SessionManager: ObservableObject{
         } else {
             authState = .login(error: "")
             print("authstate has changed to login")
+            
         }
     }
     func changeAuthStateToSignUp(){
@@ -117,6 +126,49 @@ final class SessionManager: ObservableObject{
                     DispatchQueue.main.async {
                         self?.getCurrentAuthUser()
                     }
+                    var t = Amplify.Auth.fetchAuthSession() { result in
+                        do {
+                            let session = try result.get()
+                            // Get user sub or identity id
+//                                    if let identityProvider = session as? AuthCognitoIdentityProvider {
+//
+//                                        let usersub = try identityProvider.getUserSub().get()
+//                                        let identityId = try identityProvider.getIdentityId().get()
+//
+//                                        print("User sub - \(usersub) and identity id \(identityId)")
+//                                    }
+//
+//                                    // Get aws credentials
+//                                    if let awsCredentialsProvider = session as? AuthAWSCredentialsProvider {
+//                                        let credentials = try awsCredentialsProvider.getAWSCredentials().get()
+//
+//                                        print("Access key - \(credentials.accessKey) ")
+//
+//                                    }
+
+                                    // Get cognito user pool token
+                                    if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
+                                        print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
+                                        let tokens = try cognitoTokenProvider.getCognitoTokens().get()
+                                        print("Id token - \(tokens.idToken) ")
+
+                                        let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
+                                        print("Token Claims: \(tokenClaims)")
+                                        
+                                        if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
+                                            var cognitoGroups : Set<String> = []
+                                            for group in groups {
+                                                print("Cognito group: \(group)")
+                                                if let groupString = group as? String {
+                                                    cognitoGroups.insert(groupString)
+                                                }
+                                            }
+                                         }
+                                    }
+                                } catch {
+                                    print("Fetch auth session failed with error - \(error)")
+                                }
+                        }
                 }
                 
             case .failure(let error):
@@ -141,6 +193,7 @@ final class SessionManager: ObservableObject{
                 DispatchQueue.main.async {
                     self?.getCurrentAuthUser()
                 }
+                print("user has been signed out")
             case .failure(let error):
                 print("Sign out error: ", error)
             }
@@ -222,18 +275,60 @@ func confirmResetPassword(
                     self?.changeAuthStateToConfirmResetPassword(confirmResetPasswordError: the_error)
                 }
             }
-//            if case let .failure(authError) = result{
-//                print("Reset password failed with error \(authError)")
-//                return
-//            }
-//        recieveValue: do {
-//            print("Password reset confirmed.")
-//            DispatchQueue.main.async {
-//                self?.showLogin(error: "")
-//            }
-//        }
+
             
         }
     }
-
+    
+    
+//    func getIdentityPoolID(name: String,
+//                           completion: @escaping (String?) -> Void) throws {
+//        var token: String? = nil
+//        var poolID: String? = nil
+//
+//        repeat {
+//            var error: Error?
+//            let listPoolsInput = ListIdentityPoolsInput(maxResults: 25, nextToken: token)
+//
+//            cognitoIdentityClient.listIdentityPools(input: listPoolsInput) { (result) in
+//                switch(result) {
+//                case .success(let output):
+//                    poolID = output.identityPools?
+//                        .filter { $0.identityPoolName == name }
+//                        .map { $0.identityPoolId }
+//                        .first ?? nil
+//                    token = output.nextToken
+//                case .failure(let listError):
+//                    error = listError
+//                }
+//            }
+//
+//            if error != nil {
+//                throw(error!)
+//            }
+//        } while token != nil && poolID == nil
+//
+//        completion(poolID)
+//    }
+    
+    
+    
+    
+//    func checkAdmin(username: String) -> Bool{
+//
+//
+//    if username == "ADMIN"{
+//            print("this is an admin")
+//            return true
+//        } else{
+//            print("this is not an admin")
+//            return false
+//        }
+//
+//        //        if username == rand{
+////            return true
+////        } else{
+////            return false
+////        }
+//    }
 }

@@ -7,3 +7,4 @@ ${BUILT_PRODUCTS_DIR}/AWSMobileClient/AWSMobileClient.framework
 ${BUILT_PRODUCTS_DIR}/AWSPluginsCore/AWSPluginsCore.framework
 ${BUILT_PRODUCTS_DIR}/Amplify/Amplify.framework
 ${BUILT_PRODUCTS_DIR}/AmplifyPlugins/AmplifyPlugins.framework
+${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework

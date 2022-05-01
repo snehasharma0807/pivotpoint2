@@ -297,6 +297,6 @@ func addTask(taskName: String, date: Date) -> (){
 
 struct Previews_Custom_Date_Picker_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        Text("Hello, World!")
     }
 }
