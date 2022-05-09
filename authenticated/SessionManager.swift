@@ -16,6 +16,8 @@ import Foundation
 import AWSPluginsCore
 
 
+
+
 enum AuthState{
     case signUp
     case login(error: String)
@@ -25,8 +27,12 @@ enum AuthState{
     case confirmResetPassword(confirmResetPasswordError: String)
     case signUpForEvent
     case calendarView(user: AuthUser)
+    case addEvent
 }
 final class SessionManager: ObservableObject{
+    
+    var isAdmin: Bool = false
+    
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
         if let user = Amplify.Auth.getCurrentUser(){
@@ -53,14 +59,19 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToEventDetails(){
         authState = .signUpForEvent
     }
-    func changeAuthStateToSession(){
+    func changeAuthStateToCalendar(){
         if let user = Amplify.Auth.getCurrentUser(){
             authState = .calendar(user: user)
         } else {
             authState = .login(error: "")
         }
     }
+    func changeAuthStateToAddEvent(){
+        authState = .addEvent
+    }
     
+    
+
 
     
     func signUp(username: String, email: String, password: String){
@@ -126,49 +137,6 @@ final class SessionManager: ObservableObject{
                     DispatchQueue.main.async {
                         self?.getCurrentAuthUser()
                     }
-                    var t = Amplify.Auth.fetchAuthSession() { result in
-                        do {
-                            let session = try result.get()
-                            // Get user sub or identity id
-//                                    if let identityProvider = session as? AuthCognitoIdentityProvider {
-//
-//                                        let usersub = try identityProvider.getUserSub().get()
-//                                        let identityId = try identityProvider.getIdentityId().get()
-//
-//                                        print("User sub - \(usersub) and identity id \(identityId)")
-//                                    }
-//
-//                                    // Get aws credentials
-//                                    if let awsCredentialsProvider = session as? AuthAWSCredentialsProvider {
-//                                        let credentials = try awsCredentialsProvider.getAWSCredentials().get()
-//
-//                                        print("Access key - \(credentials.accessKey) ")
-//
-//                                    }
-
-                                    // Get cognito user pool token
-                                    if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
-                                        print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
-                                        let tokens = try cognitoTokenProvider.getCognitoTokens().get()
-                                        print("Id token - \(tokens.idToken) ")
-
-                                        let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
-                                        print("Token Claims: \(tokenClaims)")
-                                        
-                                        if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
-                                            var cognitoGroups : Set<String> = []
-                                            for group in groups {
-                                                print("Cognito group: \(group)")
-                                                if let groupString = group as? String {
-                                                    cognitoGroups.insert(groupString)
-                                                }
-                                            }
-                                         }
-                                    }
-                                } catch {
-                                    print("Fetch auth session failed with error - \(error)")
-                                }
-                        }
                 }
                 
             case .failure(let error):
@@ -280,55 +248,70 @@ func confirmResetPassword(
         }
     }
     
+    func isTheUserAdmin(user: String) -> Bool{
+        if user == "ADMIN"{
+            return true
+        } else{
+            return false
+        }
+    }
     
-//    func getIdentityPoolID(name: String,
-//                           completion: @escaping (String?) -> Void) throws {
-//        var token: String? = nil
-//        var poolID: String? = nil
+    
+//    func getGroupsFromUser(){
+//        Amplify.Auth.fetchAuthSession() { result in
+//            do {
+//                let session = try result.get()
+//                        if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
+//                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
+//                            let tokens = try cognitoTokenProvider.getCognitoTokens().get()
+//                            print("Id token - \(tokens.idToken) ")
 //
-//        repeat {
-//            var error: Error?
-//            let listPoolsInput = ListIdentityPoolsInput(maxResults: 25, nextToken: token)
+//                            let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
+//                            print("Token Claims: \(tokenClaims)")
 //
-//            cognitoIdentityClient.listIdentityPools(input: listPoolsInput) { (result) in
-//                switch(result) {
-//                case .success(let output):
-//                    poolID = output.identityPools?
-//                        .filter { $0.identityPoolName == name }
-//                        .map { $0.identityPoolId }
-//                        .first ?? nil
-//                    token = output.nextToken
-//                case .failure(let listError):
-//                    error = listError
-//                }
+//                            if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
+//                                var _ : Set<String> = []
+//                                for group in groups {
+//                                    print("Cognito group: \(group)")
+//                                    if group as! String == "admin"{
+//                                        self.isAdmin = true
+//                                        return
+//                                    } else{
+//                                        self.isAdmin = false
+//                                        return
+//                                    }
+//
+//
+//                                    //if let groupString = group as? String {
+////                                        cognitoGroups.insert(groupString)
+////                                        if groupString == "admin"{
+////                                            print("This person is an admin")
+////                                            self.isAdmin = true
+////                                        } else{
+////                                            print("This person is not an admin")
+////                                            self.isAdmin = false
+////                                        }
+////                                    }
+//                                }
+//                             }
+//                        }
+//                print("did this run?")
+//                    } catch {
+//                        print("Fetch auth session failed with error - \(error)")
+//                    }
 //            }
+//        print ("i sm here!!!")
 //
-//            if error != nil {
-//                throw(error!)
-//            }
-//        } while token != nil && poolID == nil
-//
-//        completion(poolID)
 //    }
     
-    
-    
-    
-//    func checkAdmin(username: String) -> Bool{
-//
-//
-//    if username == "ADMIN"{
-//            print("this is an admin")
+//    func isTheUserAdmin() -> Bool{
+//        print("Before getting groups: \(isAdmin)")
+//        getGroupsFromUser()
+//        print("After getting groups: \(isAdmin)")
+//        if isAdmin == true{
 //            return true
 //        } else{
-//            print("this is not an admin")
 //            return false
 //        }
-//
-//        //        if username == rand{
-////            return true
-////        } else{
-////            return false
-////        }
 //    }
 }

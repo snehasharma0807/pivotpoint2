@@ -29,18 +29,6 @@ struct CalendarView: View{
         
         .safeAreaInset(edge: .bottom){
             HStack{
-//                if sessionManager.checkAdmin(username: user.username) == true{
-//                    Button{
-//                    } label: {
-//                        Text("Add Task")
-//                            .fontWeight(.bold)
-//                            .padding()
-//                            .frame(maxWidth: .infinity)
-//                            .background(Color( "DarkGreyBlue"), in: Capsule())
-//                            .foregroundColor(.white)
-//                    }
-//                }
-                
                 Button{
                     print("button clicked")
                     sessionManager.signOut()
@@ -51,6 +39,19 @@ struct CalendarView: View{
                         .frame(maxWidth: .infinity)
                         .background(Color( "LightGrey"), in: Capsule())
                         .foregroundColor(.white)
+                }
+                if (sessionManager.isTheUserAdmin(user: user.username) == true){
+                    Button{
+                        print("adding event")
+                        sessionManager.changeAuthStateToAddEvent()
+                    } label: {
+                        Text("Add Task")
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color( "DarkGreyBlue"), in: Capsule())
+                            .foregroundColor(.white)
+                    }
                 }
                 Button{
                 } label: {
