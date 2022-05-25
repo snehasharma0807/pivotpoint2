@@ -19,7 +19,16 @@ struct CalendarView: View{
     var body: some View{
         ScrollView(.vertical, showsIndicators: false){
             VStack(spacing: 20){
-                Text("\(user.username)")
+                HStack{
+                    Image(systemName:  "person.crop.circle")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                    Text("Welcome \(user.username)!")
+                        .fontWeight(.semibold)
+                        .font(.title)
+                        .foregroundColor(Color("DarkGreyBlue"))
+
+                }
                 //Custom date picker
                 CustomDatePicker(currentDate: $currentDate)
             }

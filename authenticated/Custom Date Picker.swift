@@ -278,15 +278,15 @@ func getSampleDate(offset: Int)->Date{
 var tasks: [TaskMetaData] = [
     TaskMetaData(task: [
     
-        Task(title: "Meeting 1"),
-        Task(title: "Meeting 2"),
-        Task(title: "Eat some food")
+        Task(title: "Event 1"),
+        Task(title: "Event 2"),
+        Task(title: "Event 3")
              ], taskDate: getSampleDate(offset: 1)),
         TaskMetaData(task: [
-             Task(title: "Meeting 3")
+             Task(title: "Event 4")
              ], taskDate: getSampleDate(offset: -3)),
         TaskMetaData(task: [
-            Task(title: "Meeting 4")
+            Task(title: "Event 5")
             ], taskDate: getSampleDate(offset: -8))
 ]
 

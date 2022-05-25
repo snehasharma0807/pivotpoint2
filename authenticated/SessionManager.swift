@@ -257,6 +257,7 @@ func confirmResetPassword(
     }
     
     
+    
 //    func getGroupsFromUser(){
 //        Amplify.Auth.fetchAuthSession() { result in
 //            do {

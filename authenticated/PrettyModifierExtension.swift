@@ -8,8 +8,7 @@ struct Pretty: ViewModifier {
             .foregroundColor(Color(red: 0.2824, green: 0.5255, blue: 0.6275))
             .padding()
             .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .border(Color(red: 0.2824, green: 0.5255, blue: 0.6275))
+        
     }
 }
 extension View {
