@@ -62,15 +62,6 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
                 }
-                Button{
-                } label: {
-                    Text("Add Reminder")
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color( "LightGrey"), in: Capsule())
-                        .foregroundColor(.white)
-                }
 
             }
             .padding(.horizontal)

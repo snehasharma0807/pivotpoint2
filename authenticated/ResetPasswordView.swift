@@ -10,28 +10,45 @@ struct ResetPasswordView: View{
     @State var username = ""
     
     var body: some View{
-        VStack{
-            Spacer()
-            if (!resetPasswordError.isEmpty){
-                Text(resetPasswordError)
+        Text("Enter your username to recieve instructions on how to reset your password.")
+            .bold()
+            .foregroundColor(Color("BlueGray"))
+            .font(.system(size: 30))
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 20)
+        TextField("Username...", text: $username)
+            .foregroundColor(Color("BlueGray"))
+            .padding(.horizontal, 30).padding(.top, 20)
+            .offset(y: 50)
+            .padding(.bottom, 50)
+        Divider()
+            .background(Color("BlueGray"))
+            .padding(.horizontal, 30)
+        Button {
+            sessionManager.resetPassword(username: username)
+        } label: {
+            Text("Next")
+                .padding(.horizontal, 100)
+                .padding(.vertical, 10)
+                .foregroundColor(.white)
+                .background(Color("BlueGray"))
+                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                .offset(y: 20)
+                .padding(.bottom, 20)
+        }
+        HStack{
+            Text("Don't have an account?    ")
+                .font(.system(size: 15))
+            Button {
+                sessionManager.changeAuthStateToSignUp(error: "")
+            } label: {
+                Text("Sign up here.")
                     .bold()
-                    .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 15))
             }
 
-            Spacer()
-            Text("Enter your username here. If you don't remember it, please make a new account.").header()
-            TextField("Username", text: $username).pretty()
-            Button("Confirm your username.", action: {
-                sessionManager.resetPassword(username: username)
-            }).pretty()
-            
-            Spacer()
-            Button("Back to home", action: {
-                sessionManager.changeAuthStateToLogin(error: "")
-            })
         }
-        .padding()
     }
 }
 

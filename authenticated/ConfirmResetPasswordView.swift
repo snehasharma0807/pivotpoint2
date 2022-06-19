@@ -13,30 +13,62 @@ struct ConfirmResetPasswordView: View{
     
     var body: some View{
         VStack{
-            Spacer()
-            if (!confirmResetPasswordError.isEmpty){
-                Text(confirmResetPasswordError)
-                    .bold()
-                    .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
-
+            Text("Check your email for a verification code.")
+                .bold()
+                .foregroundColor(Color("BlueGray"))
+                .font(.system(size: 30))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+            TextField("Username...", text: $username)
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30).padding(.top, 20)
+                .offset(y: 50)
+                .padding(.bottom, 50)
+            Divider()
+                .background(Color("BlueGray"))
+                .padding(.horizontal, 30)
+            TextField("Verification code...", text: $confirmationCode)
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30).padding(.top, 20)
+                .offset(y: 25)
+                .padding(.bottom, 25)
+            Divider()
+                .background(Color("BlueGray"))
+                .padding(.horizontal, 30)
+            SecureInputView("New password...", text: $newPassword)
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30).padding(.top, 20)
+                .offset(y: 25)
+                .padding(.bottom, 25)
+            Divider()
+                .background(Color("BlueGray"))
+                .padding(.horizontal, 30)
+            Button {
+                sessionManager.confirmResetPassword(username: username, newPassword: newPassword, confirmationCode: confirmationCode)
+            } label: {
+                Text("Reset Password")
+                    .padding(.horizontal, 100)
+                    .padding(.vertical, 10)
+                    .foregroundColor(.white)
+                    .background(Color("BlueGray"))
+                    .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                    .offset(y: 20)
+                    .padding(.bottom, 20)
             }
-            Spacer()
-
-            Text("Check your email for a confirmation code.").header()
-            TextField("Username", text: $username).pretty()
-            TextField("Password", text: $newPassword).pretty()
-            SecureField("ConfirmationCode", text: $confirmationCode).pretty()
-            Button("Confirm", action: {
-                sessionManager.confirmResetPassword(username: username, newPassword: newPassword, confirmationCode: confirmationCode); print(newPassword)}).pretty()
-            
-            Spacer()
-            Button("Already have an account? Log in.", action: {
-                sessionManager.changeAuthStateToLogin(error: "")
+            HStack{
+                Text("Remember your password now?    ")
+                    .font(.system(size: 15))
+                Button {
+                    sessionManager.changeAuthStateToLogin(error: "")
+                } label: {
+                    Text("Log in here.")
+                        .bold()
+                        .foregroundColor(Color("BlueGray"))
+                        .font(.system(size: 15))
+                }
                 
-            })
+            }
         }
-        .padding()
     }
 }
 
