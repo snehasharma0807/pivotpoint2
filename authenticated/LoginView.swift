@@ -11,6 +11,14 @@ struct LoginView: View{
     
     var body: some View{
         VStack{
+            if (error != ""){
+                Text(error)
+                    .bold()
+                    .foregroundColor(.red)
+            } else{
+                Text("")
+            }
+
             Image("logo")
                 .resizable()
                 .scaledToFit()
@@ -64,7 +72,6 @@ struct LoginView: View{
             }
 
 
-            Spacer()
 
         }
         .padding(.vertical, 30)
