@@ -11,59 +11,99 @@ struct LoginView: View{
     
     var body: some View{
         VStack{
-            Group{
-                Spacer()
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer()
-
-                Text(error)
-                    .bold()
-                    .foregroundColor(.red)
-
-                    
-                TextField("Username", text: $username).pretty()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color(red: 0.2824, green: 0.5255, blue: 0.6275), lineWidth: 1)
-                        )
-                SecureField("Password", text: $password).pretty()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color(red: 0.2824, green: 0.5255, blue: 0.6275), lineWidth: 1)
-                        )
+            Image("logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 300, height: 300)
+            TextField("Username...", text: $username)
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30).padding(.top, 20)
+                .offset(y: 50)
+                .padding(.bottom, 50)
+            Divider()
+                .background(Color("BlueGray"))
+                .padding(.horizontal, 30)
+            SecureInputView("Password", text: $password)
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30).padding(.top, 22)
+            Divider()
+                .background(Color("BlueGray"))
+                .padding(.horizontal, 30)
+            Button {
+                sessionManager.login(username: username, password: password)
+            } label: {
+                Text("Login")
+                    .padding(.horizontal, 100)
+                    .padding(.vertical, 10)
+                    .foregroundColor(.white)
+                    .background(Color("BlueGray"))
+                    .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                    .offset(y: 20)
+                    .padding(.bottom, 20)
+            }
+            Button {
+                sessionManager.changeAuthStateToResetPassword(resetPasswordError: "")
+            } label: {
+                Text("Forgot Password?")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 15))
+            }
+            Spacer()
+            HStack{
+                Text("Don't have an account?  ")
+                    .font(.system(size: 15))
                 Button {
-                    sessionManager.login(username: username, password: password)
+                    sessionManager.changeAuthStateToSignUp()
                 } label: {
-                    Text("Login")
-                        .font(.largeTitle)
-                        .foregroundColor(Color(red: 0.2824, green: 0.5255, blue: 0.6275))
-                        .padding()
-                        .background(.white)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color(red: 0.2824, green: 0.5255, blue: 0.6275), lineWidth: 1)
-                            )
+                    Text("Sign up here.")
+                        .bold()
+                        .foregroundColor(Color("BlueGray"))
+                        .font(.system(size: 15))
                 }
-                Spacer()
+
             }
 
 
-            
-            Button("Don't remember your password? Reset it here.", action: {sessionManager.changeAuthStateToResetPassword(resetPasswordError: "")})
-            Button("Don't have an account? Sign up.", action: {
-                sessionManager.changeAuthStateToSignUp()
-            })
+            Spacer()
 
         }
-        .padding()
+        .padding(.vertical, 30)
     }
 }
 
 struct LoginView_Previews: PreviewProvider{
     static var previews: some View{
         LoginView(error: "")
+    }
+}
+
+struct SecureInputView: View {
+    
+    @Binding private var text: String
+    @State private var isSecured: Bool = true
+    private var title: String
+    
+    init(_ title: String, text: Binding<String>) {
+        self.title = title
+        self._text = text
+    }
+    
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            Group {
+                if isSecured {
+                    SecureField(title, text: $text)
+                } else {
+                    TextField(title, text: $text)
+                }
+            }.padding(.trailing, 32)
+
+            Button(action: {
+                isSecured.toggle()
+            }) {
+                Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                    .accentColor(.gray)
+            }
+        }
     }
 }
