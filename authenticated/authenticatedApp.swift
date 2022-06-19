@@ -27,8 +27,8 @@ struct AuthenticatedApp: App{
             case .login(let error):
                 LoginView(error: error)
                     .environmentObject(sessionManager)
-            case .signUp:
-                SignUpView()
+            case .signUp(let error):
+                SignUpView(error: error)
                     .environmentObject(sessionManager)
             case .confirmCode(let username):
                 ConfirmationView(username: username)

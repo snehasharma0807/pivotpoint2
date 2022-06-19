@@ -61,7 +61,7 @@ struct LoginView: View{
                 Text("Don't have an account?  ")
                     .font(.system(size: 15))
                 Button {
-                    sessionManager.changeAuthStateToSignUp()
+                    sessionManager.changeAuthStateToSignUp(error: "")
                 } label: {
                     Text("Sign up here.")
                         .bold()

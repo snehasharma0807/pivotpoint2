@@ -9,9 +9,18 @@ struct SignUpView: View{
     @State var username = ""
     @State var email = ""
     @State var password = ""
+    let error: String
     
     var body: some View{
         VStack{
+            if (error != ""){
+                Text(error)
+                    .bold()
+                    .foregroundColor(.red)
+            } else{
+                Text("")
+            }
+            
             Image(systemName: "person.crop.square.fill")
                 .resizable()
                 .scaledToFit()
@@ -32,7 +41,7 @@ struct SignUpView: View{
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)
-            TextField("Password...", text: $password)
+            SecureInputView("Password...", text: $password)
                 .foregroundColor(Color("BlueGray"))
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 25)
@@ -75,6 +84,6 @@ struct SignUpView: View{
 
 struct SignUpView_Previews: PreviewProvider{
     static var previews: some View{
-        SignUpView()
+        SignUpView(error: "")
     }
 }

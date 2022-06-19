@@ -19,7 +19,7 @@ import AWSPluginsCore
 
 
 enum AuthState{
-    case signUp
+    case signUp(error: String)
     case login(error: String)
     case confirmCode(username: String)
     case calendar(user: AuthUser)
@@ -43,8 +43,8 @@ final class SessionManager: ObservableObject{
             
         }
     }
-    func changeAuthStateToSignUp(){
-        authState = .signUp
+    func changeAuthStateToSignUp(error: String){
+        authState = .signUp(error: error)
     }
     func changeAuthStateToLogin(error: String){
         authState = .login(error: error)
@@ -100,7 +100,24 @@ final class SessionManager: ObservableObject{
                 }
                 
             case .failure(let error):
-                print("Sign up error", error)
+                var the_error: String = ""
+                print("Error: ", error.errorDescription)
+                if (error.errorDescription == "Username is required to signUp"){
+                    the_error = "Username is required to sign up."
+                } else if (error.errorDescription == "Password is required to signUp"){
+                    the_error = "Password is required to sign up."
+                } else if (error.errorDescription == "Password did not conform with policy: Password not long enough"){
+                    the_error = "Password is not long enough."
+                } else if(error.errorDescription == "Invalid email address format."){
+                    the_error = "Make sure your email is correct!"
+                } else if(error.errorDescription != ""){
+                    the_error = "Try again"
+                }else{
+                    the_error = ""
+                }
+                DispatchQueue.main.async {
+                    self?.changeAuthStateToSignUp(error: the_error)
+                }
             }
             
         }
