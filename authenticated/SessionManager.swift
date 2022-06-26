@@ -37,6 +37,7 @@ final class SessionManager: ObservableObject{
     func getCurrentAuthUser(){
         if let user = Amplify.Auth.getCurrentUser(){
             authState = .calendar(user: user)
+            listGroups()
         } else {
             authState = .login(error: "")
             print("authstate has changed to login")
@@ -265,6 +266,38 @@ func confirmResetPassword(
         }
     }
     
+    func listGroups(){
+        Amplify.Auth.fetchAuthSession() { result in
+            do {
+                let session = try result.get()
+                        if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
+                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
+                            let tokens = try cognitoTokenProvider.getCognitoTokens().get()
+                            print("Id token - \(tokens.idToken) ")
+
+                            let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
+                            print("Token Claims: \(tokenClaims)")
+
+                            if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
+                                var _ : Set<String> = []
+                                for group in groups {
+                                    print("Cognito group: \(group)")
+                                    if group as! String == "admin"{
+                                        self.isAdmin = true
+                                    } else{
+                                        self.isAdmin = false
+                                    }
+                                }
+                             }
+                        }
+                print("did this run?")
+                print("Is the user an admin? \(self.isAdmin)")
+                    } catch {
+                        print("Fetch auth session failed with error - \(error)")
+                    }
+            }
+    }
+    
     func isTheUserAdmin(user: String) -> Bool{
         if user == "ADMIN"{
             return true
@@ -272,64 +305,9 @@ func confirmResetPassword(
             return false
         }
     }
-    
-    
-    
-//    func getGroupsFromUser(){
-//        Amplify.Auth.fetchAuthSession() { result in
-//            do {
-//                let session = try result.get()
-//                        if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
-//                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
-//                            let tokens = try cognitoTokenProvider.getCognitoTokens().get()
-//                            print("Id token - \(tokens.idToken) ")
-//
-//                            let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
-//                            print("Token Claims: \(tokenClaims)")
-//
-//                            if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
-//                                var _ : Set<String> = []
-//                                for group in groups {
-//                                    print("Cognito group: \(group)")
-//                                    if group as! String == "admin"{
-//                                        self.isAdmin = true
-//                                        return
-//                                    } else{
-//                                        self.isAdmin = false
-//                                        return
-//                                    }
-//
-//
-//                                    //if let groupString = group as? String {
-////                                        cognitoGroups.insert(groupString)
-////                                        if groupString == "admin"{
-////                                            print("This person is an admin")
-////                                            self.isAdmin = true
-////                                        } else{
-////                                            print("This person is not an admin")
-////                                            self.isAdmin = false
-////                                        }
-////                                    }
-//                                }
-//                             }
-//                        }
-//                print("did this run?")
-//                    } catch {
-//                        print("Fetch auth session failed with error - \(error)")
-//                    }
-//            }
-//        print ("i sm here!!!")
-//
-//    }
-    
-//    func isTheUserAdmin() -> Bool{
-//        print("Before getting groups: \(isAdmin)")
-//        getGroupsFromUser()
-//        print("After getting groups: \(isAdmin)")
-//        if isAdmin == true{
-//            return true
-//        } else{
-//            return false
-//        }
-//    }
+
+
+    func isUserAdmin() {
+        print(self.isAdmin)
+    }
 }

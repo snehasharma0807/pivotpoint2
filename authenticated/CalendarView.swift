@@ -26,7 +26,7 @@ struct CalendarView: View{
                     Text("Welcome \(user.username)!")
                         .fontWeight(.semibold)
                         .font(.title)
-                        .foregroundColor(Color("DarkGreyBlue"))
+                        .foregroundColor(Color("BlueGray"))
 
                 }
                 //Custom date picker
@@ -46,22 +46,24 @@ struct CalendarView: View{
                         .fontWeight(.bold)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color( "LightGrey"), in: Capsule())
+                        .background(Color( "LightGrey"), in: Rectangle())
+                        .shadow(color: .gray, radius: 5, x: 4, y: 4)
                         .foregroundColor(.white)
                 }
-                if (sessionManager.isTheUserAdmin(user: user.username) == true){
                     Button{
                         print("adding event")
+                        sessionManager.isUserAdmin()
                         sessionManager.changeAuthStateToAddEvent()
                     } label: {
                         Text("Add Task")
                             .fontWeight(.bold)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color( "DarkGreyBlue"), in: Capsule())
+                            .background(Color( "BlueGray"), in: Rectangle())
+                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
                             .foregroundColor(.white)
                     }
-                }
+                
 
             }
             .padding(.horizontal)
