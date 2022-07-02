@@ -28,17 +28,25 @@ enum AuthState{
     case signUpForEvent
     case calendarView(user: AuthUser)
     case addEvent
+    case pageAfterLogin
 }
 final class SessionManager: ObservableObject{
-    
     var isAdmin: Bool = false
+    var cognitoGroups: Array<String> = [""]
+
     
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
+        
         if let user = Amplify.Auth.getCurrentUser(){
-            authState = .calendar(user: user)
-            listGroups()
+            isAdmin = false
+            cognitoGroups = []
+            authState = .pageAfterLogin
+            self.listGroups()
+            self.isUserAdmin()
         } else {
+            isAdmin = false
+            cognitoGroups = []
             authState = .login(error: "")
             print("authstate has changed to login")
             
@@ -69,6 +77,9 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToAddEvent(){
         authState = .addEvent
+    }
+    func changeAuthStateToPageAfterLogin(){
+        authState = .pageAfterLogin
     }
     
     
@@ -153,6 +164,7 @@ final class SessionManager: ObservableObject{
                 print(signInResult)
                 if signInResult.isSignedIn{
                     DispatchQueue.main.async {
+                        self?.listGroups()
                         self?.getCurrentAuthUser()
                     }
                 }
@@ -271,13 +283,11 @@ func confirmResetPassword(
             do {
                 let session = try result.get()
                         if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
-                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
+//                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
                             let tokens = try cognitoTokenProvider.getCognitoTokens().get()
-                            print("Id token - \(tokens.idToken) ")
-
+//                            print("Id token - \(tokens.idToken) ")
                             let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
-                            print("Token Claims: \(tokenClaims)")
-
+//                            print("Token Claims: \(tokenClaims)")
                             if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
                                 var _ : Set<String> = []
                                 for group in groups {
@@ -287,27 +297,23 @@ func confirmResetPassword(
                                     } else{
                                         self.isAdmin = false
                                     }
+                                    self.cognitoGroups.append(group as! String)
                                 }
                              }
                         }
                 print("did this run?")
                 print("Is the user an admin? \(self.isAdmin)")
+                print("List of the user's groups: \(self.cognitoGroups)")
                     } catch {
                         print("Fetch auth session failed with error - \(error)")
                     }
             }
     }
     
-    func isTheUserAdmin(user: String) -> Bool{
-        if user == "ADMIN"{
-            return true
-        } else{
-            return false
-        }
-    }
-
-
-    func isUserAdmin() {
+    func isUserAdmin() -> Bool {
         print(self.isAdmin)
+        return self.isAdmin
     }
+
 }
+

@@ -51,6 +51,9 @@ struct AuthenticatedApp: App{
             case .addEvent:
                 AddEventView()
                     .environmentObject(sessionManager)
+            case .pageAfterLogin:
+                PageAfterLoginView()
+                    .environmentObject(sessionManager)
             }
 
         }

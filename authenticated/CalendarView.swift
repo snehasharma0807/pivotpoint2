@@ -40,6 +40,8 @@ struct CalendarView: View{
             HStack{
                 Button{
                     print("button clicked")
+                    print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
+                    print("adding event")
                     sessionManager.signOut()
                 } label: {
                     Text("Log out")
@@ -47,23 +49,26 @@ struct CalendarView: View{
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color( "LightGrey"), in: Rectangle())
+                        .cornerRadius(5)
                         .shadow(color: .gray, radius: 5, x: 4, y: 4)
                         .foregroundColor(.white)
                 }
+                if (sessionManager.isAdmin == true){
                     Button{
+                        print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
                         print("adding event")
-                        sessionManager.isUserAdmin()
                         sessionManager.changeAuthStateToAddEvent()
                     } label: {
-                        Text("Add Task")
+                        Text("Add Outing")
                             .fontWeight(.bold)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color( "BlueGray"), in: Rectangle())
+                            .cornerRadius(5)
                             .shadow(color: .gray, radius: 5, x: 4, y: 4)
                             .foregroundColor(.white)
                     }
-                
+                }
 
             }
             .padding(.horizontal)
