@@ -17,7 +17,6 @@ import AWSPluginsCore
 
 
 
-
 enum AuthState{
     case signUp(error: String)
     case login(error: String)
@@ -30,20 +29,24 @@ enum AuthState{
     case addEvent
     case pageAfterLogin
 }
+
+
 final class SessionManager: ObservableObject{
     var isAdmin: Bool = false
     var cognitoGroups: Array<String> = [""]
+    var isEmployee: Bool = false
 
     
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
         
-        if let user = Amplify.Auth.getCurrentUser(){
+        if Amplify.Auth.getCurrentUser() != nil{
             isAdmin = false
             cognitoGroups = []
             authState = .pageAfterLogin
             self.listGroups()
             self.isUserAdmin()
+            self.isUserEmployee()
         } else {
             isAdmin = false
             cognitoGroups = []
@@ -297,6 +300,11 @@ func confirmResetPassword(
                                     } else{
                                         self.isAdmin = false
                                     }
+                                    if group as! String == "employee"{
+                                        self.isEmployee = true
+                                    } else {
+                                        self.isEmployee = false
+                                    }
                                     self.cognitoGroups.append(group as! String)
                                 }
                              }
@@ -314,6 +322,10 @@ func confirmResetPassword(
         print(self.isAdmin)
         return self.isAdmin
     }
+    func isUserEmployee() -> Bool {
+        print(self.isEmployee)
+        return self.isEmployee
+    }
+
 
 }
-
