@@ -11,11 +11,11 @@
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
-		555B7AB827ED8D5A00196098 /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 555B7AB727ED8D5A00196098 /* ElegantCalendar */; };
 		55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */; };
 		55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FC027E1A8DF00379E8D /* awsconfiguration.json */; };
 		55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A13FC227E1B09200379E8D /* SessionManager.swift */; };
 		55A74199286BE44C0027188A /* PageAfterLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A74198286BE44C0027188A /* PageAfterLoginView.swift */; };
+		55BEE749287CD69A0083A3DB /* AWSCognitoIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 55BEE748287CD69A0083A3DB /* AWSCognitoIdentity */; };
 		55C385FE2828A47700CA74B1 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C385FD2828A47700CA74B1 /* AddEventView.swift */; };
 		55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */; };
 		55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */; };
@@ -66,8 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55BEE749287CD69A0083A3DB /* AWSCognitoIdentity in Frameworks */,
 				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
-				555B7AB827ED8D5A00196098 /* ElegantCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,7 +165,7 @@
 			);
 			name = authenticated;
 			packageProductDependencies = (
-				555B7AB727ED8D5A00196098 /* ElegantCalendar */,
+				55BEE748287CD69A0083A3DB /* AWSCognitoIdentity */,
 			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
@@ -196,7 +196,7 @@
 			);
 			mainGroup = 55E1BD5C27E1955900F7ECC6;
 			packageReferences = (
-				555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */,
+				55BEE747287CD69A0083A3DB /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 55E1BD6627E1955900F7ECC6 /* Products */;
 			projectDirPath = "";
@@ -510,21 +510,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */ = {
+		55BEE747287CD69A0083A3DB /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ThasianX/ElegantCalendar";
+			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				minimumVersion = 0.2.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		555B7AB727ED8D5A00196098 /* ElegantCalendar */ = {
+		55BEE748287CD69A0083A3DB /* AWSCognitoIdentity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 555B7AB627ED8D5A00196098 /* XCRemoteSwiftPackageReference "ElegantCalendar" */;
-			productName = ElegantCalendar;
+			package = 55BEE747287CD69A0083A3DB /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSCognitoIdentity;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

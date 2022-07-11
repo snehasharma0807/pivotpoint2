@@ -53,6 +53,7 @@ struct CalendarView: View{
                         .shadow(color: .gray, radius: 5, x: 4, y: 4)
                         .foregroundColor(.white)
                 }
+
                 if (sessionManager.isAdmin == true){
                     Button{
                         print("sessionManager.isAdmin == \(sessionManager.isAdmin)")

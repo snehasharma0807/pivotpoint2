@@ -5,16 +5,12 @@
 //  Created by Sneha Sharma on 3/15/22.
 //
 
-//import AWSCognitoIdentity
-//import ClientRuntime
-//import AWSClientRuntime
 
 import Amplify
 import AmplifyPlugins
 import Combine
 import Foundation
 import AWSPluginsCore
-
 
 
 enum AuthState{
@@ -33,7 +29,7 @@ enum AuthState{
 
 final class SessionManager: ObservableObject{
     var isAdmin: Bool = false
-    var cognitoGroups: Array<String> = [""]
+    var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
 
     

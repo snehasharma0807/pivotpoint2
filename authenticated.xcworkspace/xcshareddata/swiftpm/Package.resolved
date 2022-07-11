@@ -1,21 +1,57 @@
 {
   "pins" : [
     {
-      "identity" : "elegantcalendar",
+      "identity" : "aws-crt-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ThasianX/ElegantCalendar",
+      "location" : "https://github.com/awslabs/aws-crt-swift.git",
       "state" : {
-        "revision" : "d446234f27e60f5bef15f91c35d384f388ff2c7d",
-        "version" : "4.3.2"
+        "revision" : "d654b82a55aec736ad8b4354027acab17394a060",
+        "version" : "0.2.2"
       }
     },
     {
-      "identity" : "elegantpages",
+      "identity" : "aws-sdk-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ThasianX/ElegantPages",
+      "location" : "https://github.com/awslabs/aws-sdk-swift",
       "state" : {
-        "revision" : "d598ce4824c40296decc84eae5b3c042d3dff842",
+        "revision" : "497c2034a00a507806611eec42727fb8ec9b5d69",
+        "version" : "0.2.5"
+      }
+    },
+    {
+      "identity" : "smithy-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/awslabs/smithy-swift.git",
+      "state" : {
+        "revision" : "46e2e69abc12ad820fcb31834045a1c9e1d053c1",
+        "version" : "0.2.4"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
         "version" : "1.4.2"
+      }
+    },
+    {
+      "identity" : "xmlcoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaxDesiatov/XMLCoder.git",
+      "state" : {
+        "revision" : "f30119af03996939cc4f54e0bf0dda9f88a84da5",
+        "version" : "0.13.1"
       }
     }
   ],
