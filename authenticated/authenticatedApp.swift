@@ -17,6 +17,7 @@ struct AuthenticatedApp: App{
     
     init(){
         configureAmplify()
+        
         sessionManager.getCurrentAuthUser()
     }
 
@@ -50,9 +51,6 @@ struct AuthenticatedApp: App{
                     .environmentObject(sessionManager)
             case .addEvent:
                 AddEventView()
-                    .environmentObject(sessionManager)
-            case .pageAfterLogin:
-                PageAfterLoginView()
                     .environmentObject(sessionManager)
             }
 

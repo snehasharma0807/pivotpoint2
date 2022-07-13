@@ -11,7 +11,9 @@ import AmplifyPlugins
 import Combine
 import Foundation
 import AWSPluginsCore
-
+import AWSCognitoIdentity
+import ClientRuntime
+import AWSClientRuntime
 
 enum AuthState{
     case signUp(error: String)
@@ -23,7 +25,6 @@ enum AuthState{
     case signUpForEvent
     case calendarView(user: AuthUser)
     case addEvent
-    case pageAfterLogin
 }
 
 
@@ -32,14 +33,14 @@ final class SessionManager: ObservableObject{
     var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
 
+
     
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
-        
         if Amplify.Auth.getCurrentUser() != nil{
             isAdmin = false
             cognitoGroups = []
-            authState = .pageAfterLogin
+            authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             self.listGroups()
             self.isUserAdmin()
             self.isUserEmployee()
@@ -77,9 +78,7 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToAddEvent(){
         authState = .addEvent
     }
-    func changeAuthStateToPageAfterLogin(){
-        authState = .pageAfterLogin
-    }
+
     
     
 
@@ -162,7 +161,7 @@ final class SessionManager: ObservableObject{
             case .success(let signInResult):
                 print(signInResult)
                 if signInResult.isSignedIn{
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self?.listGroups()
                         self?.getCurrentAuthUser()
                     }
@@ -322,6 +321,23 @@ func confirmResetPassword(
         print(self.isEmployee)
         return self.isEmployee
     }
-
-
+    
+//    func listUsers() async {
+//        do{
+//            let cogidClient = try CognitoIdentityClient(region: "us-west-2")
+//            let userList = try await cogidClient.listIdentities(input: ListIdentitiesInput(hideDisabled: false, identityPoolId: "us-west-2_cQe5CmJ7z", maxResults: 100))
+//        } catch {
+//            print("\(error)")
+//        }
+//    }
+    
+    func cogidClient() async {
+        do {
+            let cogidClient = try CognitoIdentityClient(region: "us-west-2")
+            let identityPoolsList = try await cogidClient.listIdentityPools(input: ListIdentityPoolsInput(maxResults: 100))
+            print("\(identityPoolsList)")
+        } catch {
+            print("\(error)")
+        }
+    }
 }

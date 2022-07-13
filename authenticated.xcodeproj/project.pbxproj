@@ -14,7 +14,6 @@
 		55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */; };
 		55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FC027E1A8DF00379E8D /* awsconfiguration.json */; };
 		55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A13FC227E1B09200379E8D /* SessionManager.swift */; };
-		55A74199286BE44C0027188A /* PageAfterLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A74198286BE44C0027188A /* PageAfterLoginView.swift */; };
 		55BEE749287CD69A0083A3DB /* AWSCognitoIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 55BEE748287CD69A0083A3DB /* AWSCognitoIdentity */; };
 		55C385FE2828A47700CA74B1 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C385FD2828A47700CA74B1 /* AddEventView.swift */; };
 		55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */; };
@@ -40,7 +39,6 @@
 		55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = SOURCE_ROOT; };
 		55A13FC027E1A8DF00379E8D /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
 		55A13FC227E1B09200379E8D /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		55A74198286BE44C0027188A /* PageAfterLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAfterLoginView.swift; sourceTree = "<group>"; };
 		55C385FD2828A47700CA74B1 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
 		55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmResetPasswordView.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */,
 				55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */,
 				55A13FC227E1B09200379E8D /* SessionManager.swift */,
-				55A74198286BE44C0027188A /* PageAfterLoginView.swift */,
 				55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */,
 				55E1BD8227E195D000F7ECC6 /* SignUpView.swift */,
 				55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */,
@@ -283,7 +280,6 @@
 				552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */,
 				55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */,
 				55E1BD8727E195EB00F7ECC6 /* LoginView.swift in Sources */,
-				55A74199286BE44C0027188A /* PageAfterLoginView.swift in Sources */,
 				55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
