@@ -50,7 +50,7 @@ struct AuthenticatedApp: App{
                 CalendarView(user: "user" as! AuthUser)
                     .environmentObject(sessionManager)
             case .addEvent:
-                AddEventView()
+                AddEventView(eventName: "", eventDetails: "", eventDate: Date.now, eventTime: Date.now, eventLocation: "", eventInstructor: "")
                     .environmentObject(sessionManager)
             }
 
