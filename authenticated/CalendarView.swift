@@ -69,19 +69,20 @@ struct CalendarView: View{
                             .shadow(color: .gray, radius: 5, x: 4, y: 4)
                             .foregroundColor(.white)
                     }
+                    Button {
+                        print("done")
+                    } label: {
+                        Text("List Users")
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color( "BlueGray"), in: Rectangle())
+                            .cornerRadius(5)
+                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                            .foregroundColor(.white)
+                    }
                 }
-                Button {
-                    print("done")
-                } label: {
-                    Text("List Users")
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color( "BlueGray"), in: Rectangle())
-                        .cornerRadius(5)
-                        .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                        .foregroundColor(.white)
-                }
+
 
                 if(sessionManager.isEmployee == true) {
                     Button {

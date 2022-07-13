@@ -52,6 +52,9 @@ struct AuthenticatedApp: App{
             case .addEvent:
                 AddEventView(eventName: "", eventDetails: "", eventDate: Date.now, eventTime: Date.now, eventLocation: "", eventInstructor: "")
                     .environmentObject(sessionManager)
+            case .loadingView:
+                LoadingView()
+                    .environmentObject(sessionManager)
             }
 
         }

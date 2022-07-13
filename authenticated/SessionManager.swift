@@ -25,6 +25,7 @@ enum AuthState{
     case signUpForEvent
     case calendarView(user: AuthUser)
     case addEvent
+    case loadingView
 }
 
 
@@ -32,6 +33,7 @@ final class SessionManager: ObservableObject{
     var isAdmin: Bool = false
     var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
+    var isLoading: Bool = false
 
 
     
@@ -40,10 +42,13 @@ final class SessionManager: ObservableObject{
         if Amplify.Auth.getCurrentUser() != nil{
             isAdmin = false
             cognitoGroups = []
-            authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             self.listGroups()
-            self.isUserAdmin()
-            self.isUserEmployee()
+            _ = self.isUserAdmin()
+            _ = self.isUserEmployee()
+            self.authState = .loadingView
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
+            }
         } else {
             isAdmin = false
             cognitoGroups = []
@@ -77,6 +82,9 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToAddEvent(){
         authState = .addEvent
+    }
+    func changeAuthStateToLoading(){
+        authState = .loadingView
     }
 
     
@@ -161,10 +169,8 @@ final class SessionManager: ObservableObject{
             case .success(let signInResult):
                 print(signInResult)
                 if signInResult.isSignedIn{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.listGroups()
-                        self?.getCurrentAuthUser()
-                    }
+                    self?.listGroups()
+                    self?.getCurrentAuthUser()
                 }
                 
             case .failure(let error):
@@ -338,6 +344,12 @@ func confirmResetPassword(
             print("\(identityPoolsList)")
         } catch {
             print("\(error)")
+        }
+    }
+    func startFakeNetworkCall() {
+        isLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.isLoading = false
         }
     }
 }
