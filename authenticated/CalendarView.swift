@@ -10,6 +10,7 @@
 import Amplify
 import SwiftUI
 
+
 struct CalendarView: View{
 
     @EnvironmentObject var sessionManager: SessionManager
@@ -37,30 +38,12 @@ struct CalendarView: View{
         //Safe area view
         
         .safeAreaInset(edge: .bottom){
-            HStack{
-                Button{
-                    print("button clicked")
-                    print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
-                    print("adding event")
-                    sessionManager.signOut()
-                } label: {
-                    Text("Log out")
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color( "LightGrey"), in: Rectangle())
-                        .cornerRadius(5)
-                        .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                        .foregroundColor(.white)
-                }
-
-                if (sessionManager.isAdmin == true){
+            ScrollView(.horizontal){
+                HStack{
                     Button{
-                        print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
-                        print("adding event")
-                        sessionManager.changeAuthStateToAddEvent()
+                        sessionManager.signOut()
                     } label: {
-                        Text("Add Outing")
+                        Text("Log out")
                             .fontWeight(.bold)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -70,25 +53,9 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
                     Button {
-                        print("done")
+                        sessionManager.changeAuthStateToProfileInformation()
                     } label: {
-                        Text("List Users")
-                            .fontWeight(.bold)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color( "BlueGray"), in: Rectangle())
-                            .cornerRadius(5)
-                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                            .foregroundColor(.white)
-                    }
-                }
-
-
-                if(sessionManager.isEmployee == true) {
-                    Button {
-                        print("sessionManager.isEmployee == \(sessionManager.isEmployee)")
-                    } label: {
-                        Text("View Outings")
+                        Text("Profile Information")
                             .fontWeight(.bold)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -98,17 +65,70 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
 
+                    if (sessionManager.isAdmin == true){
+                        Button{
+                            print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
+                            print("adding event")
+                            sessionManager.changeAuthStateToAddEvent()
+                        } label: {
+                            Text("Add Outing")
+                                .fontWeight(.bold)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color( "BlueGray"), in: Rectangle())
+                                .cornerRadius(5)
+                                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                                .foregroundColor(.white)
+                        }
+                        
+
+                        Button {
+                            sessionManager.changeAuthStateToUsersList()
+                        } label: {
+                            Text("View Users")
+                                .fontWeight(.bold)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color( "BlueGray"), in: Rectangle())
+                                .cornerRadius(5)
+                                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                                .foregroundColor(.white)
+                        }
+                        
+                        
+                    }
+
+
+                    if(sessionManager.isEmployee == true) {
+                        Button {
+                            print("sessionManager.isEmployee == \(sessionManager.isEmployee)")
+                        } label: {
+                            Text("View Outings")
+                                .fontWeight(.bold)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color( "BlueGray"), in: Rectangle())
+                                .cornerRadius(5)
+                                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                                .foregroundColor(.white)
+                        }
+
+                    }
+                    
+
+                    
                 }
 
+                }
+                .padding(.bottom, 10)
+                .padding(.horizontal)
+                .padding(.top, 10)
+                .background(.ultraThinMaterial)
+            
             }
-            .padding(.horizontal)
-            .padding(.top, 10)
-            .background(.ultraThinMaterial)
         }
 
-        }
-    }
-
+}
 
 
 struct CalendarView_Previews: PreviewProvider{

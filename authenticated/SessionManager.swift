@@ -14,6 +14,11 @@ import AWSPluginsCore
 import AWSCognitoIdentity
 import ClientRuntime
 import AWSClientRuntime
+import AWSCore
+import AWSCognitoIdentityProvider
+import AWSMobileClient
+import AWSCognitoIdentityProviderASF
+import AWSAuthCore
 
 enum AuthState{
     case signUp(error: String)
@@ -26,6 +31,8 @@ enum AuthState{
     case calendarView(user: AuthUser)
     case addEvent
     case loadingView
+    case usersListView
+    case profileInformationView
 }
 
 
@@ -34,6 +41,7 @@ final class SessionManager: ObservableObject{
     var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
     var isLoading: Bool = false
+    var users: String = ""
 
 
     
@@ -86,7 +94,12 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToLoading(){
         authState = .loadingView
     }
-
+    func changeAuthStateToUsersList(){
+        authState = .usersListView
+    }
+    func changeAuthStateToProfileInformation() {
+        authState = .profileInformationView
+    }
     
     
 
@@ -236,7 +249,7 @@ final class SessionManager: ObservableObject{
         }
         
     }
-func confirmResetPassword(
+    func confirmResetPassword(
         username: String,
         newPassword: String,
         confirmationCode: String
@@ -328,28 +341,13 @@ func confirmResetPassword(
         return self.isEmployee
     }
     
-//    func listUsers() async {
-//        do{
-//            let cogidClient = try CognitoIdentityClient(region: "us-west-2")
-//            let userList = try await cogidClient.listIdentities(input: ListIdentitiesInput(hideDisabled: false, identityPoolId: "us-west-2_cQe5CmJ7z", maxResults: 100))
-//        } catch {
-//            print("\(error)")
-//        }
-//    }
+
     
-    func cogidClient() async {
-        do {
-            let cogidClient = try CognitoIdentityClient(region: "us-west-2")
-            let identityPoolsList = try await cogidClient.listIdentityPools(input: ListIdentityPoolsInput(maxResults: 100))
-            print("\(identityPoolsList)")
-        } catch {
-            print("\(error)")
-        }
-    }
     func startFakeNetworkCall() {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.isLoading = false
         }
     }
+
 }

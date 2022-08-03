@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */; };
+		550403322899E21E003793FA /* UsersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550403312899E21E003793FA /* UsersListView.swift */; };
+		550403342899EE9A003793FA /* ProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550403332899EE9A003793FA /* ProfileInformationView.swift */; };
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
@@ -34,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-authenticated.debug.xcconfig"; path = "Target Support Files/Pods-authenticated/Pods-authenticated.debug.xcconfig"; sourceTree = "<group>"; };
+		550403312899E21E003793FA /* UsersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListView.swift; sourceTree = "<group>"; };
+		550403332899EE9A003793FA /* ProfileInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInformationView.swift; sourceTree = "<group>"; };
 		552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Date Picker.swift"; sourceTree = "<group>"; };
 		553CA72B2806728500D734E6 /* SignUpForEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpForEventView.swift; sourceTree = "<group>"; };
 		553CA72D2807B8DD00D734E6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -104,12 +108,14 @@
 				55A13FC227E1B09200379E8D /* SessionManager.swift */,
 				55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */,
 				5576FA6A287F872C0070CE17 /* LoadingView.swift */,
+				550403312899E21E003793FA /* UsersListView.swift */,
 				55E1BD8227E195D000F7ECC6 /* SignUpView.swift */,
 				55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */,
 				55C385FD2828A47700CA74B1 /* AddEventView.swift */,
 				55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */,
 				552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */,
 				553CA72B2806728500D734E6 /* SignUpForEventView.swift */,
+				550403332899EE9A003793FA /* ProfileInformationView.swift */,
 				553CA72D2807B8DD00D734E6 /* CalendarView.swift */,
 				55E1BD6C27E1955900F7ECC6 /* ViewController.swift */,
 				55E1BD6E27E1955900F7ECC6 /* Main.storyboard */,
@@ -278,7 +284,9 @@
 				55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */,
 				5576FA6B287F872C0070CE17 /* LoadingView.swift in Sources */,
 				55C385FE2828A47700CA74B1 /* AddEventView.swift in Sources */,
+				550403322899E21E003793FA /* UsersListView.swift in Sources */,
 				55E1BD6D27E1955900F7ECC6 /* ViewController.swift in Sources */,
+				550403342899EE9A003793FA /* ProfileInformationView.swift in Sources */,
 				553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */,
 				55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */,
 				552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */,

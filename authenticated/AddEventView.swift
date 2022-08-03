@@ -103,8 +103,6 @@ struct AddEventView: View{
                     .foregroundColor(.white)
                     .background(Color("BlueGray"))
                     .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                    .offset(y: 20)
-                    .padding(.bottom, 20)
             }
         }
     }

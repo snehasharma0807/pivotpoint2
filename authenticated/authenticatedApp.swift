@@ -55,6 +55,12 @@ struct AuthenticatedApp: App{
             case .loadingView:
                 LoadingView()
                     .environmentObject(sessionManager)
+            case .usersListView:
+                UsersListView()
+                    .environmentObject(sessionManager)
+            case .profileInformationView:
+                ProfileInformationView()
+                    .environmentObject(sessionManager)
             }
 
         }
@@ -65,6 +71,7 @@ struct AuthenticatedApp: App{
         do{
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.configure()
+            
             print("Amplify configured successfully")
         } catch{
             print("could not initialize successfully", error)

@@ -253,7 +253,7 @@ struct DateValue: Identifiable{
     
 }
 
-struct Task: Identifiable{
+struct MyTask: Identifiable{
     var id = UUID().uuidString
     var title: String
     var time: Date = Date()
@@ -262,7 +262,7 @@ struct Task: Identifiable{
 //total task meta view
 struct TaskMetaData: Identifiable{
     var id = UUID().uuidString
-    var task: [Task]
+    var task: [MyTask]
     var taskDate: Date
 }
 
@@ -278,15 +278,15 @@ func getSampleDate(offset: Int)->Date{
 var tasks: [TaskMetaData] = [
     TaskMetaData(task: [
     
-        Task(title: "Event 1"),
-        Task(title: "Event 2"),
-        Task(title: "Event 3")
+        MyTask(title: "Event 1"),
+        MyTask(title: "Event 2"),
+        MyTask(title: "Event 3")
              ], taskDate: getSampleDate(offset: 1)),
         TaskMetaData(task: [
-             Task(title: "Event 4")
+             MyTask(title: "Event 4")
              ], taskDate: getSampleDate(offset: -3)),
         TaskMetaData(task: [
-            Task(title: "Event 5")
+            MyTask(title: "Event 5")
             ], taskDate: getSampleDate(offset: -8))
 ]
 
