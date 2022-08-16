@@ -24,18 +24,23 @@ struct UsersListView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
             SearchBar(text: $searchText)
-            List {
-                ListRow(username: "Name", group: "Admin", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Admin", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Employee", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Employee", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Employee", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Client", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Client", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Client", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Client", phoneNumber: "+1 (111) 111 1111")
-                ListRow(username: "Name", group: "Client", phoneNumber: "+1 (111) 111 1111")
-            }.refreshable{}
+            
+            Button {
+                sessionManager.queryUserProfileInformation()
+                print(sessionManager.usersList)
+            } label: {
+                Text("View Users")
+            }
+
+            if (sessionManager.usersList.isEmpty == false) {
+                List(sessionManager.idsForUsersList, id: \.self) { id in
+                    ListRow(username: sessionManager.usersList[id], group: "", phoneNumber: sessionManager.userPhoneNumberList[id])
+                }
+                .refreshable {
+                    sessionManager.queryUserProfileInformation()
+                }
+            }
+
             
             Button {
                 sessionManager.changeAuthStateToCalendar()
@@ -50,9 +55,6 @@ struct UsersListView: View {
                     .padding(.bottom, 20)
             }
             Spacer()
-
-
-
         }
     }
 }

@@ -44,12 +44,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>AppSyncRealTimeClient.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-authenticated.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>SQLite.swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Starscream.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/awslabs/smithy-swift.git",
       "state" : {
-        "revision" : "46e2e69abc12ad820fcb31834045a1c9e1d053c1",
-        "version" : "0.2.4"
+        "revision" : "83de16a9d66c942248305aafd57f842eb2363358",
+        "version" : "0.2.5"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
-        "version" : "1.4.2"
+        "revision" : "8fc79cae9d03a5e623c52cc2dbd2df165a7832b0",
+        "version" : "1.4.3"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MaxDesiatov/XMLCoder.git",
       "state" : {
-        "revision" : "f30119af03996939cc4f54e0bf0dda9f88a84da5",
-        "version" : "0.13.1"
+        "revision" : "ca932442d7481700f5434a7b138c47dd42d9902b",
+        "version" : "0.14.0"
       }
     }
   ],

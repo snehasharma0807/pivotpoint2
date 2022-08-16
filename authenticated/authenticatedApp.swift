@@ -8,6 +8,8 @@
 import Amplify
 import AmplifyPlugins
 import SwiftUI
+
+
 @main
 
 
@@ -58,8 +60,11 @@ struct AuthenticatedApp: App{
             case .usersListView:
                 UsersListView()
                     .environmentObject(sessionManager)
-            case .profileInformationView:
-                ProfileInformationView()
+            case .updateProfileInformationView:
+                UpdateProfileInformationView()
+                    .environmentObject(sessionManager)
+            case .addProfileInformationView:
+                AddProfileInformationView()
                     .environmentObject(sessionManager)
             }
 
@@ -70,12 +75,30 @@ struct AuthenticatedApp: App{
     private func configureAmplify(){
         do{
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
+            let datastorePlugin = AWSDataStorePlugin(modelRegistration: AmplifyModels())
+            try Amplify.add(plugin: datastorePlugin)
+            let apiPlugin = AWSAPIPlugin(modelRegistration: AmplifyModels())
+            try Amplify.add(plugin: apiPlugin)
             try Amplify.configure()
+            try Amplify.Logging.logLevel = .debug
             
             print("Amplify configured successfully")
         } catch{
             print("could not initialize successfully", error)
         }
     }
-
 }
+//13pro and 11
+//on 13:
+//["", "!!!SNEHA", "Sneha Sharma", "Sneha Sharma", "August", "USERNAME"] in 11 before adding new
+//new: thirdaugust, password
+//["", "!!!SNEHA", "Sneha Sharma", "Sneha Sharma", "August", "USERNAME", "3aug"]
+
+//on 11:
+//["", "!!!SNEHA", "Sneha Sharma", "3aug", "Sneha Sharma", "August", "USERNAME"]
+
+//make something on 11, then log out immediately and try to view on 13
+//LASTTEST, password
+//gave the error message (requested resource not found)
+//not working on 13pro
+//showing on 11 but also throwing the error message that it isnt syncing

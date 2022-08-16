@@ -53,7 +53,7 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
                     Button {
-                        sessionManager.changeAuthStateToProfileInformation()
+                        sessionManager.changeAuthStateToUpdateProfileInformation()
                     } label: {
                         Text("Profile Information")
                             .fontWeight(.bold)

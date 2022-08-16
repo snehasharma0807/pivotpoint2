@@ -1,5 +1,7 @@
 //sign up by inputting your desired username, email, and password
 import SwiftUI
+import Amplify
+import AmplifyPlugins
 
 struct SignUpView: View{
     
@@ -87,3 +89,6 @@ struct SignUpView_Previews: PreviewProvider{
         SignUpView(error: "")
     }
 }
+
+
+

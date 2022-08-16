@@ -1,16 +1,17 @@
 //
-//  ProfileInformationView.swift
+//  UpdateProfileInformationView.swift
 //  authenticated
 //
-//  Created by Sneha Sharma on 8/2/22.
+//  Created by Sneha Sharma on 8/9/22.
 //
 
 import SwiftUI
 import Amplify
 
 
-struct ProfileInformationView: View {
+struct UpdateProfileInformationView: View {
     @EnvironmentObject var sessionManager: SessionManager
+    
     @State var fullName: String = ""
     @State var phoneNumber: String = ""
     @State var address: String = ""
@@ -27,8 +28,10 @@ struct ProfileInformationView: View {
         InputBox(backgroundWords: "Full Name...", bindingText: $fullName)
         InputBox(backgroundWords: "Phone Number...", bindingText: $phoneNumber)
         InputBox(backgroundWords: "Address...", bindingText: $address)
+
         
         Button {
+            print("\(sessionManager.currentUserModel?.fullName ?? "")")
         } label: {
             Text("Update Information")
                 .padding(.horizontal, 100)
@@ -39,6 +42,12 @@ struct ProfileInformationView: View {
                 .offset(y: 20)
                 .padding(.bottom, 20)
         }
+        Button {
+            sessionManager.queryUserProfileInformation()
+        } label: {
+            Text("Query User Information")
+        }
+
         
         Button {
             sessionManager.changeAuthStateToCalendar()
@@ -72,5 +81,4 @@ struct InputBox: View {
     }
     
 }
-
 

@@ -7,4 +7,5 @@ target 'authenticated' do
   pod 'Amplify'
   pod 'AmplifyPlugins/AWSCognitoAuthPlugin'
   pod 'AmplifyPlugins/AWSDataStorePlugin'
+  pod 'AmplifyPlugins/AWSAPIPlugin'
 end

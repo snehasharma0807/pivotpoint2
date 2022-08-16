@@ -12,13 +12,9 @@ import Combine
 import Foundation
 import AWSPluginsCore
 import AWSCognitoIdentity
-import ClientRuntime
-import AWSClientRuntime
-import AWSCore
 import AWSCognitoIdentityProvider
-import AWSMobileClient
-import AWSCognitoIdentityProviderASF
-import AWSAuthCore
+
+
 
 enum AuthState{
     case signUp(error: String)
@@ -32,7 +28,8 @@ enum AuthState{
     case addEvent
     case loadingView
     case usersListView
-    case profileInformationView
+    case updateProfileInformationView(user: AuthUser)
+    case addProfileInformationView
 }
 
 
@@ -41,7 +38,16 @@ final class SessionManager: ObservableObject{
     var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
     var isLoading: Bool = false
-    var users: String = ""
+//    var returnValue: Bool = false
+    var currentUser: String = ""
+    var currentUserModel: UserDetails? = nil
+    var idsForUsersList: [Int] = []
+    var usersList: [String] = []
+    var userPhoneNumberList: [String] = []
+    var usersSubscription: AnyCancellable?
+
+    
+
 
 
     
@@ -54,6 +60,7 @@ final class SessionManager: ObservableObject{
             _ = self.isUserAdmin()
             _ = self.isUserEmployee()
             self.authState = .loadingView
+            currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             }
@@ -95,10 +102,16 @@ final class SessionManager: ObservableObject{
         authState = .loadingView
     }
     func changeAuthStateToUsersList(){
+        queryUserProfileInformation()
         authState = .usersListView
     }
-    func changeAuthStateToProfileInformation() {
-        authState = .profileInformationView
+    func changeAuthStateToUpdateProfileInformation() {
+        if let user = Amplify.Auth.getCurrentUser(){
+            authState = .updateProfileInformationView(user: user)
+        }
+    }
+    func changeAuthStateToAddProfileInformation() {
+        authState = .addProfileInformationView
     }
     
     
@@ -155,6 +168,7 @@ final class SessionManager: ObservableObject{
     }
     
     func confirm(username: String, code: String){
+        currentUser = username
         _ = Amplify.Auth.confirmSignUp(for: username, confirmationCode: code
         ){ [weak self] result in
             
@@ -163,7 +177,7 @@ final class SessionManager: ObservableObject{
                 print(confirmResult)
                 if confirmResult.isSignupComplete{
                     DispatchQueue.main.async {
-                        self?.changeAuthStateToLogin(error: "")
+                        self?.changeAuthStateToAddProfileInformation()
                     }
                 }
             case .failure(let error):
@@ -182,6 +196,7 @@ final class SessionManager: ObservableObject{
             case .success(let signInResult):
                 print(signInResult)
                 if signInResult.isSignedIn{
+                    Amplify.DataStore.clear()
                     self?.listGroups()
                     self?.getCurrentAuthUser()
                 }
@@ -205,6 +220,7 @@ final class SessionManager: ObservableObject{
         _ = Amplify.Auth.signOut{ [weak self] result in
             switch result{
             case .success:
+                Amplify.DataStore.clear()
                 DispatchQueue.main.async {
                     self?.getCurrentAuthUser()
                 }
@@ -349,5 +365,97 @@ final class SessionManager: ObservableObject{
             self.isLoading = false
         }
     }
+    
+    func saveUserProfileInformation(username: String, fullname: String, phoneNumber: String, address: String) {
+        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber)
+        Amplify.DataStore.save(detailsToSave) { result in
+            switch result {
+            case .success(let user):
+                print("\(user.username) details saved")
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+//        Amplify.API.mutate(request: .create(detailsToSave)) { event in
+//            switch event {
+//            case .success(let result):
+//                switch result {
+//                case .success(let user):
+//                    print("Successfully created user: \(user)")
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            case .failure(let error):
+//                print("Got failed event with error \(error)")
+//            }
+//        }
 
+    }
+    
+
+    
+    
+    //used in updateUserProfileInformation()
+    func returnCurrentUserModel (username: String) {
+        self.usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self)
+            .sink { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                    
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { querySnapshot in
+                print("Snapshot item live count: \(querySnapshot.items.count), inSynced: \(querySnapshot.isSynced)")
+                for user in querySnapshot.items {
+                    if user.username == username {
+                        self.currentUserModel = user
+                    }
+                }
+            }
+    }
+    
+    func queryUserProfileInformation () {
+        usersList = []
+        idsForUsersList = []
+        userPhoneNumberList = []
+        
+        self.usersSubscription = Amplify.DataStore.observeQuery(
+                    for: UserDetails.self
+                )
+            .sink { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("Error \(error)")
+                }
+            } receiveValue: { [self] querySnapshot in
+                print("[Snapshot] item count: \(querySnapshot.items.count), isSynced: \(querySnapshot.isSynced)")
+                var id = 0
+                for user in querySnapshot.items {
+                    usersList.append(user.fullName)
+                    userPhoneNumberList.append(user.phoneNumber)
+                    idsForUsersList.append(id)
+                    id += 1
+                    print(user.username)
+                }
+                print(idsForUsersList)
+            }
+    }
+    
+    func subscribeToUsers() {
+        usersSubscription = Amplify.DataStore.publisher(for: UserDetails.self)
+        .sink {
+                 if case let .failure(error) = $0 {
+                     print("Subscription received error - \(error.localizedDescription)")
+                 }
+             }
+             receiveValue: { changes in
+                 // handle incoming changes
+                 print("Subscription received mutation: \(changes)")
+             }
+    }
 }
