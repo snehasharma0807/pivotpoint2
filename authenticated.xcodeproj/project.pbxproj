@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */; };
-		5503893F28A4932E00DA0A3F /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 5503893E28A4932E00DA0A3F /* AWSAmplify */; };
 		550403322899E21E003793FA /* UsersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550403312899E21E003793FA /* UsersListView.swift */; };
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
@@ -34,6 +33,8 @@
 		55F17C2528AB5F56000F55A3 /* UserDetails+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F17C2228AB5F55000F55A3 /* UserDetails+Schema.swift */; };
 		55F17C2628AB5F56000F55A3 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F17C2328AB5F55000F55A3 /* UserDetails.swift */; };
 		55F17C2728AB5F56000F55A3 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F17C2428AB5F55000F55A3 /* AmplifyModels.swift */; };
+		55F17C2B28AC757B000F55A3 /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 55F17C2A28AC757B000F55A3 /* AWSAmplify */; };
+		55F17C2D28AC757B000F55A3 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */; };
 		A5E670DD6FF7357A5D0946BF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F171AF5D5F067E724ACE3503 /* awsconfiguration.json */; };
 		F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */; };
 /* End PBXBuildFile section */
@@ -79,7 +80,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
-				5503893F28A4932E00DA0A3F /* AWSAmplify in Frameworks */,
+				55F17C2B28AC757B000F55A3 /* AWSAmplify in Frameworks */,
+				55F17C2D28AC757B000F55A3 /* AWSCognitoIdentityProvider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +193,8 @@
 			);
 			name = authenticated;
 			packageProductDependencies = (
-				5503893E28A4932E00DA0A3F /* AWSAmplify */,
+				55F17C2A28AC757B000F55A3 /* AWSAmplify */,
+				55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */,
 			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
@@ -222,7 +225,7 @@
 			);
 			mainGroup = 55E1BD5C27E1955900F7ECC6;
 			packageReferences = (
-				5503893D28A4932E00DA0A3F /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
+				55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 55E1BD6627E1955900F7ECC6 /* Products */;
 			projectDirPath = "";
@@ -542,21 +545,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5503893D28A4932E00DA0A3F /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+		55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.5;
+				minimumVersion = 0.2.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5503893E28A4932E00DA0A3F /* AWSAmplify */ = {
+		55F17C2A28AC757B000F55A3 /* AWSAmplify */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5503893D28A4932E00DA0A3F /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			package = 55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSAmplify;
+		};
+		55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSCognitoIdentityProvider;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

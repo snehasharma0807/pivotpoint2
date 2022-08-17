@@ -40,6 +40,14 @@ struct CalendarView: View{
         .safeAreaInset(edge: .bottom){
             ScrollView(.horizontal){
                 HStack{
+                    Button {
+                        Task {
+                            await sessionManager.addUserToUserGroup()
+                        }
+                    } label: {
+                        Text("trying something")
+                    }
+
                     Button{
                         sessionManager.signOut()
                     } label: {

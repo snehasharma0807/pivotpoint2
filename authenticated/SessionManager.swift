@@ -13,6 +13,8 @@ import Foundation
 import AWSPluginsCore
 import AWSCognitoIdentity
 import AWSCognitoIdentityProvider
+import ClientRuntime
+import AWSClientRuntime
 
 
 
@@ -444,7 +446,28 @@ final class SessionManager: ObservableObject{
                  print("Subscription received mutation: \(changes)")
              }
     }
-    func random () {
+    func testing () async {
+        do {
+            let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
+            let user = Amplify.Auth.getCurrentUser()?.username
+            let cognitoInputCall = AdminListUserAuthEventsInput(maxResults: 1000, userPoolId: "us-west-2_cQe5CmJ7z", username: user)
+            let result = try await cognitoIdentityClient.adminListUserAuthEvents(input: cognitoInputCall)
+            print("result: \(result.self)")
+        } catch {
+            print(error)
+        }
     }
     
+    func addUserToUserGroup() async {
+        do {
+            let cognitoClient = try CognitoIdentityProviderClient(region: "us-west-2")
+            let cognitoInputCall = AdminAddUserToGroupInput(groupName: "admin", userPoolId: "us-west-2_cQe5CmJ7z", username: "Anotheruser")
+            
+            let result = try await cognitoClient.adminAddUserToGroup(input: cognitoInputCall)
+            print("succeeded")
+            print(result.self)
+        } catch {
+            print(error)
+        }
+    }
 }
