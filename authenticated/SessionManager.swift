@@ -16,6 +16,7 @@ import AWSCognitoIdentityProvider
 
 
 
+
 enum AuthState{
     case signUp(error: String)
     case login(error: String)
@@ -38,7 +39,6 @@ final class SessionManager: ObservableObject{
     var cognitoGroups: Array<String> = []
     var isEmployee: Bool = false
     var isLoading: Bool = false
-//    var returnValue: Bool = false
     var currentUser: String = ""
     var currentUserModel: UserDetails? = nil
     var idsForUsersList: [Int] = []
@@ -103,6 +103,7 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToUsersList(){
         queryUserProfileInformation()
+        print(usersList)
         authState = .usersListView
     }
     func changeAuthStateToUpdateProfileInformation() {
@@ -376,20 +377,6 @@ final class SessionManager: ObservableObject{
                 print(error)
             }
         }
-        
-//        Amplify.API.mutate(request: .create(detailsToSave)) { event in
-//            switch event {
-//            case .success(let result):
-//                switch result {
-//                case .success(let user):
-//                    print("Successfully created user: \(user)")
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            case .failure(let error):
-//                print("Got failed event with error \(error)")
-//            }
-//        }
 
     }
     
@@ -442,7 +429,6 @@ final class SessionManager: ObservableObject{
                     id += 1
                     print(user.username)
                 }
-                print(idsForUsersList)
             }
     }
     
@@ -458,4 +444,7 @@ final class SessionManager: ObservableObject{
                  print("Subscription received mutation: \(changes)")
              }
     }
+    func random () {
+    }
+    
 }

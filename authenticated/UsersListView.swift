@@ -13,7 +13,7 @@ import Amplify
 struct UsersListView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var searchText = ""
-    
+    @State var usersList = [""]
     
     var body: some View {
         VStack {
@@ -25,19 +25,18 @@ struct UsersListView: View {
                 .padding(.horizontal, 20)
             SearchBar(text: $searchText)
             
-            Button {
-                sessionManager.queryUserProfileInformation()
-                print(sessionManager.usersList)
-            } label: {
-                Text("View Users")
-            }
 
-            if (sessionManager.usersList.isEmpty == false) {
+
+            if (usersList.isEmpty == false) {
                 List(sessionManager.idsForUsersList, id: \.self) { id in
-                    ListRow(username: sessionManager.usersList[id], group: "", phoneNumber: sessionManager.userPhoneNumberList[id])
-                }
-                .refreshable {
-                    sessionManager.queryUserProfileInformation()
+                    Button {
+                        
+                    } label: {
+                        ListRow(username: sessionManager.usersList[id], group: "", phoneNumber: sessionManager.userPhoneNumberList[id])
+                            .listRowSeparator(.visible)
+                    }
+
+
                 }
             }
 
@@ -64,6 +63,7 @@ struct ListRow: View {
     let phoneNumber: String
     
     var body: some View {
+        
         HStack {
             VStack {
                 Text(username)
@@ -78,7 +78,8 @@ struct ListRow: View {
             Text(group)
                 .font(.system(size: 20))
                 .foregroundColor(Color("BlueGray"))
-        }.padding(10)
+        }.padding(5)
+//        Divider()
     }
 }
 
