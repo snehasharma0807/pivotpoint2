@@ -66,6 +66,9 @@ struct AuthenticatedApp: App{
             case .addProfileInformationView:
                 AddProfileInformationView()
                     .environmentObject(sessionManager)
+            case .userProfileInformationView:
+                UserProfileInformationView()
+                    .environmentObject(sessionManager)
             }
 
         }

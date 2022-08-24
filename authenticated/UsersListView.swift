@@ -12,8 +12,6 @@ import Amplify
 
 struct UsersListView: View {
     @EnvironmentObject var sessionManager: SessionManager
-    @State private var searchText = ""
-    @State var usersList = [""]
     
     var body: some View {
         VStack {
@@ -23,21 +21,20 @@ struct UsersListView: View {
                 .font(.system(size: 35))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
-            SearchBar(text: $searchText)
             
 
 
-            if (usersList.isEmpty == false) {
-                List(sessionManager.idsForUsersList, id: \.self) { id in
-                    Button {
-                        
-                    } label: {
-                        ListRow(username: sessionManager.usersList[id], group: "", phoneNumber: sessionManager.userPhoneNumberList[id])
-                            .listRowSeparator(.visible)
-                    }
-
-
+            List(sessionManager.idsForUsersList, id: \.self) { id in
+                Button {
+                    sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList[id].username, fullName: sessionManager.userDetailsList[id].fullName, address: sessionManager.userDetailsList[id].address, phoneNumber: sessionManager.userDetailsList[id].phoneNumber, userType: sessionManager.userDetailsList[id].userType)
+                    print(sessionManager.clickedOnUserDetails)
+                    sessionManager.changeAuthStateToUserProfileInformationView()
+                } label: {
+                    ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType.rawValue, phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
                 }
+
+            }.refreshable {
+                sessionManager.queryUserProfileInformation()
             }
 
             
@@ -57,9 +54,11 @@ struct UsersListView: View {
         }
     }
 }
+
+
 struct ListRow: View {
     let username: String
-    let group: String
+    let userType: String
     let phoneNumber: String
     
     var body: some View {
@@ -75,45 +74,9 @@ struct ListRow: View {
                     .foregroundColor(Color("BlueGray"))
             }
             Spacer()
-            Text(group)
+            Text(userType)
                 .font(.system(size: 20))
                 .foregroundColor(Color("BlueGray"))
         }.padding(5)
-//        Divider()
-    }
-}
-
-struct SearchBar: View {
-    @Binding var text: String
- 
-    @State private var isEditing = false
- 
-    var body: some View {
-        HStack {
- 
-            TextField("Search ...", text: $text)
-                .padding(7)
-                .padding(.horizontal, 25)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 10)
-                .onTapGesture {
-                    self.isEditing = true
-                }
- 
-            if isEditing {
-                Button(action: {
-                    self.isEditing = false
-                    self.text = ""
- 
-                }) {
-                    Text("Cancel")
-                }
-                .padding(.trailing, 10)
-                .transition(.move(edge: .trailing))
-                .animation(.default)
-
-            }
-        }
     }
 }

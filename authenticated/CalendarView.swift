@@ -40,13 +40,6 @@ struct CalendarView: View{
         .safeAreaInset(edge: .bottom){
             ScrollView(.horizontal){
                 HStack{
-                    Button {
-                        Task {
-                            await sessionManager.addUserToUserGroup()
-                        }
-                    } label: {
-                        Text("trying something")
-                    }
 
                     Button{
                         sessionManager.signOut()
@@ -73,10 +66,8 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
 
-                    if (sessionManager.isAdmin == true){
+                    if (sessionManager.currentUserModel?.userType == UserGroup.admin){
                         Button{
-                            print("sessionManager.isAdmin == \(sessionManager.isAdmin)")
-                            print("adding event")
                             sessionManager.changeAuthStateToAddEvent()
                         } label: {
                             Text("Add Outing")
@@ -107,9 +98,9 @@ struct CalendarView: View{
                     }
 
 
-                    if(sessionManager.isEmployee == true) {
+                    if(sessionManager.currentUserModel?.userType == UserGroup.employee) {
                         Button {
-                            print("sessionManager.isEmployee == \(sessionManager.isEmployee)")
+                            
                         } label: {
                             Text("View Outings")
                                 .fontWeight(.bold)
@@ -136,16 +127,4 @@ struct CalendarView: View{
             }
         }
 
-}
-
-
-struct CalendarView_Previews: PreviewProvider{
-    private struct DummyUser: AuthUser{
-        let userId: String = "2"
-        let username: String = "dummy-add"
-    }
-
-    static var previews: some View{
-        CalendarView(user: DummyUser())
-    }
 }

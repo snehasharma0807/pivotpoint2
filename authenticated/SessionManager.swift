@@ -33,42 +33,41 @@ enum AuthState{
     case usersListView
     case updateProfileInformationView(user: AuthUser)
     case addProfileInformationView
+    case userProfileInformationView
 }
 
 
 final class SessionManager: ObservableObject{
-    var isAdmin: Bool = false
-    var cognitoGroups: Array<String> = []
-    var isEmployee: Bool = false
     var isLoading: Bool = false
     var currentUser: String = ""
-    var currentUserModel: UserDetails? = nil
+    @Published var currentUserModel: UserDetails? = nil
     var idsForUsersList: [Int] = []
-    var usersList: [String] = []
-    var userPhoneNumberList: [String] = []
     var usersSubscription: AnyCancellable?
-
+    var userDetailsList: [UserDetails] = []
+    var clickedOnUserDetails: UserDetails = UserDetails(username: "", fullName: "", address: "", phoneNumber: "", userType: UserGroup.client)
     
-
 
 
     
     @Published var authState: AuthState = .login(error: "")
     func getCurrentAuthUser(){
         if Amplify.Auth.getCurrentUser() != nil{
-            isAdmin = false
-            cognitoGroups = []
-            self.listGroups()
-            _ = self.isUserAdmin()
-            _ = self.isUserEmployee()
-            self.authState = .loadingView
+            Amplify.DataStore.clear() {
+                switch $0 {
+                case .success:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
+            print(currentUserModel?.userType ?? "")
             currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
+            self.authState = .loadingView
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             }
         } else {
-            isAdmin = false
-            cognitoGroups = []
             authState = .login(error: "")
             print("authstate has changed to login")
             
@@ -105,7 +104,6 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToUsersList(){
         queryUserProfileInformation()
-        print(usersList)
         authState = .usersListView
     }
     func changeAuthStateToUpdateProfileInformation() {
@@ -115,6 +113,9 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToAddProfileInformation() {
         authState = .addProfileInformationView
+    }
+    func changeAuthStateToUserProfileInformationView() {
+        authState = .userProfileInformationView
     }
     
     
@@ -200,7 +201,7 @@ final class SessionManager: ObservableObject{
                 print(signInResult)
                 if signInResult.isSignedIn{
                     Amplify.DataStore.clear()
-                    self?.listGroups()
+                    self?.returnCurrentUserModel(username: username)
                     self?.getCurrentAuthUser()
                 }
                 
@@ -313,52 +314,7 @@ final class SessionManager: ObservableObject{
             
         }
     }
-    
-    func listGroups(){
-        Amplify.Auth.fetchAuthSession() { result in
-            do {
-                let session = try result.get()
-                        if let cognitoTokenProvider = session as? AuthCognitoTokensProvider {
-//                            print(try cognitoTokenProvider.getCognitoTokens().get().accessToken)
-                            let tokens = try cognitoTokenProvider.getCognitoTokens().get()
-//                            print("Id token - \(tokens.idToken) ")
-                            let tokenClaims = try AWSAuthService().getTokenClaims(tokenString: tokens.idToken).get()
-//                            print("Token Claims: \(tokenClaims)")
-                            if let groups = (tokenClaims["cognito:groups"] as? NSArray) as Array?{
-                                var _ : Set<String> = []
-                                for group in groups {
-                                    print("Cognito group: \(group)")
-                                    if group as! String == "admin"{
-                                        self.isAdmin = true
-                                    } else{
-                                        self.isAdmin = false
-                                    }
-                                    if group as! String == "employee"{
-                                        self.isEmployee = true
-                                    } else {
-                                        self.isEmployee = false
-                                    }
-                                    self.cognitoGroups.append(group as! String)
-                                }
-                             }
-                        }
-                print("did this run?")
-                print("Is the user an admin? \(self.isAdmin)")
-                print("List of the user's groups: \(self.cognitoGroups)")
-                    } catch {
-                        print("Fetch auth session failed with error - \(error)")
-                    }
-            }
-    }
-    
-    func isUserAdmin() -> Bool {
-        print(self.isAdmin)
-        return self.isAdmin
-    }
-    func isUserEmployee() -> Bool {
-        print(self.isEmployee)
-        return self.isEmployee
-    }
+
     
 
     
@@ -370,7 +326,7 @@ final class SessionManager: ObservableObject{
     }
     
     func saveUserProfileInformation(username: String, fullname: String, phoneNumber: String, address: String) {
-        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber)
+        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.client)
         Amplify.DataStore.save(detailsToSave) { result in
             switch result {
             case .success(let user):
@@ -379,7 +335,6 @@ final class SessionManager: ObservableObject{
                 print(error)
             }
         }
-
     }
     
 
@@ -397,8 +352,8 @@ final class SessionManager: ObservableObject{
                     print(error)
                 }
             } receiveValue: { querySnapshot in
-                print("Snapshot item live count: \(querySnapshot.items.count), inSynced: \(querySnapshot.isSynced)")
                 for user in querySnapshot.items {
+                    print(user.username)
                     if user.username == username {
                         self.currentUserModel = user
                     }
@@ -407,12 +362,12 @@ final class SessionManager: ObservableObject{
     }
     
     func queryUserProfileInformation () {
-        usersList = []
         idsForUsersList = []
-        userPhoneNumberList = []
+        userDetailsList = []
         
         self.usersSubscription = Amplify.DataStore.observeQuery(
-                    for: UserDetails.self
+                    for: UserDetails.self,
+                    sort: .ascending(UserDetails.keys.id)
                 )
             .sink { completed in
                 switch completed {
@@ -425,12 +380,14 @@ final class SessionManager: ObservableObject{
                 print("[Snapshot] item count: \(querySnapshot.items.count), isSynced: \(querySnapshot.isSynced)")
                 var id = 0
                 for user in querySnapshot.items {
-                    usersList.append(user.fullName)
-                    userPhoneNumberList.append(user.phoneNumber)
+
                     idsForUsersList.append(id)
+
+                    userDetailsList.append(user)
                     id += 1
                     print(user.username)
                 }
+                                
             }
     }
     
@@ -446,28 +403,69 @@ final class SessionManager: ObservableObject{
                  print("Subscription received mutation: \(changes)")
              }
     }
-    func testing () async {
-        do {
-            let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
-            let user = Amplify.Auth.getCurrentUser()?.username
-            let cognitoInputCall = AdminListUserAuthEventsInput(maxResults: 1000, userPoolId: "us-west-2_cQe5CmJ7z", username: user)
-            let result = try await cognitoIdentityClient.adminListUserAuthEvents(input: cognitoInputCall)
-            print("result: \(result.self)")
-        } catch {
-            print(error)
+    
+    func updateUserProfileInformation(username: String, changeUserType: UserGroup) {
+        let u = UserDetails.keys
+        _ = Amplify.DataStore.query(UserDetails.self, where: u.username == username).sink {
+            if case let .failure(error) = $0 {
+                print("failure querying data: \(error)")
+            }
+        }
+        receiveValue: { result in
+            if result.count > 1 {
+                self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
+            }  else {
+                var detailsToUpdate = result[0]
+                detailsToUpdate.userType = changeUserType
+                Amplify.DataStore.save(detailsToUpdate) { result in
+                    switch result {
+                    case .success:
+                        print("successfully updated!")
+                    case .failure(let error):
+                        print("error saving: \(error.localizedDescription)")
+                    }
+                }
+            }
         }
     }
     
-    func addUserToUserGroup() async {
+    func deleteUser(username: String) {
+        let u = UserDetails.keys
+        _ = Amplify.DataStore.query(UserDetails.self, where: u.username == username).sink {
+            if case let .failure(error) = $0 {
+                print("Error on query() for type Post - \(error.localizedDescription)")
+            }
+        }
+        receiveValue: { result in
+            if result.count > 1 {
+                self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
+            } else {
+                let userToDelete = result[0]
+                Amplify.DataStore.delete(userToDelete) {
+                    switch $0 {
+                    case .success():
+                        Task {
+                            await self.deleteUserFromCognito(username: username)
+                        }
+                    case .failure(let error):
+                        print("error deleting user: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteUserFromCognito(username: String) async {
         do {
-            let cognitoClient = try CognitoIdentityProviderClient(region: "us-west-2")
-            let cognitoInputCall = AdminAddUserToGroupInput(groupName: "admin", userPoolId: "us-west-2_cQe5CmJ7z", username: "Anotheruser")
+            let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
+            let cognitoInputCall = AdminDeleteUserInput(userPoolId: "us-west-2_cQe5CmJ7z", username: username)
             
-            let result = try await cognitoClient.adminAddUserToGroup(input: cognitoInputCall)
-            print("succeeded")
-            print(result.self)
+            _ = try await cognitoIdentityClient.adminDeleteUser(input: cognitoInputCall)
+            print("successfully deleted user from cognito!")
         } catch {
             print(error)
         }
+
     }
+    
 }
