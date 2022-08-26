@@ -105,7 +105,22 @@ struct CalendarView: View{
                         Button {
                             
                         } label: {
-                            Text("View Outings")
+                            Text("View My Outings")
+                                .fontWeight(.bold)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color( "BlueGray"), in: Rectangle())
+                                .cornerRadius(5)
+                                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                                .foregroundColor(.white)
+                        }
+
+                    }
+                    if(sessionManager.currentUserModel?.userType == UserGroup.client) {
+                        Button {
+                            sessionManager.changeAuthStateToViewScheduledOutingsView()
+                        } label: {
+                            Text("View Scheduled Outings")
                                 .fontWeight(.bold)
                                 .padding()
                                 .frame(maxWidth: .infinity)

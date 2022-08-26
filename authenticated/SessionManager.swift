@@ -34,6 +34,7 @@ enum AuthState{
     case updateProfileInformationView(user: AuthUser)
     case addProfileInformationView
     case userProfileInformationView
+    case viewScheduledOutingsView
 }
 
 
@@ -49,7 +50,10 @@ final class SessionManager: ObservableObject{
     var taskMetaDataList: [TaskMetaData] = []
     var clickedOnOuting: Outing = Outing(title: "", description: "", location: "", startDate: Temporal.Date.now(), startTime: Temporal.Time.now(), endDate: Temporal.Date.now(), endTime: Temporal.Time.now(), numClients: 1)
     var stringInstructors = ""
-    
+    var upcomingOutings: [Outing] = []
+    var idsForUpcomingOutingsList: [Int] = []
+    var pastOutings: [Outing] = []
+    var idsForPastOutingsList: [Int] = []
 
 
     
@@ -124,7 +128,10 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToUserProfileInformationView() {
         authState = .userProfileInformationView
     }
-    
+    func changeAuthStateToViewScheduledOutingsView() {
+        viewUserOutings(user: currentUserModel!)
+        authState = .viewScheduledOutingsView
+    }
     
 
 
@@ -527,6 +534,54 @@ final class SessionManager: ObservableObject{
             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
         }
         
+    }
+    func signUpForOuting(outing: Outing, userDetails: UserDetails) {
+        let saveUserToOuting = OutingUserDetails(outing: outing, userdetails: userDetails)
+        
+        _ = Amplify.DataStore.query(Outing.self, where: Outing.keys.title.eq(outing.title)).sink {
+            if case let .failure(error) = $0 {
+                print("\(error.localizedDescription)")
+            }
+        } receiveValue: { results in
+            if results.count == 1 {
+                Amplify.DataStore.save(saveUserToOuting) { result in
+                    switch result {
+                    case .success(let userOuting):
+                        print("\(userOuting.userdetails.username) saved to \(userOuting.outing.title)!")
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
+    func viewUserOutings(user: UserDetails) {
+        _ = Amplify.DataStore.query(OutingUserDetails.self) .sink {
+            if case let .failure(error) = $0 {
+                print("\(error.localizedDescription)")
+            }
+        } receiveValue: { results in
+            var id1 = 0
+            var id2 = 0
+            for result in results {
+                if (result.userdetails.username == user.username) {
+                    if result.outing.startDate.foundationDate >= Date.now {
+                        print("upcoming: \(result.outing)")
+                        self.upcomingOutings.append(result.outing)
+                        self.idsForUpcomingOutingsList.append(id1)
+                        id1 += 1
+                    } else {
+                        self.pastOutings.append(result.outing)
+                        print("past: \(result.outing)")
+                        self.idsForPastOutingsList.append(id2)
+                        id2 += 1
+                    }
+                }
+
+            }
+        }
+
     }
     
 }

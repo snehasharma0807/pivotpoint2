@@ -37,6 +37,7 @@
 		55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8227E195D000F7ECC6 /* SignUpView.swift */; };
 		55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */; };
 		55E1BD8727E195EB00F7ECC6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8627E195EB00F7ECC6 /* LoginView.swift */; };
+		55E9E08428B8506A00089930 /* ViewScheduledOutingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */; };
 		55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3828A37A5B00499934 /* UpdateProfileInformationView.swift */; };
 		55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3A28A37A8800499934 /* AddProfileInformationView.swift */; };
 		55F17C2B28AC757B000F55A3 /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 55F17C2A28AC757B000F55A3 /* AWSAmplify */; };
@@ -78,6 +79,7 @@
 		55E1BD8227E195D000F7ECC6 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		55E1BD8627E195EB00F7ECC6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewScheduledOutingsView.swift; sourceTree = "<group>"; };
 		55ED7E3828A37A5B00499934 /* UpdateProfileInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileInformationView.swift; sourceTree = "<group>"; };
 		55ED7E3A28A37A8800499934 /* AddProfileInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileInformationView.swift; sourceTree = "<group>"; };
 		58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				550403312899E21E003793FA /* UsersListView.swift */,
 				55E1BD8227E195D000F7ECC6 /* SignUpView.swift */,
 				556099A828AD9AF50017D129 /* UserProfileInformationView.swift */,
+				55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */,
 				55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */,
 				55C385FD2828A47700CA74B1 /* AddEventView.swift */,
 				55ED7E3A28A37A8800499934 /* AddProfileInformationView.swift */,
@@ -337,6 +340,7 @@
 				55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */,
 				558FA00F28B7188D0073F534 /* OutingUserDetails+Schema.swift in Sources */,
 				55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */,
+				55E9E08428B8506A00089930 /* ViewScheduledOutingsView.swift in Sources */,
 				55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */,
 				558FA00828B7188D0073F534 /* OutingUserDetails.swift in Sources */,
 				552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */,

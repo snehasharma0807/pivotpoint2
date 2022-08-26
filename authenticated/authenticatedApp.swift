@@ -69,6 +69,9 @@ struct AuthenticatedApp: App{
             case .userProfileInformationView:
                 UserProfileInformationView()
                     .environmentObject(sessionManager)
+            case .viewScheduledOutingsView:
+                ViewScheduledOutingsView()
+                    .environmentObject(sessionManager)
             }
 
         }

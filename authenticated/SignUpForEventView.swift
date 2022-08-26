@@ -11,12 +11,12 @@ import Amplify
 
 struct SignUpForEventView: View{
     @EnvironmentObject var sessionManager: SessionManager
-    @State var eventName: String = "Event Name"
-    @State var eventDetails: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Donec massa sapien faucibus et molestie. Sit amet consectetur adipiscing elit."
-    @State var eventDate: String = "August 23, 2022"
-    @State var eventTime: String = "10:00-11:00"
-    @State var eventLocation: String = "243 Argle St. Saint Joseph, MI 49085"
-    @State var eventInstructor: String = "Event Name"
+    @State var eventName: String = ""
+    @State var eventDetails: String = ""
+    @State var eventDate: String = ""
+    @State var eventTime: String = ""
+    @State var eventLocation: String = ""
+    @State var eventInstructor: String = ""
     @State private var showingAlert = false
 
 
@@ -114,7 +114,7 @@ struct SignUpForEventView: View{
             }
             .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
                 Button("Yes, I'm sure.", role: .cancel) {
-                    
+                    sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel!)
                 }; Button("Nevermind!", role: .destructive) {}})
 
             
