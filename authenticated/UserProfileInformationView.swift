@@ -17,7 +17,7 @@ struct UserProfileInformationView: View {
     var body: some View {
         VStack {
             
-            UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType.rawValue , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType ?? "Not Set")
+            UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType ?? "Not Set")
             
             Button {
                 sessionManager.changeAuthStateToUsersList()

@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import AwsCommonRuntimeKit
+import Amplify
 
 struct CustomDatePicker: View{
     @EnvironmentObject var sessionManager: SessionManager
 
     
     @Binding var currentDate: Date
+    
     
     //month update on arrow click
     
@@ -92,7 +95,7 @@ struct CustomDatePicker: View{
                     .padding(.vertical, 20)
 
                 
-                if let task = tasks.first(where: { task in
+                if let task = sessionManager.taskMetaDataList.first(where: { task in
                     return isSameDay(date1: task.taskDate, date2: currentDate)
                 }){
                     
@@ -100,10 +103,17 @@ struct CustomDatePicker: View{
                         VStack(alignment: .leading, spacing: 10) {
                             //for custom timing
                             Button {
+
+                                print("start date: \(task.outingModel.startDate.iso8601FormattedString(format: .short))")
+                                print("start time: \(task.outingModel.startTime.iso8601FormattedString(format: .short))")
+                                print("end date: \(task.outingModel.endDate.iso8601FormattedString(format: .short))")
+                                print("end time: \(task.outingModel.endTime.iso8601FormattedString(format: .short))")
+
+                                sessionManager.clickedOnOuting = task.outingModel
+                                sessionManager.stringInstructors = task.outingModel.instructors.joined(separator: ", ")
                                 sessionManager.changeAuthStateToEventDetails()
                             } label: {
-                                Text(task.time
-                                    .addingTimeInterval(CGFloat.random(in: 0...5000)), style: .time)
+                                Text(task.time, style: .time)
                                 Text("  |  ")
                                 Text(task.title)
                                     .font(.title2.bold())
@@ -142,10 +152,11 @@ struct CustomDatePicker: View{
         
         VStack{
             if value.day != -1{
-                if let task = tasks.first(where: {task in
+                if let task = sessionManager.taskMetaDataList.first(where: {task in
                     
                     return isSameDay(date1: task.taskDate, date2: value.date)
                 }) {
+                
                     Text("\(value.day)")
                         .font(.title3.bold())
                         .foregroundColor(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary)
@@ -257,6 +268,7 @@ struct MyTask: Identifiable{
     var id = UUID().uuidString
     var title: String
     var time: Date = Date()
+    var outingModel: Outing
 }
 
 //total task meta view
@@ -274,25 +286,36 @@ func getSampleDate(offset: Int)->Date{
 }
 
 
-//sample tasks
-var tasks: [TaskMetaData] = [
-    TaskMetaData(task: [
-    
-        MyTask(title: "Event 1"),
-        MyTask(title: "Event 2"),
-        MyTask(title: "Event 3")
-             ], taskDate: getSampleDate(offset: 1)),
-        TaskMetaData(task: [
-             MyTask(title: "Event 4")
-             ], taskDate: getSampleDate(offset: -3)),
-        TaskMetaData(task: [
-            MyTask(title: "Event 5")
-            ], taskDate: getSampleDate(offset: -8))
-]
+
 
 func addTask(taskName: String, date: Date) -> (){
     
 }
+
+
+//populate the tasks in generateRandomTasks()
+
+func generateRandomTasks() -> [TaskMetaData] {
+    let randomTitles = ["task 1", "task 2", "task 3", "task 4", "task 5", "task 6", "task 7"]
+    var tasksList: [TaskMetaData] = []
+    for title in randomTitles {
+        var dateComponents = DateComponents()
+        dateComponents.year = 2022
+        dateComponents.month = Int.random(in: 1..<12)
+        dateComponents.day = Int.random(in: 1..<30)
+        dateComponents.hour = Int.random(in: 1..<24)
+        dateComponents.minute = Int.random(in: 1..<60)
+        let someDate = Calendar(identifier: .gregorian).date(from: dateComponents)
+        let randomOuting = Outing(title: "Title", description: "Description", location: "Location", startDate: Temporal.Date.now(), startTime: Temporal.Time.now(), endDate: Temporal.Date.now(), endTime: Temporal.Time.now(), numClients: 2)
+        tasksList.append(TaskMetaData(task: [MyTask(title: title, outingModel: randomOuting)], taskDate: someDate!))
+    }
+
+    return tasksList
+    
+    
+}
+
+
 
 
 struct Previews_Custom_Date_Picker_Previews: PreviewProvider {

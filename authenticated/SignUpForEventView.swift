@@ -17,11 +17,13 @@ struct SignUpForEventView: View{
     @State var eventTime: String = "10:00-11:00"
     @State var eventLocation: String = "243 Argle St. Saint Joseph, MI 49085"
     @State var eventInstructor: String = "Event Name"
+    @State private var showingAlert = false
+
 
 
     var body: some View{
         VStack{
-            Text("\(eventName)")
+            Text("\(sessionManager.clickedOnOuting.title)")
                 .bold()
                 .foregroundColor(Color("BlueGray"))
                 .font(.system(size: 35))
@@ -30,36 +32,76 @@ struct SignUpForEventView: View{
                 .padding(.bottom, 30)
                 .padding(.top, 35)
             
-            Text("\(eventDetails)")
+            Text("\(sessionManager.clickedOnOuting.description)")
                 .italic()
                 .foregroundColor(Color("BlueGray"))
                 .font(.system(size: 20))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 35)
-            Text("**Date:** \(eventDate)")
+            
+            if (sessionManager.clickedOnOuting.startDate == sessionManager.clickedOnOuting.endDate) {
+                //same date
+                Text("**Date:** \(sessionManager.clickedOnOuting.startDate.iso8601FormattedString(format: .short))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                Text("**Start Time:** \(sessionManager.clickedOnOuting.startTime.iso8601FormattedString(format: .short))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                Text("**End Time:** \(sessionManager.clickedOnOuting.endTime.iso8601FormattedString(format: .short))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+            } else if (sessionManager.clickedOnOuting.startDate != sessionManager.clickedOnOuting.endDate){
+                //not same date
+                Text("**Starts on:** \(sessionManager.clickedOnOuting.startDate.iso8601FormattedString(format: .short)) at \(sessionManager.clickedOnOuting.startTime.iso8601FormattedString(format: .short))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                Text("**Ends on:** \(sessionManager.clickedOnOuting.endDate.iso8601FormattedString(format: .short)) at \(sessionManager.clickedOnOuting.endTime.iso8601FormattedString(format: .short))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+            }
+            
+
+            Text("**Location:** \(sessionManager.clickedOnOuting.location)")
                 .foregroundColor(Color("BlueGray"))
                 .font(.system(size: 20))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
-            Text("**Time:** \(eventTime)")
-                .foregroundColor(Color("BlueGray"))
-                .font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-            Text("**Location:** \(eventLocation)")
-                .foregroundColor(Color("BlueGray"))
-                .font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-            Text("**Instructor:** \(eventInstructor)")
-                .foregroundColor(Color("BlueGray"))
-                .font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-                .padding(.bottom, 35)
+            
+            if sessionManager.clickedOnOuting.instructors.count == 1 {
+                Text("**Instructor:** \(sessionManager.stringInstructors)")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 35)
+            } else {
+                Text("**Instructors:** \(sessionManager.stringInstructors)")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 35)
+            }
+            
+
+            
+            
+            
+
             Button {
                 //code for signup confirmation screen here
+                showingAlert = true
             } label: {
                 Text("Sign Up")
                     .padding(.horizontal, 100)
@@ -70,6 +112,10 @@ struct SignUpForEventView: View{
                     .offset(y: 20)
                     .padding(.bottom, 20)
             }
+            .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
+                Button("Yes, I'm sure.", role: .cancel) {
+                    
+                }; Button("Nevermind!", role: .destructive) {}})
 
             
             Button {
@@ -88,4 +134,3 @@ struct SignUpForEventView: View{
 
     }
 }
-

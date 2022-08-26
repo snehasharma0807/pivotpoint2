@@ -28,7 +28,7 @@ enum AuthState{
     case confirmResetPassword(confirmResetPasswordError: String)
     case signUpForEvent
     case calendarView(user: AuthUser)
-    case addEvent
+    case addEvent(error: String)
     case loadingView
     case usersListView
     case updateProfileInformationView(user: AuthUser)
@@ -45,6 +45,10 @@ final class SessionManager: ObservableObject{
     var usersSubscription: AnyCancellable?
     var userDetailsList: [UserDetails] = []
     var clickedOnUserDetails: UserDetails = UserDetails(username: "", fullName: "", address: "", phoneNumber: "", userType: UserGroup.client)
+    var outingsList: [Outing] = []
+    var taskMetaDataList: [TaskMetaData] = []
+    var clickedOnOuting: Outing = Outing(title: "", description: "", location: "", startDate: Temporal.Date.now(), startTime: Temporal.Time.now(), endDate: Temporal.Date.now(), endTime: Temporal.Time.now(), numClients: 1)
+    var stringInstructors = ""
     
 
 
@@ -55,16 +59,17 @@ final class SessionManager: ObservableObject{
             Amplify.DataStore.clear() {
                 switch $0 {
                 case .success:
-                    break
+                    print("cleared")
                 case .failure(let error):
                     print(error)
                 }
             }
+            queryOutings()
+            getOutings()
             returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
             print(currentUserModel?.userType ?? "")
             currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
-            self.authState = .loadingView
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             }
         } else {
@@ -91,13 +96,15 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToCalendar(){
         if let user = Amplify.Auth.getCurrentUser(){
+            queryOutings()
+            getOutings()
             authState = .calendar(user: user)
         } else {
             authState = .login(error: "")
         }
     }
-    func changeAuthStateToAddEvent(){
-        authState = .addEvent
+    func changeAuthStateToAddEvent(error: String){
+        authState = .addEvent(error: error)
     }
     func changeAuthStateToLoading(){
         authState = .loadingView
@@ -326,7 +333,7 @@ final class SessionManager: ObservableObject{
     }
     
     func saveUserProfileInformation(username: String, fullname: String, phoneNumber: String, address: String) {
-        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.client)
+        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.admin)
         Amplify.DataStore.save(detailsToSave) { result in
             switch result {
             case .success(let user):
@@ -466,6 +473,60 @@ final class SessionManager: ObservableObject{
             print(error)
         }
 
+    }
+    
+    func saveOuting(title: String, description: String, location: String, startDate: Date, startTime: Date, endDate: Date, endTime: Date, instructors: [String], programType: String, maxNumClients: Int) {
+        
+        if (title == "") || (description == "") || (location == "") || instructors.isEmpty || programType == "" {
+            self.changeAuthStateToAddEvent(error: "Error saving outing. Make sure that you input all information.")
+        }
+        
+        
+        let sD = Temporal.Date.init(startDate)
+        let sT = Temporal.Time.init(startTime)
+        let eD = Temporal.Date.init(endDate)
+        let eT = Temporal.Time.init(endTime)
+        
+        let outingToSave = Outing(title: title, description: description, location: location, startDate: sD, startTime: sT, endDate: eD, endTime: eT, instructors: instructors, numClients: maxNumClients, programType: programType)
+        
+        _ = Amplify.DataStore.save(outingToSave)
+            .sink {
+                if case let .failure(error) = $0 {
+                    print("Error saving outing: \(error)")
+                    self.changeAuthStateToAddEvent(error: "Error saving outing. Make sure that you input all information correctly.")
+                }
+            }
+            receiveValue: {
+                print("saved post: \($0)")
+            }
+    }
+    
+    func queryOutings() {
+        _ = Amplify.DataStore.query(Outing.self, sort: .ascending(Outing.keys.startDate)).sink {
+            if case let .failure(error) = $0 {
+                print("Error on query() for type Post - \(error.localizedDescription)")
+            }
+        }
+        receiveValue: { outings in
+            for outing in outings {
+                self.outingsList.append(outing)
+            }
+        }
+    }
+    
+    func getOutings() {
+        for outing in outingsList {
+            var listOfOutingsInOneDay: [MyTask] = []
+            let currentDate = outing.startDate.foundationDate
+            
+            for secondOuting in outingsList {
+                if secondOuting.startDate.foundationDate == currentDate {
+                    listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+                }
+            }
+            taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+        }
+        
     }
     
 }

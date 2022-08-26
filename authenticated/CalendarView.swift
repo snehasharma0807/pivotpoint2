@@ -32,6 +32,9 @@ struct CalendarView: View{
                 }
                 //Custom date picker
                 CustomDatePicker(currentDate: $currentDate)
+                    .refreshable {
+                        sessionManager.queryOutings()
+                    }
             }
             .padding(.vertical)
         }
@@ -68,7 +71,7 @@ struct CalendarView: View{
 
                     if (sessionManager.currentUserModel?.userType == UserGroup.admin){
                         Button{
-                            sessionManager.changeAuthStateToAddEvent()
+                            sessionManager.changeAuthStateToAddEvent(error: "")
                         } label: {
                             Text("Add Outing")
                                 .fontWeight(.bold)

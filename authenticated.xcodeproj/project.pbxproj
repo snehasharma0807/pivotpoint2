@@ -10,14 +10,18 @@
 		11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */; };
 		550403322899E21E003793FA /* UsersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550403312899E21E003793FA /* UsersListView.swift */; };
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
-		552D965528AF22630082D820 /* UserDetails+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D965128AF22630082D820 /* UserDetails+Schema.swift */; };
-		552D965628AF22630082D820 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D965228AF22630082D820 /* UserGroup.swift */; };
-		552D965728AF22630082D820 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D965328AF22630082D820 /* UserDetails.swift */; };
-		552D965828AF22630082D820 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D965428AF22630082D820 /* AmplifyModels.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
 		556099A928AD9AF50017D129 /* UserProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556099A828AD9AF50017D129 /* UserProfileInformationView.swift */; };
 		5576FA6B287F872C0070CE17 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576FA6A287F872C0070CE17 /* LoadingView.swift */; };
+		558FA00828B7188D0073F534 /* OutingUserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00028B7188D0073F534 /* OutingUserDetails.swift */; };
+		558FA00928B7188D0073F534 /* UserDetails+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00128B7188D0073F534 /* UserDetails+Schema.swift */; };
+		558FA00A28B7188D0073F534 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00228B7188D0073F534 /* UserGroup.swift */; };
+		558FA00B28B7188D0073F534 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00328B7188D0073F534 /* UserDetails.swift */; };
+		558FA00C28B7188D0073F534 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00428B7188D0073F534 /* AmplifyModels.swift */; };
+		558FA00D28B7188D0073F534 /* Outing+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00528B7188D0073F534 /* Outing+Schema.swift */; };
+		558FA00E28B7188D0073F534 /* Outing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00628B7188D0073F534 /* Outing.swift */; };
+		558FA00F28B7188D0073F534 /* OutingUserDetails+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00728B7188D0073F534 /* OutingUserDetails+Schema.swift */; };
 		55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */; };
 		55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FC027E1A8DF00379E8D /* awsconfiguration.json */; };
 		55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A13FC227E1B09200379E8D /* SessionManager.swift */; };
@@ -45,14 +49,18 @@
 		41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-authenticated.debug.xcconfig"; path = "Target Support Files/Pods-authenticated/Pods-authenticated.debug.xcconfig"; sourceTree = "<group>"; };
 		550403312899E21E003793FA /* UsersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListView.swift; sourceTree = "<group>"; };
 		552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Date Picker.swift"; sourceTree = "<group>"; };
-		552D965128AF22630082D820 /* UserDetails+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDetails+Schema.swift"; sourceTree = "<group>"; };
-		552D965228AF22630082D820 /* UserGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
-		552D965328AF22630082D820 /* UserDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
-		552D965428AF22630082D820 /* AmplifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmplifyModels.swift; sourceTree = "<group>"; };
 		553CA72B2806728500D734E6 /* SignUpForEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpForEventView.swift; sourceTree = "<group>"; };
 		553CA72D2807B8DD00D734E6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		556099A828AD9AF50017D129 /* UserProfileInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileInformationView.swift; sourceTree = "<group>"; };
 		5576FA6A287F872C0070CE17 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		558FA00028B7188D0073F534 /* OutingUserDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutingUserDetails.swift; sourceTree = "<group>"; };
+		558FA00128B7188D0073F534 /* UserDetails+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDetails+Schema.swift"; sourceTree = "<group>"; };
+		558FA00228B7188D0073F534 /* UserGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
+		558FA00328B7188D0073F534 /* UserDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
+		558FA00428B7188D0073F534 /* AmplifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmplifyModels.swift; sourceTree = "<group>"; };
+		558FA00528B7188D0073F534 /* Outing+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Outing+Schema.swift"; sourceTree = "<group>"; };
+		558FA00628B7188D0073F534 /* Outing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Outing.swift; sourceTree = "<group>"; };
+		558FA00728B7188D0073F534 /* OutingUserDetails+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OutingUserDetails+Schema.swift"; sourceTree = "<group>"; };
 		55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = SOURCE_ROOT; };
 		55A13FC027E1A8DF00379E8D /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
 		55A13FC227E1B09200379E8D /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
@@ -92,13 +100,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		552D965028AF22630082D820 /* models */ = {
+		558F9FFF28B7188D0073F534 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				552D965128AF22630082D820 /* UserDetails+Schema.swift */,
-				552D965228AF22630082D820 /* UserGroup.swift */,
-				552D965328AF22630082D820 /* UserDetails.swift */,
-				552D965428AF22630082D820 /* AmplifyModels.swift */,
+				558FA00028B7188D0073F534 /* OutingUserDetails.swift */,
+				558FA00128B7188D0073F534 /* UserDetails+Schema.swift */,
+				558FA00228B7188D0073F534 /* UserGroup.swift */,
+				558FA00328B7188D0073F534 /* UserDetails.swift */,
+				558FA00428B7188D0073F534 /* AmplifyModels.swift */,
+				558FA00528B7188D0073F534 /* Outing+Schema.swift */,
+				558FA00628B7188D0073F534 /* Outing.swift */,
+				558FA00728B7188D0073F534 /* OutingUserDetails+Schema.swift */,
 			);
 			name = models;
 			path = amplify/generated/models;
@@ -108,8 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				55E1BD6727E1955900F7ECC6 /* authenticated */,
-				552D965028AF22630082D820 /* models */,
 				A0362CF16D2959F9047B429B /* Pods */,
+				558F9FFF28B7188D0073F534 /* models */,
 				55E1BD6627E1955900F7ECC6 /* Products */,
 				BA4809BC38C4EDB9F5E7FD2F /* AmplifyConfig */,
 				FC638D31D55DF1B89D3C462B /* Frameworks */,
@@ -307,25 +319,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				552D965528AF22630082D820 /* UserDetails+Schema.swift in Sources */,
 				55E1BD7D27E1957300F7ECC6 /* PrettyModifierExtension.swift in Sources */,
+				558FA00A28B7188D0073F534 /* UserGroup.swift in Sources */,
+				558FA00C28B7188D0073F534 /* AmplifyModels.swift in Sources */,
 				55E1BD8127E195C100F7ECC6 /* AuthenticatedApp.swift in Sources */,
+				558FA00E28B7188D0073F534 /* Outing.swift in Sources */,
 				55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */,
 				553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */,
 				55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */,
-				552D965628AF22630082D820 /* UserGroup.swift in Sources */,
 				5576FA6B287F872C0070CE17 /* LoadingView.swift in Sources */,
+				558FA00D28B7188D0073F534 /* Outing+Schema.swift in Sources */,
 				55C385FE2828A47700CA74B1 /* AddEventView.swift in Sources */,
 				550403322899E21E003793FA /* UsersListView.swift in Sources */,
 				556099A928AD9AF50017D129 /* UserProfileInformationView.swift in Sources */,
-				552D965728AF22630082D820 /* UserDetails.swift in Sources */,
 				55E1BD6D27E1955900F7ECC6 /* ViewController.swift in Sources */,
 				553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */,
 				55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */,
+				558FA00F28B7188D0073F534 /* OutingUserDetails+Schema.swift in Sources */,
 				55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */,
 				55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */,
+				558FA00828B7188D0073F534 /* OutingUserDetails.swift in Sources */,
 				552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */,
-				552D965828AF22630082D820 /* AmplifyModels.swift in Sources */,
+				558FA00B28B7188D0073F534 /* UserDetails.swift in Sources */,
+				558FA00928B7188D0073F534 /* UserDetails+Schema.swift in Sources */,
 				55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */,
 				55E1BD8727E195EB00F7ECC6 /* LoginView.swift in Sources */,
 				55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */,

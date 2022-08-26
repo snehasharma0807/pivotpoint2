@@ -51,8 +51,8 @@ struct AuthenticatedApp: App{
             case .calendarView:
                 CalendarView(user: "user" as! AuthUser)
                     .environmentObject(sessionManager)
-            case .addEvent:
-                AddEventView(eventName: "", eventDetails: "", eventDate: Date.now, eventTime: Date.now, eventLocation: "", eventInstructor: "")
+            case .addEvent(let error):
+                AddEventView(errorMessage: error)
                     .environmentObject(sessionManager)
             case .loadingView:
                 LoadingView()
