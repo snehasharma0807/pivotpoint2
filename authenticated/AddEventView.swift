@@ -18,16 +18,13 @@ struct AddEventView: View{
     @State var outingEndTime = Date()
     @State var outingLocation: String = ""
     @State var outingDescription: String = ""
-    @State var instructorsString: String = ""
-    @State var instructorsList: [String] = []
     @State var outingProgramType: String = ""
     @State var maxNumClients: Int = 0
+    @State var listOfInstructors: [String] = []
+    @State var didClick: Bool = false
     
     var errorMessage: String
     
-    func stringToList(string: String) {
-        instructorsList = string.components(separatedBy: ", ")
-    }
     
 
     
@@ -42,13 +39,6 @@ struct AddEventView: View{
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
             
-            Text("Note: While inputting the instructors' usernames, please format it as: Instructor1, Instructor2, etc...")
-                .foregroundColor(Color("BlueGray"))
-                .font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 20)
             
             if errorMessage != "" {
                 Text("\(errorMessage)")
@@ -128,7 +118,47 @@ struct AddEventView: View{
                     .padding(.bottom, 20)
 
 
-                InputField(backgroundText: "Instructor[s]...", bindingText: $instructorsString)
+                Text("Instructor[s]...")
+                    .foregroundColor(Color("BlueGray"))
+                    .padding(.horizontal, 30)
+                    .multilineTextAlignment(.center)
+                
+                List(sessionManager.idsForUsersList, id: \.self) { id in
+                    if sessionManager.userDetailsList[id].userType == UserGroup.employee {
+                        HStack {
+                            Image(systemName: didClick ? "checkmark.square.fill" : "square")
+                                .foregroundColor(didClick ? Color(UIColor.systemBlue) : Color.secondary)
+                                .onTapGesture {
+                                    self.didClick.toggle()
+
+                                    
+                                    if self.didClick == true {
+                                        listOfInstructors.append(sessionManager.userDetailsList[id].username)
+                                    } else {
+                                        var id = 0
+                                        for instructor in listOfInstructors {
+                                            if (instructor == sessionManager.userDetailsList[id].username) {
+                                                listOfInstructors.remove(at: id)
+                                            }
+                                            id += 1
+                                        }
+                                    }
+
+                                    print(listOfInstructors)
+
+                                }
+                            ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType?.rawValue ?? "CLIENT", phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
+                                .listRowBackground(didClick ? Color(red: 0.839, green: 0.839, blue: 0.839) : Color(red: 0.565, green: 0.612, blue: 0.69))
+                            
+                        }
+                        
+                    }
+
+                }.frame(height: 200, alignment: .center)
+                    .padding()
+                
+                }
+
 
                 InputField(backgroundText: "Program Type...", bindingText: $outingProgramType)
 
@@ -147,26 +177,24 @@ struct AddEventView: View{
                         .overlay(Capsule(style: .circular)
                             .stroke(Color("BlueGray")))
                         
-
-    
                 }
                 
-
-                
                 
 
-            }
-            
+                
             Button {
-                //change string to list
-                stringToList(string: instructorsString)
-                print(instructorsString)
-                print(instructorsList)
-                sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: instructorsList, programType: outingProgramType, maxNumClients: maxNumClients)
-                sessionManager.changeAuthStateToLoading()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    sessionManager.changeAuthStateToCalendar()
+                
+                if (outingTitle == "") || (outingLocation == "") || (outingDescription == "") || (listOfInstructors == []) {
+                    sessionManager.changeAuthStateToAddEvent(error: "Please input all information.")
+                } else {
+                    sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: listOfInstructors, programType: outingProgramType, maxNumClients: maxNumClients)
+                    sessionManager.changeAuthStateToLoading()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        sessionManager.changeAuthStateToCalendar()
+                    }
                 }
+                
+
                                 
             } label: {
                 Text("Save")
@@ -192,9 +220,16 @@ struct AddEventView: View{
                     .offset(y: 20)
                     .padding(.bottom, 20)
 
+                
             }
+
+            }
+
             
-        }
+        Spacer()
+
+    
+    
     }
 }
 
@@ -213,3 +248,14 @@ struct InputField: View {
 
     }
 }
+
+
+
+//what i'm working on right now:
+///
+///when you click a list item, it turns a different color + appends to a list
+///if you click it again, this stops
+
+//problem that im having:
+///
+///how to set the ui to do this

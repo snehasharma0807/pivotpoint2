@@ -18,7 +18,15 @@ struct SignUpForEventView: View{
     @State var eventLocation: String = ""
     @State var eventInstructor: String = ""
     @State private var showingAlert = false
-
+    
+    var alreadyScheduled = false
+    
+    init(alreadyScheduled: Bool) {
+        self.alreadyScheduled = alreadyScheduled
+    }
+    init () {
+        
+    }
 
 
     var body: some View{
@@ -79,14 +87,14 @@ struct SignUpForEventView: View{
                 .padding(.horizontal, 20)
             
             if sessionManager.clickedOnOuting.instructors.count == 1 {
-                Text("**Instructor:** \(sessionManager.stringInstructors)")
+                Text("**Instructor:** \(sessionManager.clickedOnOuting.instructors.joined(separator: ", "))")
                     .foregroundColor(Color("BlueGray"))
                     .font(.system(size: 20))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 35)
             } else {
-                Text("**Instructors:** \(sessionManager.stringInstructors)")
+                Text("**Instructors:** \(sessionManager.clickedOnOuting.instructors.joined(separator: ", "))")
                     .foregroundColor(Color("BlueGray"))
                     .font(.system(size: 20))
                     .multilineTextAlignment(.center)
@@ -96,26 +104,28 @@ struct SignUpForEventView: View{
             
 
             
-            
-            
-
-            Button {
-                //code for signup confirmation screen here
-                showingAlert = true
-            } label: {
-                Text("Sign Up")
-                    .padding(.horizontal, 100)
-                    .padding(.vertical, 10)
-                    .foregroundColor(.white)
-                    .background(Color("BlueGray"))
-                    .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                    .offset(y: 20)
-                    .padding(.bottom, 20)
+            if alreadyScheduled == false {
+                Button {
+                    showingAlert = true
+                } label: {
+                    Text("Sign Up")
+                        .padding(.horizontal, 100)
+                        .padding(.vertical, 10)
+                        .foregroundColor(.white)
+                        .background(Color("BlueGray"))
+                        .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                        .offset(y: 20)
+                        .padding(.bottom, 20)
+                }
+                .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
+                    Button("Yes, I'm sure.", role: .cancel) {
+                        sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel!)
+                        sessionManager.changeAuthStateToCalendar()
+                    }; Button("Nevermind!", role: .destructive) {}})
+            } else {
+                
             }
-            .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
-                Button("Yes, I'm sure.", role: .cancel) {
-                    sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel!)
-                }; Button("Nevermind!", role: .destructive) {}})
+            
 
             
             Button {

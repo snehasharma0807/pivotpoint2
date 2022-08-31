@@ -72,6 +72,12 @@ struct AuthenticatedApp: App{
             case .viewScheduledOutingsView:
                 ViewScheduledOutingsView()
                     .environmentObject(sessionManager)
+            case .seeEventDetailsAfterSigningUp:
+                SignUpForEventView(alreadyScheduled: true)
+                    .environmentObject(sessionManager)
+            case .seeUsersInEachOutingView(let clickedOnOuting):
+                SeeUsersInEachOutingView(clickedOnOuting: clickedOnOuting)
+                    .environmentObject(sessionManager)
             }
 
         }

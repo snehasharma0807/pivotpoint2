@@ -26,6 +26,7 @@
 		55A13FC127E1A8DF00379E8D /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FC027E1A8DF00379E8D /* awsconfiguration.json */; };
 		55A13FC327E1B09200379E8D /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A13FC227E1B09200379E8D /* SessionManager.swift */; };
 		55C385FE2828A47700CA74B1 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C385FD2828A47700CA74B1 /* AddEventView.swift */; };
+		55D8EEFE28BEE49F0062D145 /* SeeUsersInEachOutingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D8EEFD28BEE49F0062D145 /* SeeUsersInEachOutingView.swift */; };
 		55DCC0A827E6A50800D2AB56 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */; };
 		55DCC0AC27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */; };
 		55E1BD6D27E1955900F7ECC6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD6C27E1955900F7ECC6 /* ViewController.swift */; };
@@ -66,6 +67,7 @@
 		55A13FC027E1A8DF00379E8D /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
 		55A13FC227E1B09200379E8D /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		55C385FD2828A47700CA74B1 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
+		55D8EEFD28BEE49F0062D145 /* SeeUsersInEachOutingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeUsersInEachOutingView.swift; sourceTree = "<group>"; };
 		55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		55DCC0AB27E6BDBE00D2AB56 /* ConfirmResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmResetPasswordView.swift; sourceTree = "<group>"; };
 		55E1BD6527E1955900F7ECC6 /* authenticated.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = authenticated.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +154,7 @@
 				550403312899E21E003793FA /* UsersListView.swift */,
 				55E1BD8227E195D000F7ECC6 /* SignUpView.swift */,
 				556099A828AD9AF50017D129 /* UserProfileInformationView.swift */,
+				55D8EEFD28BEE49F0062D145 /* SeeUsersInEachOutingView.swift */,
 				55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */,
 				55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */,
 				55C385FD2828A47700CA74B1 /* AddEventView.swift */,
@@ -339,6 +342,7 @@
 				553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */,
 				55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */,
 				558FA00F28B7188D0073F534 /* OutingUserDetails+Schema.swift in Sources */,
+				55D8EEFE28BEE49F0062D145 /* SeeUsersInEachOutingView.swift in Sources */,
 				55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */,
 				55E9E08428B8506A00089930 /* ViewScheduledOutingsView.swift in Sources */,
 				55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */,

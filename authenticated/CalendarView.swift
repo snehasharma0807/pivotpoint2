@@ -103,7 +103,7 @@ struct CalendarView: View{
 
                     if(sessionManager.currentUserModel?.userType == UserGroup.employee) {
                         Button {
-                            
+                            sessionManager.changeAuthStateToViewScheduledOutingsView()
                         } label: {
                             Text("View My Outings")
                                 .fontWeight(.bold)

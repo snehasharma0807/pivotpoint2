@@ -35,6 +35,8 @@ enum AuthState{
     case addProfileInformationView
     case userProfileInformationView
     case viewScheduledOutingsView
+    case seeEventDetailsAfterSigningUp
+    case seeUsersInEachOutingView(clickedOnOuting: Outing)
 }
 
 
@@ -54,6 +56,8 @@ final class SessionManager: ObservableObject{
     var idsForUpcomingOutingsList: [Int] = []
     var pastOutings: [Outing] = []
     var idsForPastOutingsList: [Int] = []
+    var usersInAnOutingList: [UserDetails] = []
+    var idsForUsersInAnOutingList: [Int] = []
 
 
     
@@ -73,7 +77,8 @@ final class SessionManager: ObservableObject{
             returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
             print(currentUserModel?.userType ?? "")
             currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
+            authState = .loadingView
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             }
         } else {
@@ -100,14 +105,20 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToCalendar(){
         if let user = Amplify.Auth.getCurrentUser(){
+            outingsList = []
             queryOutings()
             getOutings()
-            authState = .calendar(user: user)
+            authState = .loadingView
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.authState = .calendar(user: user)
+
+            }
         } else {
             authState = .login(error: "")
         }
     }
     func changeAuthStateToAddEvent(error: String){
+        queryUserProfileInformation()
         authState = .addEvent(error: error)
     }
     func changeAuthStateToLoading(){
@@ -129,8 +140,21 @@ final class SessionManager: ObservableObject{
         authState = .userProfileInformationView
     }
     func changeAuthStateToViewScheduledOutingsView() {
+        outingsList = []
         viewUserOutings(user: currentUserModel!)
+        print(pastOutings)
+        print(idsForPastOutingsList)
+        letEmployeeViewTheirOutings(instructorUsername: currentUserModel!.username)
         authState = .viewScheduledOutingsView
+    }
+    
+    func changeAuthStateToSeeEventDetailsAfterSigningUp() {
+        authState = .seeEventDetailsAfterSigningUp
+    }
+    
+    func changeAuthStateToSeeUsersInEachOutingView(clickedOnOuting: Outing) {
+        findUsersInAnOuting(outing: clickedOnOuting)
+        authState = .seeUsersInEachOutingView(clickedOnOuting: clickedOnOuting)
     }
     
 
@@ -458,9 +482,7 @@ final class SessionManager: ObservableObject{
                 Amplify.DataStore.delete(userToDelete) {
                     switch $0 {
                     case .success():
-                        Task {
-                            await self.deleteUserFromCognito(username: username)
-                        }
+                        self.deleteUserFromCognito(username: username)
                     case .failure(let error):
                         print("error deleting user: \(error.localizedDescription)")
                     }
@@ -469,15 +491,17 @@ final class SessionManager: ObservableObject{
         }
     }
     
-    func deleteUserFromCognito(username: String) async {
-        do {
-            let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
-            let cognitoInputCall = AdminDeleteUserInput(userPoolId: "us-west-2_cQe5CmJ7z", username: username)
-            
-            _ = try await cognitoIdentityClient.adminDeleteUser(input: cognitoInputCall)
-            print("successfully deleted user from cognito!")
-        } catch {
-            print(error)
+    func deleteUserFromCognito(username: String) {
+        Task { @MainActor in
+            do {
+                let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
+                let cognitoInputCall = AdminDeleteUserInput(userPoolId: "us-west-2_cQe5CmJ7z", username: username)
+                
+                _ = try await cognitoIdentityClient.adminDeleteUser(input: cognitoInputCall)
+                print("successfully deleted user from cognito!")
+            } catch {
+                print(error)
+            }
         }
 
     }
@@ -557,6 +581,10 @@ final class SessionManager: ObservableObject{
     }
     
     func viewUserOutings(user: UserDetails) {
+        self.idsForPastOutingsList = []
+        self.idsForUpcomingOutingsList = []
+        self.pastOutings = []
+        self.upcomingOutings = []
         _ = Amplify.DataStore.query(OutingUserDetails.self) .sink {
             if case let .failure(error) = $0 {
                 print("\(error.localizedDescription)")
@@ -583,5 +611,56 @@ final class SessionManager: ObservableObject{
         }
 
     }
+    
+    func letEmployeeViewTheirOutings(instructorUsername: String) {
+        self.idsForPastOutingsList = []
+        self.idsForUpcomingOutingsList = []
+        self.pastOutings = []
+        self.upcomingOutings = []
+        _ = Amplify.DataStore.query(Outing.self, where: Outing.keys.instructors.contains(instructorUsername)) .sink {
+            if case let .failure(error) = $0 {
+                print(error)
+            }
+        } receiveValue: { results in
+            var id1 = 0
+            var id2 = 0
+            for result in results {
+                let instructors = result.instructors
+                for instructor in instructors {
+                    if instructor == instructorUsername {
+                        if result.startDate.foundationDate >= Date.now {
+                            self.upcomingOutings.append(result)
+                            self.idsForUpcomingOutingsList.append(id1)
+                            id1 += 1
+                        } else {
+                            self.pastOutings.append(result)
+                            self.idsForPastOutingsList.append(id2)
+                            id2 += 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func findUsersInAnOuting(outing: Outing) {
+        usersInAnOutingList = []
+        idsForUsersInAnOutingList = []
+        _ = Amplify.DataStore.query(OutingUserDetails.self) .sink(receiveCompletion: {
+            if case let .failure(error) = $0 {
+                print(error.localizedDescription)
+            }
+        }, receiveValue: { results in
+            for result in results {
+               var  id1 = 0
+                if outing.id == result.outing.id {
+                    self.usersInAnOutingList.append(result.userdetails)
+                    self.idsForUsersInAnOutingList.append(id1)
+                    id1 += 1
+                }
+            }
+        })
+    }
+    
     
 }
