@@ -61,7 +61,6 @@ struct SeeUsersInEachOutingView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
             }
-            
             if sessionManager.idsForUsersInAnOutingList.isEmpty {
                 Spacer()
                 Text("No users have signed up for this outing yet.")
@@ -71,6 +70,11 @@ struct SeeUsersInEachOutingView: View {
                     .padding(.horizontal, 20)
                     .font(.system(size: 15))
             } else {
+                Text("Clients: ")
+                    .bold()
+                    .foregroundColor(Color("BlueGray"))
+                    .padding(.horizontal, 20)
+                    .font(.system(size: 15))
                 List(sessionManager.idsForUsersInAnOutingList, id: \.self) { id in
                     ListRow(username: sessionManager.usersInAnOutingList[id].fullName, userType: "", phoneNumber: sessionManager.usersInAnOutingList[id].phoneNumber)
                 }
@@ -78,7 +82,7 @@ struct SeeUsersInEachOutingView: View {
                     .padding()
             }
             
-
+            
             
             Button {
                 sessionManager.changeAuthStateToCalendar()

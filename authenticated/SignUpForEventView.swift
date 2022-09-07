@@ -18,19 +18,34 @@ struct SignUpForEventView: View{
     @State var eventLocation: String = ""
     @State var eventInstructor: String = ""
     @State private var showingAlert = false
+    var error: String
     
     var alreadyScheduled = false
     
     init(alreadyScheduled: Bool) {
         self.alreadyScheduled = alreadyScheduled
+        error = ""
+
     }
     init () {
-        
+        error = ""
+    }
+    init(error: String) {
+        self.error = error
     }
 
 
     var body: some View{
+
         VStack{
+            if (error != ""){
+                Text(error)
+                    .bold()
+                    .foregroundColor(.red)
+            } else{
+                Text("")
+            }
+            
             Text("\(sessionManager.clickedOnOuting.title)")
                 .bold()
                 .foregroundColor(Color("BlueGray"))
@@ -102,7 +117,12 @@ struct SignUpForEventView: View{
                     .padding(.bottom, 35)
             }
             
-
+            Text("\((sessionManager.clickedOnOuting.numClients)-(sessionManager.usersInAnOutingList.count))/\(sessionManager.clickedOnOuting.numClients) Spaces Available")
+                .foregroundColor(Color("BlueGray"))
+                .font(.system(size: 20))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 35)
             
             if alreadyScheduled == false {
                 Button {

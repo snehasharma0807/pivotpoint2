@@ -45,8 +45,8 @@ struct AuthenticatedApp: App{
             case .confirmResetPassword(let confirmResetPasswordError):
                 ConfirmResetPasswordView(confirmResetPasswordError: confirmResetPasswordError)
                     .environmentObject(sessionManager)
-            case .signUpForEvent:
-                SignUpForEventView()
+            case .signUpForEvent(let error):
+                SignUpForEventView(error: error)
                     .environmentObject(sessionManager)
             case .calendarView:
                 CalendarView(user: "user" as! AuthUser)

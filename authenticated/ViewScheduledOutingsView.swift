@@ -275,6 +275,5 @@ struct OutingsRow: View {
 ///when adding events, the admin can check instructors from a list to add them
 
 //what im struggling with (what to do tomorrow)
-///when client is viewing their scheduled outings, for some reason, it isnt showing the second item (2 items in list, is saying that the index [1] is out of range??
 ///test that the instructor can view all of the users signed up for each event
 ///check if theres enough space in each event to sign up for it (if it reached its max, before letting the user sign up for it)

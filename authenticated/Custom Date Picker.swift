@@ -89,7 +89,7 @@ struct CustomDatePicker: View{
                 }
             }
             VStack(spacing: 15){
-               Text("Tasks")
+               Text("Outings")
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 20)
@@ -111,7 +111,7 @@ struct CustomDatePicker: View{
 
                                 sessionManager.clickedOnOuting = task.outingModel
                                 sessionManager.stringInstructors = task.outingModel.instructors.joined(separator: ", ")
-                                sessionManager.changeAuthStateToEventDetails()
+                                sessionManager.changeAuthStateToEventDetails(error: "")
                             } label: {
                                 Text(task.time, style: .time)
                                 Text("  |  ")
