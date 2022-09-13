@@ -12,6 +12,8 @@
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
+		5555AA4028D048340096D570 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */; };
+		5555AA4228D048340096D570 /* AWSDynamoDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5555AA4128D048340096D570 /* AWSDynamoDB */; };
 		556099A928AD9AF50017D129 /* UserProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556099A828AD9AF50017D129 /* UserProfileInformationView.swift */; };
 		5576FA6B287F872C0070CE17 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576FA6A287F872C0070CE17 /* LoadingView.swift */; };
 		558FA00828B7188D0073F534 /* OutingUserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558FA00028B7188D0073F534 /* OutingUserDetails.swift */; };
@@ -41,8 +43,6 @@
 		55E9E08428B8506A00089930 /* ViewScheduledOutingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */; };
 		55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3828A37A5B00499934 /* UpdateProfileInformationView.swift */; };
 		55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3A28A37A8800499934 /* AddProfileInformationView.swift */; };
-		55F17C2B28AC757B000F55A3 /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 55F17C2A28AC757B000F55A3 /* AWSAmplify */; };
-		55F17C2D28AC757B000F55A3 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */; };
 		A5E670DD6FF7357A5D0946BF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F171AF5D5F067E724ACE3503 /* awsconfiguration.json */; };
 		F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */; };
 /* End PBXBuildFile section */
@@ -96,8 +96,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
-				55F17C2B28AC757B000F55A3 /* AWSAmplify in Frameworks */,
-				55F17C2D28AC757B000F55A3 /* AWSCognitoIdentityProvider in Frameworks */,
+				5555AA4228D048340096D570 /* AWSDynamoDB in Frameworks */,
+				5555AA4028D048340096D570 /* AWSCognitoIdentityProvider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,8 +218,8 @@
 			);
 			name = authenticated;
 			packageProductDependencies = (
-				55F17C2A28AC757B000F55A3 /* AWSAmplify */,
-				55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */,
+				5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */,
+				5555AA4128D048340096D570 /* AWSDynamoDB */,
 			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
@@ -250,7 +250,7 @@
 			);
 			mainGroup = 55E1BD5C27E1955900F7ECC6;
 			packageReferences = (
-				55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
+				5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 55E1BD6627E1955900F7ECC6 /* Products */;
 			projectDirPath = "";
@@ -578,7 +578,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+		5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
 			requirement = {
@@ -589,15 +589,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		55F17C2A28AC757B000F55A3 /* AWSAmplify */ = {
+		5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSAmplify;
-		};
-		55F17C2C28AC757B000F55A3 /* AWSCognitoIdentityProvider */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 55F17C2928AC757B000F55A3 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			package = 5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSCognitoIdentityProvider;
+		};
+		5555AA4128D048340096D570 /* AWSDynamoDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSDynamoDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

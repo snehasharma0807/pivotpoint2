@@ -15,6 +15,7 @@ import AWSCognitoIdentity
 import AWSCognitoIdentityProvider
 import ClientRuntime
 import AWSClientRuntime
+import AWSDynamoDB
 
 
 
@@ -602,6 +603,9 @@ final class SessionManager: ObservableObject{
             } receiveValue: { querySnapshot in
                 if querySnapshot.items.count == 1 {
                     self.findUsersInAnOuting(outing: outing)
+                    print(self.usersInAnOutingList)
+                    print(self.usersInAnOutingList.count)
+                    print(outing.numClients)
                     if self.usersInAnOutingList.count <  outing.numClients {
                         Amplify.DataStore.save(saveUserToOuting) { result in
                             switch result {
@@ -612,7 +616,10 @@ final class SessionManager: ObservableObject{
                             }
                         }
                     } else {
-                        self.changeAuthStateToEventDetails(error: "You cannot sign up for this event anymore.")
+                        DispatchQueue.main.asyncAfter(deadline: .now()) {
+                            self.changeAuthStateToEventDetails(error: "You cannot sign up for this event anymore.")
+
+                        }
                     }
                 } else {
                     self.changeAuthStateToLogin(error: "An error occurred.")
@@ -709,8 +716,6 @@ final class SessionManager: ObservableObject{
     }
     
     func findUsersInAnOuting(outing: Outing) {
-        usersInAnOutingList = []
-        idsForUsersInAnOutingList = []
         
         userOutingSubscription = Amplify.DataStore.observeQuery(for: OutingUserDetails.self)
             .receive(on: DispatchQueue.main)
@@ -721,16 +726,31 @@ final class SessionManager: ObservableObject{
                 case .failure(let error):
                     print("Error \(error)")
                 }
-            } receiveValue: { querySnapshot in
+            } receiveValue: { [self] querySnapshot in
+                usersInAnOutingList = []
+                idsForUsersInAnOutingList = []
                 for result in querySnapshot.items {
                    var  id1 = 0
                     if outing.id == result.outing.id {
-                        self.usersInAnOutingList.append(result.userdetails)
-                        self.idsForUsersInAnOutingList.append(id1)
+                        usersInAnOutingList.append(result.userdetails)
+                        idsForUsersInAnOutingList.append(id1)
                         id1 += 1
                     }
                 }
             }
+    }
+    
+    func dynamoDB () {
+        do {
+            Task {
+                let client = try DynamoDbClient(region: "us-west-2")
+                let inputCall = TransactWriteItemsInput()
+                let result = try await client.transactWriteItems(input: inputCall)
+            }
+
+        } catch {
+            
+        }
     }
     
     

@@ -44,18 +44,7 @@ struct CalendarView: View{
             ScrollView(.horizontal){
                 HStack{
 
-                    Button{
-                        sessionManager.signOut()
-                    } label: {
-                        Text("Log out")
-                            .fontWeight(.bold)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color( "BlueGray"), in: Rectangle())
-                            .cornerRadius(5)
-                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                            .foregroundColor(.white)
-                    }
+
                     Button {
                         sessionManager.changeAuthStateToUpdateProfileInformation()
                     } label: {
@@ -132,7 +121,19 @@ struct CalendarView: View{
 
                     }
                     
-
+                    Button{
+                        sessionManager.signOut()
+                    } label: {
+                        Text("Log out")
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color( "LightGrey"), in: Rectangle())
+                            .cornerRadius(5)
+                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                            .foregroundColor(.white)
+                    }
+                    
                     
                 }
 
