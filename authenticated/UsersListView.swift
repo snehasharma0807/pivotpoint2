@@ -23,18 +23,41 @@ struct UsersListView: View {
                 .padding(.horizontal, 20)
             
 
-
-            List(sessionManager.idsForUsersList, id: \.self) { id in
+            if sessionManager.idsForUsersList.count == 1 {
                 Button {
-                    sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList[id].username, fullName: sessionManager.userDetailsList[id].fullName, address: sessionManager.userDetailsList[id].address, phoneNumber: sessionManager.userDetailsList[id].phoneNumber, userType: sessionManager.userDetailsList[id].userType)
+                    sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList.first!.username, fullName: sessionManager.userDetailsList.first!.fullName, address: sessionManager.userDetailsList.first!.address, phoneNumber: sessionManager.userDetailsList.first!.phoneNumber, userType: sessionManager.userDetailsList.first!.userType)
                     print(sessionManager.clickedOnUserDetails)
                     sessionManager.changeAuthStateToUserProfileInformationView()
                 } label: {
-                    ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType?.rawValue ?? "CLIENT", phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
+                    HStack {
+                        VStack {
+                            Text(sessionManager.userDetailsList.first!.username)
+                                .font(.system(size: 20))
+                                .foregroundColor(Color("BlueGray"))
+                                .padding()
+                            Text(sessionManager.userDetailsList.first!.phoneNumber)
+                                .font(.system(size: 15))
+                                .foregroundColor(Color("BlueGray"))
+                        }
+                        Spacer()
+                        Text(sessionManager.userDetailsList.first!.username)
+                            .font(.system(size: 20))
+                            .foregroundColor(Color("BlueGray"))
+                    }.padding(5)
                 }
+            } else {
+                List(sessionManager.idsForUsersList, id: \.self) { id in
+                    Button {
+                        sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList[id].username, fullName: sessionManager.userDetailsList[id].fullName, address: sessionManager.userDetailsList[id].address, phoneNumber: sessionManager.userDetailsList[id].phoneNumber, userType: sessionManager.userDetailsList[id].userType)
+                        print(sessionManager.clickedOnUserDetails)
+                        sessionManager.changeAuthStateToUserProfileInformationView()
+                    } label: {
+                        ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType?.rawValue ?? "CLIENT", phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
+                    }
 
-            }.refreshable {
-                sessionManager.queryUserProfileInformation()
+                }.refreshable {
+                    sessionManager.queryUserProfileInformation()
+                }
             }
 
             

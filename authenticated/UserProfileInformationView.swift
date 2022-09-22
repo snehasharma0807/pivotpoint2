@@ -17,7 +17,11 @@ struct UserProfileInformationView: View {
     var body: some View {
         VStack {
             
-            UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType ?? "Not Set")
+            UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType )
+            
+            if (sessionManager.clickedOnUserDetails.userType == UserGroup.client) {
+                
+            }
             
             Button {
                 sessionManager.changeAuthStateToUsersList()
@@ -66,7 +70,7 @@ struct UserDisplay: View {
     let userType: String
     let phoneNumber: String
     let address: String
-    let programType: String
+    let programType: [String]
     
     
     var body: some View {
@@ -160,12 +164,7 @@ struct UserDisplay: View {
 //            .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
-        Text("Program Type: \(programType)")
-            .foregroundColor(Color("BlueGray"))
-            .font(.system(size: 20))
-//            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
+
         
     }
 }

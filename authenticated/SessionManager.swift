@@ -11,7 +11,6 @@ import AmplifyPlugins
 import Combine
 import Foundation
 import AWSPluginsCore
-import AWSCognitoIdentity
 import AWSCognitoIdentityProvider
 import ClientRuntime
 import AWSClientRuntime
@@ -368,7 +367,7 @@ final class SessionManager: ObservableObject{
     }
     
     func saveUserProfileInformation(username: String, fullname: String, phoneNumber: String, address: String) {
-        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.admin)
+        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.client)
         Amplify.DataStore.save(detailsToSave) { result in
             switch result {
             case .success(let user):
@@ -412,6 +411,7 @@ final class SessionManager: ObservableObject{
                     for: UserDetails.self,
                     sort: .ascending(UserDetails.keys.id)
                 )
+            .receive(on: DispatchQueue.main)
             .sink { completed in
                 switch completed {
                 case .finished:
@@ -459,7 +459,10 @@ final class SessionManager: ObservableObject{
                 }
             } receiveValue: { querySnapshot in
                 if querySnapshot.items.count > 1 {
-                    self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
+                    self.changeAuthStateToLoading()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToCalendar()
+                    }
                 } else {
                     var detailsToUpdate = querySnapshot.items[0]
                     detailsToUpdate.userType = changeUserType
@@ -517,9 +520,9 @@ final class SessionManager: ObservableObject{
 
     }
     
-    func saveOuting(title: String, description: String, location: String, startDate: Date, startTime: Date, endDate: Date, endTime: Date, instructors: [String], programType: String, maxNumClients: Int) {
+    func saveOuting(title: String, description: String, location: String, startDate: Date, startTime: Date, endDate: Date, endTime: Date, instructors: [String], programType: [String], maxNumClients: Int) {
         
-        if (title == "") || (description == "") || (location == "") || instructors.isEmpty || programType == "" {
+        if (title == "") || (description == "") || (location == "") || instructors.isEmpty || programType.isEmpty {
             self.changeAuthStateToAddEvent(error: "Error saving outing. Make sure that you input all information.")
         }
         
@@ -539,7 +542,7 @@ final class SessionManager: ObservableObject{
                 }
             }
             receiveValue: {
-                print("saved post: \($0)")
+                print("saved outing: \($0)")
             }
     }
     
@@ -740,18 +743,80 @@ final class SessionManager: ObservableObject{
             }
     }
     
-    func dynamoDB () {
-        do {
-            Task {
-                let client = try DynamoDbClient(region: "us-west-2")
-                let inputCall = TransactWriteItemsInput()
-                let result = try await client.transactWriteItems(input: inputCall)
+    func addProgramToUser(programNames: [String], user: UserDetails) {
+        let keys = UserDetails.keys
+        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
+            .receive(on: DispatchQueue.main)
+            .sink { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("Error \(error)")
+                }
+            } receiveValue: { [self] querySnapshot in
+                if querySnapshot.items.count == 1 {
+                    var userToUpdate = querySnapshot.items.first
+                    userToUpdate?.programType = []
+                    userToUpdate?.programType.append(contentsOf: programNames)
+                    
+                    if userToUpdate != nil {
+                        Amplify.DataStore.save(userToUpdate!) { result in
+                            switch result {
+                            case .success:
+                                print("\(userToUpdate!.username) is part of \(String(describing: userToUpdate?.programType))!")
+                            case .failure(let error):
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
+
+                } else {
+                    changeAuthStateToLogin(error: "An error occurred.")
+                }
             }
 
-        } catch {
-            
-        }
     }
     
     
 }
+//
+//type Outing @model @auth(rules: [{allow: public}]) {
+//  id: ID!
+//  title: String!
+//  description: String!
+//  location: String!
+//  startDate: AWSDate!
+//  startTime: AWSTime!
+//  endDate: AWSDate!
+//  endTime: AWSTime!
+//  instructors: [String!]!
+//  numClients: Int!
+//  programType: [String!]!
+//  OutingUserDetails: [OutingUserDetails] @connection(keyName: "byOuting", fields: ["id"])
+//}
+//
+//enum UserGroup {
+//  ADMIN
+//  EMPLOYEE
+//  CLIENT
+//}
+//
+//type UserDetails @model @auth(rules: [{allow: public}]) {
+//  id: ID!
+//  username: String!
+//  fullName: String!
+//  address: String!
+//  programType: [String!]!
+//  phoneNumber: String!
+//  userType: UserGroup
+//  outings: [OutingUserDetails] @connection(keyName: "byUserDetails", fields: ["id"])
+//}
+//
+//type OutingUserDetails @model(queries: null) @key(name: "byOuting", fields: ["outingID", "userdetailsID"]) @key(name: "byUserDetails", fields: ["userdetailsID", "outingID"]) @auth(rules: [{allow: public}]) {
+//  id: ID!
+//  outingID: ID!
+//  userdetailsID: ID!
+//  outing: Outing! @connection(fields: ["outingID"])
+//  userdetails: UserDetails! @connection(fields: ["userdetailsID"])
+//}

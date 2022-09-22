@@ -55,6 +55,20 @@ struct SignUpForEventView: View{
                 .padding(.bottom, 30)
                 .padding(.top, 35)
             
+            if (sessionManager.clickedOnOuting.programType.count == 1) {
+                Text("Program: \(sessionManager.clickedOnOuting.programType.first ?? "")")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 15))
+                    .multilineTextAlignment(.center)
+                    .padding()
+            } else {
+                Text("Programs: \(sessionManager.clickedOnOuting.programType.joined(separator: ", "))")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 15))
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+            
             Text("\(sessionManager.clickedOnOuting.description)")
                 .italic()
                 .foregroundColor(Color("BlueGray"))

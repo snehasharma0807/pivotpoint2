@@ -18,12 +18,22 @@ struct AddEventView: View{
     @State var outingEndTime = Date()
     @State var outingLocation: String = ""
     @State var outingDescription: String = ""
-    @State var outingProgramType: String = ""
+    @State var outingPrograms: [String] = []
     @State var maxNumClients: Int = 0
     @State var listOfInstructors: [String] = []
     @State var didClick: Bool = false
+    @State var didClick2: Bool = false
+    let clickNum = 0
+    
+    
+    @State var isChecked:Bool = false
+    func toggle(){isChecked = !isChecked}
+
+
     
     var errorMessage: String
+    
+    let listOfPrograms = ["Buncombe County Veterans Treatment Court", "Buncombe County Adult Drug Court", "Buncombe County Family Drug Court", "ABCCM Veterans Restoration Quarters", "ABCCM Transformation Village", "Department of Juvenile Justice", "PIVOTPoint Program - Single Track", "PIVOTPoint Program - Family Track", "Other"]
     
     
 
@@ -104,20 +114,20 @@ struct AddEventView: View{
                             Spacer()
                         }
                         .padding(.horizontal, 30)
-
-                            
+                        
+                        
                     }
                     
                 }
-
                 
-
+                
+                
                 Divider()
                     .background(Color("BlueGray"))
                     .padding(.horizontal, 30)
                     .padding(.bottom, 20)
-
-
+                
+                
                 Text("Instructor[s]...")
                     .foregroundColor(Color("BlueGray"))
                     .padding(.horizontal, 30)
@@ -126,76 +136,105 @@ struct AddEventView: View{
                 List(sessionManager.idsForUsersList, id: \.self) { id in
                     if sessionManager.userDetailsList[id].userType == UserGroup.employee {
                         HStack {
-                            Image(systemName: didClick ? "checkmark.square.fill" : "square")
-                                .foregroundColor(didClick ? Color(UIColor.systemBlue) : Color.secondary)
+                            Image(systemName: self.listOfInstructors.contains(sessionManager.userDetailsList[id].username) ?  "checkmark.square.fill" : "square")
                                 .onTapGesture {
                                     self.didClick.toggle()
-
-                                    
                                     if self.didClick == true {
                                         listOfInstructors.append(sessionManager.userDetailsList[id].username)
+                                        
                                     } else {
-                                        var id = 0
+                                        var id1 = 0
                                         for instructor in listOfInstructors {
                                             if (instructor == sessionManager.userDetailsList[id].username) {
-                                                listOfInstructors.remove(at: id)
+                                                listOfInstructors.remove(at: id1)
                                             }
-                                            id += 1
+                                            id1 += 1
                                         }
+                                        
                                     }
-
                                     print(listOfInstructors)
-
                                 }
-                            ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType?.rawValue ?? "CLIENT", phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
-                                .listRowBackground(didClick ? Color(red: 0.839, green: 0.839, blue: 0.839) : Color(red: 0.565, green: 0.612, blue: 0.69))
-                            
+                            Text(sessionManager.userDetailsList[id].username)
+                                .foregroundColor(Color("BlueGray"))
+                                .multilineTextAlignment(.center)
                         }
-                        
                     }
-
                 }.frame(height: 200, alignment: .center)
                     .padding()
-                
-                }
-
-
-                InputField(backgroundText: "Program Type...", bindingText: $outingProgramType)
-
-                HStack {
-                    Text("Max Number of Clients")
-                        .foregroundColor(Color("BlueGray"))
-                        .padding(.horizontal, 30)
-                    
-                    Picker("Max Number of Clients", selection: $maxNumClients) {
-                        ForEach(1...100, id: \.self) { number in
-                            Text("\(number)")
-                                .foregroundColor(.white)
+            }
+            
+            
+            Text("Program[s]...")
+                .foregroundColor(Color("BlueGray"))
+                .padding(.horizontal, 30)
+                .multilineTextAlignment(.center)
+            
+            
+            
+            Form {
+                List {
+                    ForEach(listOfPrograms, id: \.self) { program in
+                        Button {
+                            withAnimation {
+                                if self.outingPrograms.contains(program) {
+                                    self.outingPrograms.removeAll(where: { $0 == program})
+                                    print(self.outingPrograms)
+                                } else {
+                                    self.outingPrograms.append(program)
+                                    print(self.outingPrograms)
+                                    
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: self.outingPrograms.contains(program) ?  "checkmark.square.fill" : "square")
+                                Text(program)
+                                    .foregroundColor(Color("BlueGray"))
+                                    .multilineTextAlignment(.center)
+                            }.foregroundColor(.primary)
                         }
-                    }
-                        .padding(5)
-                        .overlay(Capsule(style: .circular)
-                            .stroke(Color("BlueGray")))
                         
+                    }
                 }
+            }
+            .frame(height: 200, alignment: .center)
+            .padding()
+            
+            HStack {
+                Text("Max Number of Clients")
+                    .foregroundColor(Color("BlueGray"))
+                    .padding(.horizontal, 30)
                 
+                Picker("Max Number of Clients", selection: $maxNumClients) {
+                    ForEach(1...100, id: \.self) { number in
+                        Text("\(number)")
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding(5)
+                .overlay(Capsule(style: .circular)
+                    .stroke(Color("BlueGray")))
                 
-
-                
+            }
+            
+            
+            
+            
             Button {
                 
                 if (outingTitle == "") || (outingLocation == "") || (outingDescription == "") || (listOfInstructors == []) {
                     sessionManager.changeAuthStateToAddEvent(error: "Please input all information.")
                 } else {
-                    sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: listOfInstructors, programType: outingProgramType, maxNumClients: maxNumClients)
+                    sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: listOfInstructors, programType: outingPrograms, maxNumClients: maxNumClients)
                     sessionManager.changeAuthStateToLoading()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         sessionManager.changeAuthStateToCalendar()
                     }
                 }
                 
-
-                                
+                
+                
+                
             } label: {
                 Text("Save")
                     .padding(.horizontal, 100)
@@ -209,7 +248,7 @@ struct AddEventView: View{
             
             Button {
                 sessionManager.changeAuthStateToCalendar()
-                                
+                
             } label: {
                 Text("Go to Home")
                     .padding(.horizontal, 100)
@@ -219,17 +258,17 @@ struct AddEventView: View{
                     .shadow(color: .gray, radius: 5, x: 4, y: 4)
                     .offset(y: 20)
                     .padding(.bottom, 20)
-
+                
                 
             }
-
-            }
-
             
+        }
+        
+        
         Spacer()
-
-    
-    
+        
+        
+        
     }
 }
 
@@ -249,13 +288,61 @@ struct InputField: View {
     }
 }
 
+struct CheckList: View {
+    var didClick2: Bool
+    var listToAppendTo: [String]
+    var program: String
+    var originalList: [String]
+    
+
+    var body: some View {
+        HStack {
+            Image(systemName: didClick2 ? "checkmark.square.fill" : "square")
+                .foregroundColor(didClick2 ? Color(UIColor.systemBlue) : Color.secondary)
+            ListRow(username: program, userType: "", phoneNumber: "")
+                .listRowBackground(didClick2 ? Color(red: 0.839, green: 0.839, blue: 0.839) : Color(red: 0.565, green: 0.612, blue: 0.69))
+            
+        }
+    }
+}
+//
+//
+//.onTapGesture {
+//            didClick2.toggle()
+//
+//            if didClick2 == true {
+//                listToAppendTo.append(program)
+//            } else {
+//                var id1 = 0
+//                for checkProgram in originalList {
+//                    if checkProgram == program {
+//                        listToAppendTo.remove(at: id1)
+//                    }
+//                }
+//                id1 += 1
+//            }
+//            print(listToAppendTo)
+//        }
 
 
-//what i'm working on right now:
-///
-///when you click a list item, it turns a different color + appends to a list
-///if you click it again, this stops
 
-//problem that im having:
-///
-///how to set the ui to do this
+//                    Image(systemName: didClick2 ? "checkmark.square.fill" : "square")
+//                        .foregroundColor(didClick2 ? Color(UIColor.systemBlue) : Color.secondary)
+//                        .onTapGesture {
+//                            self.didClick2.toggle()
+//
+//                            if self.didClick2 == true {
+//                                outingPrograms.append(program)
+//                            } else {
+//                                var id1 = 0
+//                                for checkProgram in listOfPrograms {
+//                                    if checkProgram == program {
+//                                        outingPrograms.remove(at: id1)
+//                                    }
+//                                }
+//                                id1 += 1
+//                            }
+//                            print(outingPrograms)
+//                        }
+//                    ListRow(username: program, userType: "", phoneNumber: "")
+//                        .listRowBackground(didClick ? Color(red: 0.839, green: 0.839, blue: 0.839) : Color(red: 0.565, green: 0.612, blue: 0.69))
