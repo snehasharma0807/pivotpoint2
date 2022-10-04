@@ -35,7 +35,6 @@
 		55E1BD7027E1955900F7ECC6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD6E27E1955900F7ECC6 /* Main.storyboard */; };
 		55E1BD7227E1955B00F7ECC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD7127E1955B00F7ECC6 /* Assets.xcassets */; };
 		55E1BD7527E1955B00F7ECC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E1BD7327E1955B00F7ECC6 /* LaunchScreen.storyboard */; };
-		55E1BD7D27E1957300F7ECC6 /* PrettyModifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */; };
 		55E1BD8127E195C100F7ECC6 /* AuthenticatedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */; };
 		55E1BD8327E195D000F7ECC6 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8227E195D000F7ECC6 /* SignUpView.swift */; };
 		55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */; };
@@ -76,7 +75,6 @@
 		55E1BD7127E1955B00F7ECC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55E1BD7427E1955B00F7ECC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55E1BD7627E1955B00F7ECC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrettyModifierExtension.swift; sourceTree = "<group>"; };
 		55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedApp.swift; sourceTree = "<group>"; };
 		55E1BD8227E195D000F7ECC6 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		55E1BD8427E195DF00F7ECC6 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 				55A13FC027E1A8DF00379E8D /* awsconfiguration.json */,
 				55E1BD8627E195EB00F7ECC6 /* LoginView.swift */,
 				55DCC0A727E6A50800D2AB56 /* ResetPasswordView.swift */,
-				55E1BD7C27E1957300F7ECC6 /* PrettyModifierExtension.swift */,
 				55A13FC227E1B09200379E8D /* SessionManager.swift */,
 				55E1BD8027E195C100F7ECC6 /* AuthenticatedApp.swift */,
 				5576FA6A287F872C0070CE17 /* LoadingView.swift */,
@@ -325,7 +322,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				55CA9E6028D94F0F00086940 /* OutingUserDetails+Schema.swift in Sources */,
-				55E1BD7D27E1957300F7ECC6 /* PrettyModifierExtension.swift in Sources */,
 				55E1BD8127E195C100F7ECC6 /* AuthenticatedApp.swift in Sources */,
 				55E1BD8527E195DF00F7ECC6 /* ConfirmationView.swift in Sources */,
 				55CA9E5928D94F0F00086940 /* OutingUserDetails.swift in Sources */,

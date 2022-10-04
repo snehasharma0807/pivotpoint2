@@ -33,7 +33,7 @@ struct CalendarView: View{
                 //Custom date picker
                 CustomDatePicker(currentDate: $currentDate)
                     .refreshable {
-                        sessionManager.queryOutings()
+                        sessionManager.queryOutings(programList: sessionManager.currentUserModel.programType ?? ["Other"])
                     }
             }
             .padding(.vertical)
@@ -58,7 +58,7 @@ struct CalendarView: View{
                             .foregroundColor(.white)
                     }
 
-                    if (sessionManager.currentUserModel?.userType == UserGroup.admin){
+                    if (sessionManager.currentUserModel.userType == UserGroup.admin){
                         Button{
                             sessionManager.changeAuthStateToAddEvent(error: "")
                         } label: {
@@ -90,7 +90,7 @@ struct CalendarView: View{
                     }
 
 
-                    if(sessionManager.currentUserModel?.userType == UserGroup.employee) {
+                    if(sessionManager.currentUserModel.userType == UserGroup.employee) {
                         Button {
                             sessionManager.changeAuthStateToViewScheduledOutingsView()
                         } label: {
@@ -105,7 +105,7 @@ struct CalendarView: View{
                         }
 
                     }
-                    if(sessionManager.currentUserModel?.userType == UserGroup.client) {
+                    if(sessionManager.currentUserModel.userType == UserGroup.client) {
                         Button {
                             sessionManager.changeAuthStateToViewScheduledOutingsView()
                         } label: {

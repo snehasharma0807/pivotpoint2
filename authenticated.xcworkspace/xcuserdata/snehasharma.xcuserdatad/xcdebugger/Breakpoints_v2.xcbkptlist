@@ -14,8 +14,8 @@
             filePath = "authenticated/SessionManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "608"
-            endingLineNumber = "608"
+            startingLineNumber = "856"
+            endingLineNumber = "856"
             landmarkName = "signUpForOuting(outing:userDetails:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "authenticated/SessionManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "612"
-            endingLineNumber = "612"
+            startingLineNumber = "860"
+            endingLineNumber = "860"
             landmarkName = "signUpForOuting(outing:userDetails:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,9 +46,152 @@
             filePath = "authenticated/SessionManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "621"
-            endingLineNumber = "621"
+            startingLineNumber = "869"
+            endingLineNumber = "869"
             landmarkName = "signUpForOuting(outing:userDetails:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "054340EB-6A60-44F6-81AF-807F20CEAE57"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "999"
+            endingLineNumber = "999"
+            landmarkName = "addProgramToUser(programNames:user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FB948C85-E959-4D22-8F42-02AC609FE0D6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1010"
+            endingLineNumber = "1010"
+            landmarkName = "addProgramToUser(programNames:user:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FB948C85-E959-4D22-8F42-02AC609FE0D6 - 321bf1137ee458ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "authenticated.SessionManager.addProgramToUser(programNames: Swift.Array&lt;Swift.String&gt;, user: authenticated.UserDetails) -&gt; ()"
+                  moduleName = "authenticated"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/snehasharma/Desktop/authenticated/authenticated/SessionManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1010"
+                  endingLineNumber = "1010"
+                  offsetFromSymbolStart = "748">
+               </Location>
+               <Location
+                  uuid = "FB948C85-E959-4D22-8F42-02AC609FE0D6 - f814f4b601b46b32"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Combine.Subscribers.Completion&lt;Amplify.DataStoreError&gt;) -&gt; () in authenticated.SessionManager.addProgramToUser(programNames: Swift.Array&lt;Swift.String&gt;, user: authenticated.UserDetails) -&gt; ()"
+                  moduleName = "authenticated"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/snehasharma/Desktop/authenticated/authenticated/SessionManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1010"
+                  endingLineNumber = "1010"
+                  offsetFromSymbolStart = "760">
+               </Location>
+               <Location
+                  uuid = "FB948C85-E959-4D22-8F42-02AC609FE0D6 - 19e8e7e07c1dce5f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Amplify.DataStoreQuerySnapshot&lt;authenticated.UserDetails&gt;) -&gt; () in authenticated.SessionManager.addProgramToUser(programNames: Swift.Array&lt;Swift.String&gt;, user: authenticated.UserDetails) -&gt; ()"
+                  moduleName = "authenticated"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/snehasharma/Desktop/authenticated/authenticated/SessionManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1011"
+                  endingLineNumber = "1011"
+                  offsetFromSymbolStart = "112">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B667D044-21E4-4AC7-983C-1CAE0B2FF9B7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1016"
+            endingLineNumber = "1016"
+            landmarkName = "addProgramToUser(programNames:user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0F175FC3-6E73-4A87-8979-8C78F4B2243B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1015"
+            endingLineNumber = "1015"
+            landmarkName = "addProgramToUser(programNames:user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0C20DDB5-2DE4-414B-A8DF-2D87BB0E9D03"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1018"
+            endingLineNumber = "1018"
+            landmarkName = "addProgramToUser(programNames:user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "071FBD88-F36E-4BBC-BBE2-FFC2BD910C42"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "authenticated/SessionManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1012"
+            endingLineNumber = "1012"
+            landmarkName = "addProgramToUser(programNames:user:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

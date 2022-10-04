@@ -31,7 +31,7 @@ struct UpdateProfileInformationView: View {
 
         
         Button {
-            print("\(sessionManager.currentUserModel?.fullName ?? "")")
+            print("\(sessionManager.currentUserModel.fullName ?? "")")
         } label: {
             Text("Update Information")
                 .padding(.horizontal, 100)

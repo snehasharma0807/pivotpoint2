@@ -153,7 +153,7 @@ struct SignUpForEventView: View{
                 }
                 .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
                     Button("Yes, I'm sure.", role: .cancel) {
-                        sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel!)
+                        sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel)
                         sessionManager.changeAuthStateToCalendar()
                     }; Button("Nevermind!", role: .destructive) {}})
             } else {

@@ -28,7 +28,7 @@ struct ViewScheduledOutingsView: View {
             .padding(.top, 20)
         
         
-        if sessionManager.currentUserModel?.userType == UserGroup.client {
+        if sessionManager.currentUserModel.userType == UserGroup.client {
             if isUpcoming == true {
                 HStack {
                     Button {
@@ -121,7 +121,7 @@ struct ViewScheduledOutingsView: View {
         }
         
         
-        if sessionManager.currentUserModel?.userType == UserGroup.employee {
+        if sessionManager.currentUserModel.userType == UserGroup.employee {
             
             if isUpcoming == true {
                 HStack {
