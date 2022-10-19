@@ -13,6 +13,7 @@ struct UserProfileInformationView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showingAlert = false
     @State var programs: [String] = []
+
     
     let listOfPrograms = ["Buncombe County Veterans Treatment Court", "Buncombe County Adult Drug Court", "Buncombe County Family Drug Court", "ABCCM Veterans Restoration Quarters", "ABCCM Transformation Village", "Department of Juvenile Justice", "PIVOTPoint Program - Single Track", "PIVOTPoint Program - Family Track", "Other"]
     
@@ -22,20 +23,23 @@ struct UserProfileInformationView: View {
         ScrollView {
             VStack {
                 
-                UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType )
+                UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType)
                 
                 if (sessionManager.clickedOnUserDetails.userType == UserGroup.client) {
+                    Divider()
+                        .foregroundColor(Color(.lightGray))
+                        .padding(.bottom, 5)
                     Text("Add the user to the following programs...")
                         .foregroundColor(Color("BlueGray"))
                         .padding(.horizontal, 30)
                         .multilineTextAlignment(.center)
+
                     
-                    Divider()
-                        .foregroundColor(Color(.lightGray))
                     
                     Form {
                         List {
                             ForEach(listOfPrograms, id: \.self) { program in
+                                
                                 Button {
                                     if programs.contains(program) {
                                         programs.removeAll(where: { $0 == program})
@@ -47,13 +51,19 @@ struct UserProfileInformationView: View {
                                     }
                                 } label: {
                                     HStack {
-                                        Image(systemName: self.programs.contains(program) ?  "checkmark.square.fill" : "square")
+                                        Image(systemName: self.programs.contains(program) ? "checkmark.square.fill" : "square")
+
                                         Text(program)
                                             .foregroundColor(Color("BlueGray"))
                                             .multilineTextAlignment(.center)
                                     }.foregroundColor(.primary)
                                 }
                                 
+                            }
+                            .onAppear {
+                                programs = []
+                                programs = sessionManager.clickedOnUserDetails.programType
+                                print(programs)
                             }
                         }
                     }
@@ -62,8 +72,8 @@ struct UserProfileInformationView: View {
                     
                     Button {
                         //save programs to user
-                        sessionManager.addProgramToUser(programNames: programs, user: sessionManager.currentUserModel)
-                        sessionManager.changeAuthStateToUsersList()
+                        sessionManager.addProgramToUser(user: sessionManager.clickedOnUserDetails, programNames: programs)
+                        sessionManager.changeAuthStateToCalendar()
                     } label: {
                         Text("Save Programs to the Client")
                             .padding(.horizontal, 30)
@@ -225,8 +235,8 @@ struct UserDisplay: View {
             .padding(.bottom, 10)
         Text("Currently in these programs: \(programType.joined(separator: ", "))")
             .foregroundColor(Color("BlueGray"))
-            .font(.system(size: 20))
-//            .multilineTextAlignment(.center)
+            .font(.system(size: 17))
+
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
         

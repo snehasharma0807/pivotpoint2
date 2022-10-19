@@ -25,8 +25,8 @@ struct UsersListView: View {
 
             if sessionManager.idsForUsersList.count == 1 {
                 Button {
-                    sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList.first!.username, fullName: sessionManager.userDetailsList.first!.fullName, address: sessionManager.userDetailsList.first!.address, phoneNumber: sessionManager.userDetailsList.first!.phoneNumber, userType: sessionManager.userDetailsList.first!.userType)
-                    print(sessionManager.clickedOnUserDetails)
+                    sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList.first!.username, fullName: sessionManager.userDetailsList.first!.fullName, address: sessionManager.userDetailsList.first!.address, programType: sessionManager.userDetailsList.first!.programType, phoneNumber: sessionManager.userDetailsList.first!.phoneNumber, userType: sessionManager.userDetailsList.first!.userType)
+                    print(sessionManager.clickedOnUserDetails.programType)
                     sessionManager.changeAuthStateToUserProfileInformationView()
                 } label: {
                     HStack {
@@ -48,7 +48,7 @@ struct UsersListView: View {
             } else {
                 List(sessionManager.idsForUsersList, id: \.self) { id in
                     Button {
-                        sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList[id].username, fullName: sessionManager.userDetailsList[id].fullName, address: sessionManager.userDetailsList[id].address, phoneNumber: sessionManager.userDetailsList[id].phoneNumber, userType: sessionManager.userDetailsList[id].userType)
+                        sessionManager.clickedOnUserDetails = UserDetails(username: sessionManager.userDetailsList[id].username, fullName: sessionManager.userDetailsList[id].fullName, address: sessionManager.userDetailsList[id].address, programType: sessionManager.userDetailsList[id].programType, phoneNumber: sessionManager.userDetailsList[id].phoneNumber, userType: sessionManager.userDetailsList[id].userType)
                         print(sessionManager.clickedOnUserDetails)
                         sessionManager.changeAuthStateToUserProfileInformationView()
                     } label: {

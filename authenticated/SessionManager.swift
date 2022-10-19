@@ -44,12 +44,12 @@ final class SessionManager: ObservableObject{
     var isLoading: Bool = false
     var currentUser: String = ""
     @Published var currentUserModel: UserDetails = UserDetails(username: "", fullName: "", address: "", phoneNumber: "")
-    var idsForUsersList: [Int] = []
+    @Published var idsForUsersList: [Int] = []
     var usersSubscription: AnyCancellable?
     var outingsSubscription: AnyCancellable?
     var userOutingSubscription: AnyCancellable?
     @Published var userDetailsList: [UserDetails] = []
-    var clickedOnUserDetails: UserDetails = UserDetails(username: "", fullName: "", address: "", phoneNumber: "", userType: UserGroup.client)
+    var clickedOnUserDetails: UserDetails = UserDetails(username: "", fullName: "", address: "", programType: [], phoneNumber: "", userType: UserGroup.client)
     @Published var outingsList: [Outing] = []
     var taskMetaDataList: [TaskMetaData] = []
     var clickedOnOuting: Outing = Outing(title: "", description: "", location: "", startDate: Temporal.Date.now(), startTime: Temporal.Time.now(), endDate: Temporal.Date.now(), endTime: Temporal.Time.now(), numClients: 1)
@@ -141,6 +141,7 @@ final class SessionManager: ObservableObject{
     }
     func changeAuthStateToUserProfileInformationView() {
         authState = .userProfileInformationView
+        
     }
     func changeAuthStateToViewScheduledOutingsView() {
         outingsList = []
@@ -996,40 +997,95 @@ final class SessionManager: ObservableObject{
     
     
     //add a program to a user
-    func addProgramToUser(programNames: [String], user: UserDetails) {
-        let keys = UserDetails.keys
-        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
+    func addProgramToUser(user: UserDetails, programNames: [String]) {
+        let u = UserDetails.keys
+        self.usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: u.username == user.username)
             .receive(on: DispatchQueue.main)
             .sink { completed in
                 switch completed {
                 case .finished:
                     print("finished")
                 case .failure(let error):
-                    print("Error \(error)")
+                    print(error)
                 }
-            } receiveValue: { [self] querySnapshot in
-                print("query snapshot: \(querySnapshot.items)")
-//                if querySnapshot.items.count == 1 {
-//                    var userToUpdate = querySnapshot.items.first
-//                    userToUpdate?.programType = []
-//                    userToUpdate?.programType.append(contentsOf: ["Buncombe County Veterans Treatment Court"])
-//                    print(userToUpdate!)
-//
-//                    Amplify.DataStore.save(userToUpdate!) { result in
-//                        switch result {
-//                        case .success(let user):
-//                            print("\(user.username) is part of \(String(describing: user.programType))!")
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//                    }
-//
-//                } else {
-//                    changeAuthStateToLogin(error: "An error occurred.")
-//                }
+            } receiveValue: { querySnapshot in
+                if querySnapshot.items.count > 1 {
+                    self.changeAuthStateToLoading()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToCalendar()
+                    }
+                } else {
+                    var detailsToUpdate = querySnapshot.items[0]
+                    detailsToUpdate.programType = []
+                    detailsToUpdate.programType = programNames
+                    Amplify.DataStore.save(detailsToUpdate) { result in
+                        switch result {
+                        case .success(let user):
+                            print("successfully updated!")
+                            print("added these programs: \(user.programType) to this user: \(user.username)")
+                        case .failure(let error):
+                            print("error saving: \(error.localizedDescription)")
+                        }
+                    }
+                }
             }
-
     }
     
     
 }
+
+//
+//let keys = UserDetails.keys
+//usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
+//    .receive(on: DispatchQueue.main)
+//    .sink { completed in
+//        switch completed {
+//        case .finished:
+//            print("finished")
+//        case .failure(let error):
+//            print("Error \(error)")
+//        }
+//    } receiveValue: { [self] querySnapshot in
+//        print("query snapshot: \(querySnapshot.items)")
+////                if querySnapshot.items.count == 1 {
+////                    var userToUpdate = querySnapshot.items.first
+////                    userToUpdate?.programType = []
+////                    userToUpdate?.programType.append(contentsOf: ["Buncombe County Veterans Treatment Court"])
+////                    print(userToUpdate!)
+////
+////                    Amplify.DataStore.save(userToUpdate!) { result in
+////                        switch result {
+////                        case .success(let user):
+////                            print("\(user.username) is part of \(String(describing: user.programType))!")
+////                        case .failure(let error):
+////                            print(error)
+////                        }
+////                    }
+////
+////                } else {
+////                    changeAuthStateToLogin(error: "An error occurred.")
+////                }
+//    }
+//
+//
+//usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
+//    .receive(on: DispatchQueue.main)
+//    .sink(receiveCompletion: { completed in
+//        switch completed {
+//        case .finished:
+//            print("finished")
+//        case .failure(let error):
+//            print(error)
+//        }
+//    }, receiveValue: { [self] querySnapshot in
+//        if (querySnapshot.items.count != 1) {
+//            print("error")
+//            changeAuthStateToLogin(error: "Error updating item. Please try again.")
+//        } else {
+//            var userToUpdate = querySnapshot.items[0]
+//            userToUpdate.programType = programNames
+//            _ = Amplify.DataStore.save(userToUpdate)
+//        }
+//    })
+//
+
