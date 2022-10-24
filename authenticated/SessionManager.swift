@@ -73,7 +73,7 @@ final class SessionManager: ObservableObject{
                     print(error)
                 }
             }
-            queryOutings(programList: self.currentUserModel.programType ?? ["Other"])
+            queryOutings(programList: self.currentUserModel.programType )
             returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
             print(currentUserModel.userType ?? "")
             currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
@@ -110,11 +110,10 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToCalendar(){
         if let user = Amplify.Auth.getCurrentUser(){
             outingsList = []
-            queryOutings(programList: self.currentUserModel.programType ?? ["Other"])
             authState = .loadingView
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            queryOutings(programList: self.currentUserModel.programType)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 self.authState = .calendar(user: user)
-
             }
         } else {
             authState = .login(error: "")
@@ -257,7 +256,7 @@ final class SessionManager: ObservableObject{
                 } else{
                     the_error = error.errorDescription
                 }
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async{
                         self?.changeAuthStateToLogin(error: the_error)
                     }
             }
@@ -578,20 +577,20 @@ final class SessionManager: ObservableObject{
     
     //querying outings (and filtering them based on program IF you are a client)
     func queryOutings(programList: [String]) {
-        self.outingsList = []
         let keys = Outing.keys.programType
-        if self.currentUserModel.userType == UserGroup.client {
+        print(currentUserModel.programType)
+        if currentUserModel.userType == UserGroup.client {
             if programList.count == 1 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -599,7 +598,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -607,19 +606,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 2 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -627,7 +625,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -635,19 +633,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 3 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -655,7 +652,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -663,19 +660,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 4 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -683,7 +679,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -691,19 +687,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 5 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -711,7 +706,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -719,19 +714,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 6 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -739,7 +733,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -747,19 +741,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 7 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]) || keys.contains(programList[6]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -767,7 +760,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -775,19 +768,18 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
             } else if programList.count == 8 {
                 self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]) || keys.contains(programList[6]) || keys.contains(programList[7]))
                     .receive(on: DispatchQueue.main)
-                    .sink { completed in
+                    .sink(receiveCompletion: { completed in
                         switch completed {
                         case .finished:
                             print("finished")
                         case .failure(let error):
-                            print(error)
+                            print(error.errorDescription)
                         }
-                    } receiveValue: { [self] querySnapshot in
+                    }, receiveValue: { [self] querySnapshot in
                         for outing in querySnapshot.items {
                             outingsList.append(outing)
                         }
@@ -795,7 +787,7 @@ final class SessionManager: ObservableObject{
                         for outing in outingsList {
                             var listOfOutingsInOneDay: [MyTask] = []
                             let currentDate = outing.startDate.foundationDate
-                            
+        
                             for secondOuting in outingsList {
                                 if secondOuting.startDate.foundationDate == currentDate {
                                     listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
@@ -803,40 +795,14 @@ final class SessionManager: ObservableObject{
                             }
                             taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                         }
-                        
-                    }
+                    })
+            } else if programList.count == 0 {
+                
             }
+            
         } else {
-            self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self)
-                .receive(on: DispatchQueue.main)
-                .sink { completed in
-                    switch completed {
-                    case .finished:
-                        print("finished")
-                    case .failure(let error):
-                        print(error)
-                    }
-                } receiveValue: { [self] querySnapshot in
-                    for outing in querySnapshot.items {
-                        outingsList.append(outing)
-                    }
-                    print(outingsList.count)
-                    for outing in outingsList {
-                        var listOfOutingsInOneDay: [MyTask] = []
-                        let currentDate = outing.startDate.foundationDate
-                        
-                        for secondOuting in outingsList {
-                            if secondOuting.startDate.foundationDate == currentDate {
-                                listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
-                            }
-                        }
-                        taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
-                    }
-                    
-                }
+            print("not client")
         }
-        
-        
     }
     
     //clients sign up for an outing
@@ -1035,57 +1001,262 @@ final class SessionManager: ObservableObject{
 }
 
 //
-//let keys = UserDetails.keys
-//usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
-//    .receive(on: DispatchQueue.main)
-//    .sink { completed in
-//        switch completed {
-//        case .finished:
-//            print("finished")
-//        case .failure(let error):
-//            print("Error \(error)")
-//        }
-//    } receiveValue: { [self] querySnapshot in
-//        print("query snapshot: \(querySnapshot.items)")
-////                if querySnapshot.items.count == 1 {
-////                    var userToUpdate = querySnapshot.items.first
-////                    userToUpdate?.programType = []
-////                    userToUpdate?.programType.append(contentsOf: ["Buncombe County Veterans Treatment Court"])
-////                    print(userToUpdate!)
-////
-////                    Amplify.DataStore.save(userToUpdate!) { result in
-////                        switch result {
-////                        case .success(let user):
-////                            print("\(user.username) is part of \(String(describing: user.programType))!")
-////                        case .failure(let error):
-////                            print(error)
-////                        }
-////                    }
-////
-////                } else {
-////                    changeAuthStateToLogin(error: "An error occurred.")
-////                }
+//if self.currentUserModel.userType == UserGroup.client {
+//    print("list: \(programList) + count: \(programList.count)")
+//    if programList.count == 1 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 2 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 3 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 4 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 5 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 6 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 7 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]) || keys.contains(programList[6]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else if programList.count == 8 {
+//        self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: keys.contains(programList[0]) || keys.contains(programList[1]) || keys.contains(programList[2]) || keys.contains(programList[3]) || keys.contains(programList[4]) || keys.contains(programList[5]) || keys.contains(programList[6]) || keys.contains(programList[7]))
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { [self] querySnapshot in
+//                for outing in querySnapshot.items {
+//                    outingsList.append(outing)
+//                }
+//                print(outingsList.count)
+//                for outing in outingsList {
+//                    var listOfOutingsInOneDay: [MyTask] = []
+//                    let currentDate = outing.startDate.foundationDate
+//
+//                    for secondOuting in outingsList {
+//                        if secondOuting.startDate.foundationDate == currentDate {
+//                            listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                        }
+//                    }
+//                    taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//                }
+//
+//            }
+//    } else {
+//        outingsList = []
+//
 //    }
+//} else {
+//    self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self)
+//        .receive(on: DispatchQueue.main)
+//        .sink { completed in
+//            switch completed {
+//            case .finished:
+//                print("finished")
+//            case .failure(let error):
+//                print(error)
+//            }
+//        } receiveValue: { [self] querySnapshot in
+//            for outing in querySnapshot.items {
+//                outingsList.append(outing)
+//            }
+//            print(outingsList.count)
+//            for outing in outingsList {
+//                var listOfOutingsInOneDay: [MyTask] = []
+//                let currentDate = outing.startDate.foundationDate
 //
+//                for secondOuting in outingsList {
+//                    if secondOuting.startDate.foundationDate == currentDate {
+//                        listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
+//                    }
+//                }
+//                taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+//            }
 //
-//usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: keys.username.contains(user.username))
-//    .receive(on: DispatchQueue.main)
-//    .sink(receiveCompletion: { completed in
-//        switch completed {
-//        case .finished:
-//            print("finished")
-//        case .failure(let error):
-//            print(error)
 //        }
-//    }, receiveValue: { [self] querySnapshot in
-//        if (querySnapshot.items.count != 1) {
-//            print("error")
-//            changeAuthStateToLogin(error: "Error updating item. Please try again.")
-//        } else {
-//            var userToUpdate = querySnapshot.items[0]
-//            userToUpdate.programType = programNames
-//            _ = Amplify.DataStore.save(userToUpdate)
-//        }
-//    })
-//
-
+//}
