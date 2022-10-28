@@ -19,7 +19,6 @@ struct AuthenticatedApp: App{
     
     init(){
         configureAmplify()
-        
         sessionManager.getCurrentAuthUser()
     }
 

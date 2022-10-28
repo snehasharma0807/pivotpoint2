@@ -33,7 +33,7 @@ struct CalendarView: View{
                 //Custom date picker
                 CustomDatePicker(currentDate: $currentDate)
                     .refreshable {
-                        sessionManager.queryOutings(programList: sessionManager.currentUserModel.programType ?? ["Other"])
+                        sessionManager.queryOutings(programList: sessionManager.currentUserModel.programType, currentUserGroup: sessionManager.currentUserModel.userType)
                     }
             }
             .padding(.vertical)

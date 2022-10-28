@@ -52,7 +52,7 @@ struct UsersListView: View {
                         print(sessionManager.clickedOnUserDetails)
                         sessionManager.changeAuthStateToUserProfileInformationView()
                     } label: {
-                        ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType?.rawValue ?? "CLIENT", phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
+                        ListRow(username: sessionManager.userDetailsList[id].username, userType: sessionManager.userDetailsList[id].userType.rawValue, phoneNumber: sessionManager.userDetailsList[id].phoneNumber)
                     }
 
                 }.refreshable {

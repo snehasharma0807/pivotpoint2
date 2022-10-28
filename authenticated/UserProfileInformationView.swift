@@ -23,7 +23,7 @@ struct UserProfileInformationView: View {
         ScrollView {
             VStack {
                 
-                UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType?.rawValue ?? "CLIENT" , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType)
+                UserDisplay(fullname: sessionManager.clickedOnUserDetails.fullName , username: sessionManager.clickedOnUserDetails.username , userType: sessionManager.clickedOnUserDetails.userType.rawValue , phoneNumber: sessionManager.clickedOnUserDetails.phoneNumber , address: sessionManager.clickedOnUserDetails.address , programType: sessionManager.clickedOnUserDetails.programType)
                 
                 if (sessionManager.clickedOnUserDetails.userType == UserGroup.client) {
                     Divider()
