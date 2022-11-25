@@ -15,6 +15,8 @@ import AWSCognitoIdentityProvider
 import ClientRuntime
 import AWSClientRuntime
 import AWSDynamoDB
+import AWSPinpointEmail
+import AWSPinpoint
 
 
 
@@ -73,8 +75,9 @@ final class SessionManager: ObservableObject{
                     print(error)
                 }
             }
+            queryOutings(programList: self.currentUserModel.programType, currentUserGroup: self.currentUserModel.userType )
             returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
-            print(currentUserModel.userType)
+            print(currentUserModel.userType )
             currentUser = "\(Amplify.Auth.getCurrentUser()?.username ?? "")"
             if currentUserModel.userType == UserGroup.employee {
                 letEmployeeViewTheirOutings(instructorUsername: Amplify.Auth.getCurrentUser()!.username)
@@ -243,7 +246,6 @@ final class SessionManager: ObservableObject{
                 print(signInResult)
                 if signInResult.isSignedIn{
                     _ = Amplify.DataStore.clear()
-                    self?.returnCurrentUserModel(username: username)
                     self?.getCurrentAuthUser()
                 }
                 
@@ -374,7 +376,7 @@ final class SessionManager: ObservableObject{
     
     //save information to user profile (username, fullname, phonenumber, etc.). sets default to usertype
     func saveUserProfileInformation(username: String, fullname: String, phoneNumber: String, address: String) {
-        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.admin)
+        let detailsToSave = UserDetails(username: username, fullName: fullname, address: address, phoneNumber: phoneNumber, userType: UserGroup.client)
         Amplify.DataStore.save(detailsToSave) { result in
             switch result {
             case .success(let user):
@@ -409,7 +411,6 @@ final class SessionManager: ObservableObject{
                     }
                 }
             }
-        
     }
     
     
@@ -584,10 +585,11 @@ final class SessionManager: ObservableObject{
     func queryOutings(programList: [String], currentUserGroup: UserGroup) {
         if currentUserGroup == UserGroup.client {
             let keys = Outing.keys.programType
-            var predicateList: [QueryPredicateOperation] = []
+            var predicateList: [QueryPredicate] = []
             print(programList)
             for program in programList {
                 predicateList.append(keys.contains(program))
+                print(program)
             }
             
             let x =  QueryPredicateGroup(type: .or, predicates: predicateList)
@@ -622,7 +624,7 @@ final class SessionManager: ObservableObject{
                     }
                     
                 })
-        } else {
+        } else if ((currentUserGroup == UserGroup.admin) || (currentUserGroup == UserGroup.employee)){
             self.outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completed in
@@ -659,8 +661,9 @@ final class SessionManager: ObservableObject{
     }
     
     //clients sign up for an outing
-    func signUpForOuting(outing: Outing, userDetails: UserDetails) {
-        let saveUserToOuting = UserDetailsOuting(userdetails: userDetails, outing: outing, isOnWaitingList: false)
+    func signUpForOuting(outing: Outing, userDetails: UserDetails, waitingList: Bool) {
+        
+        let saveUserToOuting = UserDetailsOuting(userdetails: userDetails, outing: outing, isOnWaitingList: waitingList)
         
         userOutingSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: Outing.keys.title.eq(outing.title))
             .receive(on: DispatchQueue.main)
@@ -677,19 +680,12 @@ final class SessionManager: ObservableObject{
                     print(self.usersInAnOutingList)
                     print(self.usersInAnOutingList.count)
                     print(outing.numClients)
-                    if self.usersInAnOutingList.count <  outing.numClients {
-                        Amplify.DataStore.save(saveUserToOuting) { result in
-                            switch result {
-                            case .success(let userOuting):
-                                print("\(userOuting.userdetails.username) saved to \(userOuting.outing.title)!")
-                            case .failure(let error):
-                                print(error.localizedDescription)
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now()) {
-                            self.changeAuthStateToEventDetails(error: "You cannot sign up for this event anymore.")
-
+                    Amplify.DataStore.save(saveUserToOuting) { result in
+                        switch result {
+                        case .success(let userOuting):
+                            print("\(userOuting.userdetails.username) saved to \(userOuting.outing.title)!")
+                        case .failure(let error):
+                            print(error.localizedDescription)
                         }
                     }
                 } else {
@@ -712,7 +708,7 @@ final class SessionManager: ObservableObject{
     //view outings in a user
     func viewUserOutings(user: UserDetails) {
         
-        self.userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self)
+        self.userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(true))
             .receive(on: DispatchQueue.main)
             .sink { completed in
                 switch completed {
@@ -834,61 +830,43 @@ final class SessionManager: ObservableObject{
                         self.changeAuthStateToCalendar()
                     }
                 } else {
-                    var detailsToUpdate = querySnapshot.items[0]
-                    detailsToUpdate.programType = []
-                    detailsToUpdate.programType = programNames
-                    Amplify.DataStore.save(detailsToUpdate) { result in
-                        switch result {
-                        case .success(let user):
-                            print("successfully updated!")
-                            print("added these programs: \(user.programType) to this user: \(user.username)")
-                        case .failure(let error):
-                            print("error saving: \(error.localizedDescription)")
+                    if (querySnapshot.items.count != 0) {
+                        var detailsToUpdate = querySnapshot.items[0]
+                        detailsToUpdate.programType = []
+                        detailsToUpdate.programType = programNames
+                        Amplify.DataStore.save(detailsToUpdate) { result in
+                            switch result {
+                            case .success(let user):
+                                print("successfully updated!")
+                                print("added these programs: \(user.programType) to this user: \(user.username)")
+                            case .failure(let error):
+                                print("error saving: \(error.localizedDescription)")
+                            }
                         }
                     }
+                    
                 }
             }
     }
     
-    func addUserToWaitList(outing: Outing, user: UserDetails) {
-        outingsSubscription = Amplify.DataStore.observeQuery(for: Outing.self, where: Outing.keys.title.contains(outing.title))
+    func userWaitingList(username: String) {
+        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(true))
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completed in
                 switch completed {
                 case .finished:
                     print("finished")
                 case .failure(let error):
-                    print(error.errorDescription)
+                    print("error in adding to the waiting list: \(error)")
                 }
             }, receiveValue: { snapshot in
-                if snapshot.items.count == 1 {
-                    //save to waitlist
+                for result in snapshot.items {
+                    if result.userdetails.username == username {
+                        print("\(result.userdetails.username) is on the waiting list for \(result.outing.title)")
+                    }
                 }
             })
     }
     
+    
 }
-
-//                Amplify.DataStore.query(UserDetails.self, where: keys.eq(username)) {
-//                    switch $0 {
-//                    case .success(let results):
-//                        print(results.count)
-//                        if results.count == 0 {
-//                            self.changeAuthStateToLogin(error: "Please try again.")
-//                        } else {
-//                            for result in results {
-//                                if result.username == username {
-//                                    self.currentUserModel = result
-//                                    if result.userType == UserGroup.employee {
-//                                        self.letEmployeeViewTheirOutings(instructorUsername: result.username)
-//                                    } else {
-//                                        self.queryOutings(programList: result.programType, currentUserGroup: result.userType)
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                    case .failure(let error):
-//                        print(error.localizedDescription)
-//                    }
-//                }

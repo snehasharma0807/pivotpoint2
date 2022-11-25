@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		11F4F1E539353D7636843894 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A83F6B7EFAD60770544423 /* amplifyconfiguration.json */; };
 		550403322899E21E003793FA /* UsersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550403312899E21E003793FA /* UsersListView.swift */; };
+		551715A5292F4D4A00D78949 /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A4292F4D4A00D78949 /* AWSAmplify */; };
+		551715A7292F4D4A00D78949 /* AWSCognitoIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A6292F4D4A00D78949 /* AWSCognitoIdentity */; };
+		551715A9292F4D4A00D78949 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A8292F4D4A00D78949 /* AWSCognitoIdentityProvider */; };
+		551715AB292F4D4A00D78949 /* AWSDynamoDB in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AA292F4D4A00D78949 /* AWSDynamoDB */; };
+		551715AD292F4D4A00D78949 /* AWSPinpoint in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AC292F4D4A00D78949 /* AWSPinpoint */; };
+		551715AF292F4D4A00D78949 /* AWSPinpointEmail in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AE292F4D4A00D78949 /* AWSPinpointEmail */; };
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
-		5555AA4028D048340096D570 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */; };
-		5555AA4228D048340096D570 /* AWSDynamoDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5555AA4128D048340096D570 /* AWSDynamoDB */; };
 		556099A928AD9AF50017D129 /* UserProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556099A828AD9AF50017D129 /* UserProfileInformationView.swift */; };
 		5576FA6B287F872C0070CE17 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576FA6A287F872C0070CE17 /* LoadingView.swift */; };
 		55A13FBF27E1A8D800379E8D /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */; };
@@ -49,6 +53,7 @@
 /* Begin PBXFileReference section */
 		41E0F9112DF622A5F516732A /* Pods-authenticated.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-authenticated.debug.xcconfig"; path = "Target Support Files/Pods-authenticated/Pods-authenticated.debug.xcconfig"; sourceTree = "<group>"; };
 		550403312899E21E003793FA /* UsersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListView.swift; sourceTree = "<group>"; };
+		551715B0292F5F1900D78949 /* authenticated.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = authenticated.entitlements; sourceTree = "<group>"; };
 		552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Date Picker.swift"; sourceTree = "<group>"; };
 		553CA72B2806728500D734E6 /* SignUpForEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpForEventView.swift; sourceTree = "<group>"; };
 		553CA72D2807B8DD00D734E6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -93,9 +98,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				551715A7292F4D4A00D78949 /* AWSCognitoIdentity in Frameworks */,
+				551715A9292F4D4A00D78949 /* AWSCognitoIdentityProvider in Frameworks */,
+				551715AF292F4D4A00D78949 /* AWSPinpointEmail in Frameworks */,
+				551715AB292F4D4A00D78949 /* AWSDynamoDB in Frameworks */,
+				551715AD292F4D4A00D78949 /* AWSPinpoint in Frameworks */,
 				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
-				5555AA4228D048340096D570 /* AWSDynamoDB in Frameworks */,
-				5555AA4028D048340096D570 /* AWSCognitoIdentityProvider in Frameworks */,
+				551715A5292F4D4A00D78949 /* AWSAmplify in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +150,7 @@
 		55E1BD6727E1955900F7ECC6 /* authenticated */ = {
 			isa = PBXGroup;
 			children = (
+				551715B0292F5F1900D78949 /* authenticated.entitlements */,
 				55A13FBE27E1A8D800379E8D /* amplifyconfiguration.json */,
 				55A13FC027E1A8DF00379E8D /* awsconfiguration.json */,
 				55E1BD8627E195EB00F7ECC6 /* LoginView.swift */,
@@ -215,8 +225,12 @@
 			);
 			name = authenticated;
 			packageProductDependencies = (
-				5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */,
-				5555AA4128D048340096D570 /* AWSDynamoDB */,
+				551715A4292F4D4A00D78949 /* AWSAmplify */,
+				551715A6292F4D4A00D78949 /* AWSCognitoIdentity */,
+				551715A8292F4D4A00D78949 /* AWSCognitoIdentityProvider */,
+				551715AA292F4D4A00D78949 /* AWSDynamoDB */,
+				551715AC292F4D4A00D78949 /* AWSPinpoint */,
+				551715AE292F4D4A00D78949 /* AWSPinpointEmail */,
 			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
@@ -247,7 +261,7 @@
 			);
 			mainGroup = 55E1BD5C27E1955900F7ECC6;
 			packageReferences = (
-				5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
+				551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 55E1BD6627E1955900F7ECC6 /* Products */;
 			projectDirPath = "";
@@ -496,23 +510,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = authenticated/authenticated.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4U8SKPA48H;
+				DEVELOPMENT_TEAM = XA5F4W2SXP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = authenticated/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sneha.authenticated;
+				PRODUCT_BUNDLE_IDENTIFIER = pivotpoint.authenticated;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -526,23 +545,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = authenticated/authenticated.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4U8SKPA48H;
+				DEVELOPMENT_TEAM = XA5F4W2SXP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = authenticated/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = sneha.authenticated;
+				PRODUCT_BUNDLE_IDENTIFIER = pivotpoint.authenticated;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -574,26 +598,46 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+		551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.6;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5555AA3F28D048340096D570 /* AWSCognitoIdentityProvider */ = {
+		551715A4292F4D4A00D78949 /* AWSAmplify */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSAmplify;
+		};
+		551715A6292F4D4A00D78949 /* AWSCognitoIdentity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSCognitoIdentity;
+		};
+		551715A8292F4D4A00D78949 /* AWSCognitoIdentityProvider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSCognitoIdentityProvider;
 		};
-		5555AA4128D048340096D570 /* AWSDynamoDB */ = {
+		551715AA292F4D4A00D78949 /* AWSDynamoDB */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5555AA3E28D048340096D570 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSDynamoDB;
+		};
+		551715AC292F4D4A00D78949 /* AWSPinpoint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSPinpoint;
+		};
+		551715AE292F4D4A00D78949 /* AWSPinpointEmail */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSPinpointEmail;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -131,31 +131,63 @@ struct SignUpForEventView: View{
                     .padding(.bottom, 35)
             }
             
-            Text("\((sessionManager.clickedOnOuting.numClients)-(sessionManager.usersInAnOutingList.count))/\(sessionManager.clickedOnOuting.numClients) Spaces Available")
-                .foregroundColor(Color("BlueGray"))
-                .font(.system(size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-                .padding(.bottom, 35)
+            if ((sessionManager.clickedOnOuting.numClients)-(sessionManager.usersInAnOutingList.count) < 0) {
+                Text("0/\(sessionManager.clickedOnOuting.numClients) Spaces Available")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 35)
+            } else {
+                Text("\((sessionManager.clickedOnOuting.numClients)-(sessionManager.usersInAnOutingList.count))/\(sessionManager.clickedOnOuting.numClients) Spaces Available")
+                    .foregroundColor(Color("BlueGray"))
+                    .font(.system(size: 20))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 35)
+            }
+            
+
             
             if alreadyScheduled == false {
-                Button {
-                    showingAlert = true
-                } label: {
-                    Text("Sign Up")
-                        .padding(.horizontal, 100)
-                        .padding(.vertical, 10)
-                        .foregroundColor(.white)
-                        .background(Color("BlueGray"))
-                        .shadow(color: .gray, radius: 5, x: 4, y: 4)
-                        .offset(y: 20)
-                        .padding(.bottom, 20)
+                if ((sessionManager.clickedOnOuting.numClients)-(sessionManager.usersInAnOutingList.count) != 0) {
+                    Button {
+                        showingAlert = true
+                    } label: {
+                        Text("Sign Up")
+                            .padding(.horizontal, 100)
+                            .padding(.vertical, 10)
+                            .foregroundColor(.white)
+                            .background(Color("BlueGray"))
+                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                            .offset(y: 20)
+                            .padding(.bottom, 20)
+                    }
+                    .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
+                        Button("Yes, I'm sure.", role: .cancel) {
+                            sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel, waitingList: false)
+                            sessionManager.changeAuthStateToCalendar()
+                        }; Button("Nevermind!", role: .destructive) {}})
+                } else {
+                    Button {
+                        showingAlert = true
+                    } label: {
+                        Text("Join Waiting List")
+                            .padding(.horizontal, 100)
+                            .padding(.vertical, 10)
+                            .foregroundColor(.white)
+                            .background(Color("BlueGray"))
+                            .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                            .offset(y: 20)
+                            .padding(.bottom, 20)
+                    }
+                    .alert("Are you sure that you want to join the waiting list?", isPresented: $showingAlert, actions: {
+                        Button("Yes, I'm sure.", role: .cancel) {
+                            sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel, waitingList: true)
+                            sessionManager.changeAuthStateToCalendar()
+                        }; Button("Nevermind!", role: .destructive) {}})
                 }
-                .alert("Are you sure that you want to sign up for this event?", isPresented: $showingAlert, actions: {
-                    Button("Yes, I'm sure.", role: .cancel) {
-                        sessionManager.signUpForOuting(outing: sessionManager.clickedOnOuting, userDetails: sessionManager.currentUserModel)
-                        sessionManager.changeAuthStateToCalendar()
-                    }; Button("Nevermind!", role: .destructive) {}})
+
             } else {
                 
             }

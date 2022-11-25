@@ -20,6 +20,12 @@ struct UserProfileInformationView: View {
 
 
     var body: some View {
+        Button {
+            sessionManager.userWaitingList(username: sessionManager.clickedOnUserDetails.username)
+        } label: {
+            Text("view waiting list")
+        }
+
         ScrollView {
             VStack {
                 

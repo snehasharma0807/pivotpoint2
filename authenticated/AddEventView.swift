@@ -206,26 +206,24 @@ struct AddEventView: View{
                     .padding(.horizontal, 30)
                 
                 Picker("Max Number of Clients", selection: $maxNumClients) {
-                    ForEach(1...100, id: \.self) { number in
-                        Text("\(number)")
-                            .foregroundColor(.white)
+                    ForEach(2 ..< 101) {
+                        Text("\($0 - 1) people")
                     }
                 }
                 .padding(5)
                 .overlay(Capsule(style: .circular)
                     .stroke(Color("BlueGray")))
-                
             }
             
             
             
             
             Button {
-                
+                print(maxNumClients + 1)
                 if (outingTitle == "") || (outingLocation == "") || (outingDescription == "") || (listOfInstructors == []) {
                     sessionManager.changeAuthStateToAddEvent(error: "Please input all information.")
                 } else {
-                    sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: listOfInstructors, programType: outingPrograms, maxNumClients: maxNumClients)
+                    sessionManager.saveOuting(title: outingTitle, description: outingDescription, location: outingLocation, startDate: outingStartDate, startTime: outingStartTime, endDate: outingEndDate, endTime: outingEndTime, instructors: listOfInstructors, programType: outingPrograms, maxNumClients: maxNumClients + 1)
                     sessionManager.changeAuthStateToLoading()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         sessionManager.changeAuthStateToCalendar()
