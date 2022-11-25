@@ -17,6 +17,7 @@ import AWSClientRuntime
 import AWSDynamoDB
 import AWSPinpointEmail
 import AWSPinpoint
+import UserNotifications
 
 
 
@@ -147,6 +148,8 @@ final class SessionManager: ObservableObject{
     func changeAuthStateToViewScheduledOutingsView() {
         outingsList = []
         viewUserOutings(user: currentUserModel)
+        print(upcomingOutings)
+        print(pastOutings)
         print(pastOutings)
         print(idsForPastOutingsList)
         letEmployeeViewTheirOutings(instructorUsername: currentUserModel.username)
@@ -536,7 +539,6 @@ final class SessionManager: ObservableObject{
                 print(error)
             }
         }
-
     }
     
     
@@ -562,8 +564,12 @@ final class SessionManager: ObservableObject{
                     self.changeAuthStateToAddEvent(error: "Error saving outing. Make sure that you input all information correctly.")
                 }
             }
-            receiveValue: {
+    receiveValue: { [self] in
                 print("saved outing: \($0)")
+                for instructor in instructors {
+                    sendNotificationToEmployeeInOuting(username: instructor, fullName: instructor, titleOfOuting: title, outingDate: sD)
+                }
+                
             }
     }
     
@@ -680,10 +686,12 @@ final class SessionManager: ObservableObject{
                     print(self.usersInAnOutingList)
                     print(self.usersInAnOutingList.count)
                     print(outing.numClients)
-                    Amplify.DataStore.save(saveUserToOuting) { result in
+                    Amplify.DataStore.save(saveUserToOuting) { [self] result in
                         switch result {
                         case .success(let userOuting):
                             print("\(userOuting.userdetails.username) saved to \(userOuting.outing.title)!")
+                            sendConfirmationPushNotification(titleOfOuting: userOuting.outing.title)
+                            addNotificationForEventReminder(username: userOuting.userdetails.username, fullName: userOuting.userdetails.fullName, titleOfOuting: userOuting.outing.title, outingDate: userOuting.outing.startDate)
                         case .failure(let error):
                             print(error.localizedDescription)
                         }
@@ -708,7 +716,7 @@ final class SessionManager: ObservableObject{
     //view outings in a user
     func viewUserOutings(user: UserDetails) {
         
-        self.userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(true))
+        self.userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(false))
             .receive(on: DispatchQueue.main)
             .sink { completed in
                 switch completed {
@@ -727,6 +735,7 @@ final class SessionManager: ObservableObject{
                 
                 for result in querySnapshot.items {
                     if (result.userdetails.username == user.username) {
+                        print(result.outing.title)
                         if result.outing.startDate.foundationDate >= Date.now {
                             print("upcoming: \(result.outing)")
                             self.upcomingOutings.append(result.outing)
@@ -741,7 +750,6 @@ final class SessionManager: ObservableObject{
                     }
                 }
             }
-        print("past outings: \(self.pastOutings.count)")
 
     }
     
@@ -868,5 +876,83 @@ final class SessionManager: ObservableObject{
             })
     }
     
+    func addNotificationForEventReminder(username: String, fullName: String, titleOfOuting: String, outingDate: Temporal.Date) {
+        
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "\(titleOfOuting) is happening tomorrow!"
+        content.body = "Hey \(fullName)! A reminder that you are scheduled to attend \(titleOfOuting) tomorrow! Click here to learn more."
+        content.sound = UNNotificationSound.default
+
+        // Setup trigger time
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current
+        let date = outingDate.foundationDate
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        let year = components.year
+        let month = components.month
+        let day = components.day! - 1
+        
+        
+        var dateInfo = DateComponents()
+        dateInfo.day = day //Put your day
+        dateInfo.month = month //Put your month
+        dateInfo.year = year // Put your year
+        dateInfo.hour = 0 //Put your hour
+        dateInfo.minute = 0 //Put your minutes
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: false)
+
+        // Create request
+        let uniqueID = "\(username).\(titleOfOuting)"
+        let request = UNNotificationRequest(identifier: uniqueID, content: content, trigger: trigger)
+        center.add(request) // Add the notification request
+    }
     
+    func sendNotificationToEmployeeInOuting(username: String, fullName: String, titleOfOuting: String, outingDate: Temporal.Date) {
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "\(titleOfOuting) is happening tomorrow!"
+        content.body = "Hey \(fullName)! A reminder that you are leading \(titleOfOuting) tomorrow! Click here to learn more."
+        content.sound = UNNotificationSound.default
+
+        // Setup trigger time
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current
+        let date = outingDate.foundationDate
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        let year = components.year
+        let month = components.month
+        let day = components.day
+        
+        
+        var dateInfo = DateComponents()
+        dateInfo.day = day //Put your day
+        dateInfo.month = month //Put your month
+        dateInfo.year = year // Put your year
+        dateInfo.hour = 0 //Put your hour
+        dateInfo.minute = 0 //Put your minutes
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: false)
+
+        // Create request
+        let uniqueID = "\(username).\(titleOfOuting)"
+        let request = UNNotificationRequest(identifier: uniqueID, content: content, trigger: trigger)
+        center.add(request) // Add the notification request
+    }
+    
+    func sendConfirmationPushNotification(titleOfOuting: String) {
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "You have successfully signed up for \(titleOfOuting)"
+        content.body = "Click here to learn more."
+        content.sound = UNNotificationSound.default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest.init(identifier: "localNotificatoin", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
 }

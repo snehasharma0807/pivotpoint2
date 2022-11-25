@@ -11,6 +11,8 @@ struct LoginView: View{
     
     var body: some View{
         VStack{
+            
+
             if (error != ""){
                 Text(error)
                     .bold()
@@ -28,12 +30,16 @@ struct LoginView: View{
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 50)
                 .padding(.bottom, 50)
+                .textContentType(.username)
+                .submitLabel(.done)
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)
             SecureInputView("Password", text: $password)
                 .foregroundColor(Color("BlueGray"))
                 .padding(.horizontal, 30).padding(.top, 22)
+                .submitLabel(.done)
+                .textContentType(.password)
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)

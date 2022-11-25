@@ -32,6 +32,8 @@ PODS:
     - AWSCognitoIdentityProvider (= 2.27.3)
     - AWSCognitoIdentityProviderASF (= 2.27.3)
     - AWSCore (= 2.27.3)
+  - AWSPinpoint (2.27.3):
+    - AWSCore (= 2.27.3)
   - AWSPluginsCore (1.21.0):
     - Amplify (= 1.21.0)
     - AWSCore (~> 2.27.0)
@@ -45,6 +47,8 @@ DEPENDENCIES:
   - AmplifyPlugins/AWSAPIPlugin
   - AmplifyPlugins/AWSCognitoAuthPlugin
   - AmplifyPlugins/AWSDataStorePlugin
+  - AWSMobileClient
+  - AWSPinpoint
 
 SPEC REPOS:
   trunk:
@@ -56,6 +60,7 @@ SPEC REPOS:
     - AWSCognitoIdentityProviderASF
     - AWSCore
     - AWSMobileClient
+    - AWSPinpoint
     - AWSPluginsCore
     - SQLite.swift
     - Starscream
@@ -69,10 +74,11 @@ SPEC CHECKSUMS:
   AWSCognitoIdentityProviderASF: c7e226e71085c3666e2e52c86c2c15c7499e7405
   AWSCore: a05d729ef999da1c50d5a3af5e986a57fbcb42f2
   AWSMobileClient: 24564a67657f3019d70a4075317f7c70caaf9d43
+  AWSPinpoint: 5168197a1e211f6d11479e058e496b243e8f0ef6
   AWSPluginsCore: d0e4ea6ca225b0f79e40193178c06348b8220a86
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
 
-PODFILE CHECKSUM: 0b8db0030656b92c4fd6c10df59287511a1413bc
+PODFILE CHECKSUM: 41cd567a02ae1a6abacb230f40748f5592a1cfd6
 
 COCOAPODS: 1.11.2

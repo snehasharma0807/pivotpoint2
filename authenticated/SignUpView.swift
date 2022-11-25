@@ -15,6 +15,7 @@ struct SignUpView: View{
     
     var body: some View{
         VStack{
+
             if (error != ""){
                 Text(error)
                     .bold()
@@ -22,6 +23,7 @@ struct SignUpView: View{
             } else{
                 Text("")
             }
+
             
             Image(systemName: "person.crop.square.fill")
                 .resizable()
@@ -32,6 +34,7 @@ struct SignUpView: View{
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 50)
                 .padding(.bottom, 50)
+                .submitLabel(.done)
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)
@@ -40,6 +43,9 @@ struct SignUpView: View{
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 25)
                 .padding(.bottom, 25)
+                .keyboardType(.emailAddress)
+                .submitLabel(.done)
+                .textContentType(.emailAddress)
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)
@@ -48,6 +54,8 @@ struct SignUpView: View{
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 25)
                 .padding(.bottom, 25)
+                .submitLabel(.done)
+
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)

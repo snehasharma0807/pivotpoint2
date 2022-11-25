@@ -32,8 +32,15 @@ struct AddProfileInformationView: View {
             .padding(.horizontal, 20)
         
         InputBox(backgroundWords: "Full Name...", bindingText: $fullName)
+            .textContentType(.name)
+            .submitLabel(.done)
         InputBox(backgroundWords: "Phone Number...", bindingText: $phoneNumber)
+            .keyboardType(.phonePad)
+            .textContentType(.telephoneNumber)
+            .submitLabel(.done)
         InputBox(backgroundWords: "Address...", bindingText: $address)
+            .textContentType(.fullStreetAddress)
+            .submitLabel(.done)
 
         
         Button {

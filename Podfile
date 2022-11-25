@@ -8,4 +8,6 @@ target 'authenticated' do
   pod 'AmplifyPlugins/AWSCognitoAuthPlugin'
   pod 'AmplifyPlugins/AWSDataStorePlugin'
   pod 'AmplifyPlugins/AWSAPIPlugin'
+  pod  'AWSPinpoint'
+  pod  'AWSMobileClient'
 end

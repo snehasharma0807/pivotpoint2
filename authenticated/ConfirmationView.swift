@@ -24,6 +24,10 @@ struct ConfirmationView: View{
                 .padding(.horizontal, 30).padding(.top, 20)
                 .offset(y: 50)
                 .padding(.bottom, 50)
+                .textContentType(.oneTimeCode)
+                .keyboardType(.numberPad)
+                .submitLabel(.done)
+                
             Divider()
                 .background(Color("BlueGray"))
                 .padding(.horizontal, 30)
