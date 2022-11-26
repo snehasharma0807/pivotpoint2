@@ -14,10 +14,8 @@ import AWSPluginsCore
 import AWSCognitoIdentityProvider
 import ClientRuntime
 import AWSClientRuntime
-import AWSDynamoDB
-import AWSPinpointEmail
-import AWSPinpoint
 import UserNotifications
+import AWSSNS
 
 
 
@@ -152,11 +150,14 @@ final class SessionManager: ObservableObject{
         print(pastOutings)
         print(pastOutings)
         print(idsForPastOutingsList)
-        letEmployeeViewTheirOutings(instructorUsername: currentUserModel.username)
+        if currentUserModel.userType == UserGroup.employee {
+            letEmployeeViewTheirOutings(instructorUsername: currentUserModel.username)
+        }
         authState = .viewScheduledOutingsView
     }
     
     func changeAuthStateToSeeEventDetailsAfterSigningUp() {
+        findUsersInAnOuting(outing: clickedOnOuting)
         authState = .seeEventDetailsAfterSigningUp
     }
     
@@ -165,8 +166,8 @@ final class SessionManager: ObservableObject{
         authState = .seeUsersInEachOutingView(clickedOnOuting: clickedOnOuting)
     }
     
-
-
+    
+    
     //sign up a new user
     func signUp(username: String, email: String, password: String){
         let attributes = [AuthUserAttribute(.email, value: email)]
@@ -264,8 +265,8 @@ final class SessionManager: ObservableObject{
                     the_error = error.errorDescription
                 }
                 DispatchQueue.main.async{
-                        self?.changeAuthStateToLogin(error: the_error)
-                    }
+                    self?.changeAuthStateToLogin(error: the_error)
+                }
             }
         }
     }
@@ -296,12 +297,12 @@ final class SessionManager: ObservableObject{
                 case .confirmResetPasswordWithCode(let deliveryDetails, let info):
                     print("Confirm reset password with code send to - \(deliveryDetails) \(String(describing: info) )")
                     self?.changeAuthStateToConfirmResetPassword(confirmResetPasswordError: "")
-
+                    
                 case .done:
                     DispatchQueue.main.async {
                         self?.changeAuthStateToLogin(error: "")
                     }
-
+                    
                 }
             case .failure(let resetPasswordError):
                 var the_error: String = ""
@@ -359,16 +360,16 @@ final class SessionManager: ObservableObject{
                 default:
                     the_error = ""
                 }
-
+                
                 DispatchQueue.main.async {
                     self?.changeAuthStateToConfirmResetPassword(confirmResetPasswordError: the_error)
                 }
             }
-
+            
             
         }
     }
-
+    
     //set timer for the loadingview
     func startFakeNetworkCall() {
         isLoading = true
@@ -423,45 +424,45 @@ final class SessionManager: ObservableObject{
         userDetailsList = []
         
         self.usersSubscription = Amplify.DataStore.observeQuery(
-                    for: UserDetails.self,
-                    sort: .ascending(UserDetails.keys.id)
-                )
-            .receive(on: DispatchQueue.main)
-            .sink { completed in
-                switch completed {
-                case .finished:
-                    print("finished")
-                case .failure(let error):
-                    print("Error \(error)")
-                }
-            } receiveValue: { [self] querySnapshot in
-                print("[Snapshot] item count: \(querySnapshot.items.count), isSynced: \(querySnapshot.isSynced)")
-                var id = 0
-                for user in querySnapshot.items {
-
-                    idsForUsersList.append(id)
-
-                    userDetailsList.append(user)
-                    id += 1
-                    print(user.username)
-                }
-                                
+            for: UserDetails.self,
+            sort: .ascending(UserDetails.keys.id)
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completed in
+            switch completed {
+            case .finished:
+                print("finished")
+            case .failure(let error):
+                print("Error \(error)")
             }
+        } receiveValue: { [self] querySnapshot in
+            print("[Snapshot] item count: \(querySnapshot.items.count), isSynced: \(querySnapshot.isSynced)")
+            var id = 0
+            for user in querySnapshot.items {
+                
+                idsForUsersList.append(id)
+                
+                userDetailsList.append(user)
+                id += 1
+                print(user.username)
+            }
+            
+        }
     }
     
     
     //realtime updates
     func subscribeToUsers() {
         usersSubscription = Amplify.DataStore.publisher(for: UserDetails.self)
-        .sink {
-                 if case let .failure(error) = $0 {
-                     print("Subscription received error - \(error.localizedDescription)")
-                 }
-             }
-             receiveValue: { changes in
-                 // handle incoming changes
-                 print("Subscription received mutation: \(changes)")
-             }
+            .sink {
+                if case let .failure(error) = $0 {
+                    print("Subscription received error - \(error.localizedDescription)")
+                }
+            }
+    receiveValue: { changes in
+        // handle incoming changes
+        print("Subscription received mutation: \(changes)")
+    }
     }
     
     //change the user's group
@@ -565,26 +566,26 @@ final class SessionManager: ObservableObject{
                 }
             }
     receiveValue: { [self] in
-                print("saved outing: \($0)")
-                for instructor in instructors {
-                    sendNotificationToEmployeeInOuting(username: instructor, fullName: instructor, titleOfOuting: title, outingDate: sD)
-                }
-                
-            }
+        print("saved outing: \($0)")
+        for instructor in instructors {
+            sendNotificationToEmployeeInOuting(username: instructor, fullName: instructor, titleOfOuting: title, outingDate: sD)
+        }
+        
+    }
     }
     
     //outings realtime updates
     func subscribeToOutings() {
         usersSubscription = Amplify.DataStore.publisher(for: Outing.self)
-        .sink {
-                 if case let .failure(error) = $0 {
-                     print("Subscription received error - \(error.localizedDescription)")
-                 }
-             }
-             receiveValue: { changes in
-                 // handle incoming changes
-                 print("Subscription received mutation: \(changes)")
-             }
+            .sink {
+                if case let .failure(error) = $0 {
+                    print("Subscription received error - \(error.localizedDescription)")
+                }
+            }
+    receiveValue: { changes in
+        // handle incoming changes
+        print("Subscription received mutation: \(changes)")
+    }
     }
     
     //querying outings (and filtering them based on program IF you are a client)
@@ -624,7 +625,7 @@ final class SessionManager: ObservableObject{
                         taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                     }
                     self.authState = .loadingView
-                        
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
                     }
@@ -656,7 +657,7 @@ final class SessionManager: ObservableObject{
                         taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                     }
                     self.authState = .loadingView
-                        
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
                     }
@@ -750,7 +751,7 @@ final class SessionManager: ObservableObject{
                     }
                 }
             }
-
+        
     }
     
     //employees can view their outings
@@ -808,7 +809,7 @@ final class SessionManager: ObservableObject{
                 usersInAnOutingList = []
                 idsForUsersInAnOutingList = []
                 for result in querySnapshot.items {
-                   var  id1 = 0
+                    var  id1 = 0
                     if outing.id == result.outing.id {
                         usersInAnOutingList.append(result.userdetails)
                         idsForUsersInAnOutingList.append(id1)
@@ -879,12 +880,12 @@ final class SessionManager: ObservableObject{
     func addNotificationForEventReminder(username: String, fullName: String, titleOfOuting: String, outingDate: Temporal.Date) {
         
         let center = UNUserNotificationCenter.current()
-
+        
         let content = UNMutableNotificationContent()
         content.title = "\(titleOfOuting) is happening tomorrow!"
         content.body = "Hey \(fullName)! A reminder that you are scheduled to attend \(titleOfOuting) tomorrow! Click here to learn more."
         content.sound = UNNotificationSound.default
-
+        
         // Setup trigger time
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
@@ -903,7 +904,7 @@ final class SessionManager: ObservableObject{
         dateInfo.minute = 0 //Put your minutes
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: false)
-
+        
         // Create request
         let uniqueID = "\(username).\(titleOfOuting)"
         let request = UNNotificationRequest(identifier: uniqueID, content: content, trigger: trigger)
@@ -912,12 +913,12 @@ final class SessionManager: ObservableObject{
     
     func sendNotificationToEmployeeInOuting(username: String, fullName: String, titleOfOuting: String, outingDate: Temporal.Date) {
         let center = UNUserNotificationCenter.current()
-
+        
         let content = UNMutableNotificationContent()
         content.title = "\(titleOfOuting) is happening tomorrow!"
         content.body = "Hey \(fullName)! A reminder that you are leading \(titleOfOuting) tomorrow! Click here to learn more."
         content.sound = UNNotificationSound.default
-
+        
         // Setup trigger time
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
@@ -936,23 +937,136 @@ final class SessionManager: ObservableObject{
         dateInfo.minute = 0 //Put your minutes
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: false)
-
+        
         // Create request
         let uniqueID = "\(username).\(titleOfOuting)"
         let request = UNNotificationRequest(identifier: uniqueID, content: content, trigger: trigger)
         center.add(request) // Add the notification request
     }
     
+    //sending confirmation push notification
     func sendConfirmationPushNotification(titleOfOuting: String) {
-        let center = UNUserNotificationCenter.current()
-
+        _ = UNUserNotificationCenter.current()
+        
         let content = UNMutableNotificationContent()
         content.title = "You have successfully signed up for \(titleOfOuting)"
         content.body = "Click here to learn more."
         content.sound = UNNotificationSound.default
-
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         let request = UNNotificationRequest.init(identifier: "localNotificatoin", content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
+    
+    //lets admin delete an outing
+    func deleteOuting(outing: Outing) {
+        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("error querying the outings: \(error.errorDescription)")
+                }
+            }, receiveValue: { snapshots in
+                _ = Amplify.DataStore.delete(outing)
+                for snapshot in snapshots.items {
+                    if snapshot.outing.id == outing.id {
+                        _ = Amplify.DataStore.delete(snapshot)
+                    }
+                }
+            })
+    }
+    //user leaves an outing, cancels push notification that was scheduled to them, deletes from backend, sends confirmation push notification
+    func userLeavesOuting(user: UserDetails, outing: Outing) {
+        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("error oh no oh no: \(error.errorDescription)")
+                }
+            }, receiveValue: { snapshots in
+                for item in snapshots.items {
+                    if ((item.outing.id == outing.id) && (item.userdetails.id == user.id)) {
+                        _ = Amplify.DataStore.delete(item)
+                        let center = UNUserNotificationCenter.current()
+                        center.removeDeliveredNotifications(withIdentifiers: ["\(user.username).\(outing.title)"])
+                        center.removePendingNotificationRequests(withIdentifiers: ["\(user.username).\(outing.title)"])
+                        
+                        
+                        let content = UNMutableNotificationContent()
+                        content.title = "You have successfully left \(outing.title)"
+                        content.sound = UNNotificationSound.default
+                        
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                        let request = UNNotificationRequest.init(identifier: "localNotification", content: content, trigger: trigger)
+                        center.add(request, withCompletionHandler: nil)
+                    }
+                }
+            })
+    }
+    
+    //lets any user update their full name
+    func changeFullName(user: UserDetails, newName: String) {
+        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished!!")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: { snapshots in
+                var itemToUpdate = snapshots.items[0]
+                itemToUpdate.fullName = newName
+                _ = Amplify.DataStore.save(itemToUpdate)
+                self.changeAuthStateToCalendar()
+            })
+    }
+    
+    //lets any user update their address
+    func changeAddress(user: UserDetails, address: String) {
+        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished!!")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: { snapshots in
+                var itemToUpdate = snapshots.items[0]
+                itemToUpdate.address = address
+                _ = Amplify.DataStore.save(itemToUpdate)
+                self.changeAuthStateToCalendar()
+
+            })
+    }
+    
+    //lets any user update their phonenumber
+    func changePhoneNumber(user: UserDetails, phonenumber: String) {
+        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished!!")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: { snapshots in
+                var itemToUpdate = snapshots.items[0]
+                itemToUpdate.phoneNumber = phonenumber
+                _ = Amplify.DataStore.save(itemToUpdate)
+                self.changeAuthStateToCalendar()
+
+            })
+    }
+    
 }

@@ -12,9 +12,6 @@
 		551715A5292F4D4A00D78949 /* AWSAmplify in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A4292F4D4A00D78949 /* AWSAmplify */; };
 		551715A7292F4D4A00D78949 /* AWSCognitoIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A6292F4D4A00D78949 /* AWSCognitoIdentity */; };
 		551715A9292F4D4A00D78949 /* AWSCognitoIdentityProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 551715A8292F4D4A00D78949 /* AWSCognitoIdentityProvider */; };
-		551715AB292F4D4A00D78949 /* AWSDynamoDB in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AA292F4D4A00D78949 /* AWSDynamoDB */; };
-		551715AD292F4D4A00D78949 /* AWSPinpoint in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AC292F4D4A00D78949 /* AWSPinpoint */; };
-		551715AF292F4D4A00D78949 /* AWSPinpointEmail in Frameworks */ = {isa = PBXBuildFile; productRef = 551715AE292F4D4A00D78949 /* AWSPinpointEmail */; };
 		552D2F5B2805411A00AD5E05 /* Custom Date Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552D2F5A2805411A00AD5E05 /* Custom Date Picker.swift */; };
 		553CA72C2806728500D734E6 /* SignUpForEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72B2806728500D734E6 /* SignUpForEventView.swift */; };
 		553CA72E2807B8DD00D734E6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553CA72D2807B8DD00D734E6 /* CalendarView.swift */; };
@@ -46,6 +43,7 @@
 		55E9E08428B8506A00089930 /* ViewScheduledOutingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E9E08328B8506A00089930 /* ViewScheduledOutingsView.swift */; };
 		55ED7E3928A37A5B00499934 /* UpdateProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3828A37A5B00499934 /* UpdateProfileInformationView.swift */; };
 		55ED7E3B28A37A8800499934 /* AddProfileInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55ED7E3A28A37A8800499934 /* AddProfileInformationView.swift */; };
+		55EE12CA2931D81700935069 /* AWSSNS in Frameworks */ = {isa = PBXBuildFile; productRef = 55EE12C92931D81700935069 /* AWSSNS */; };
 		A5E670DD6FF7357A5D0946BF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F171AF5D5F067E724ACE3503 /* awsconfiguration.json */; };
 		F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E843DD01378F51F100A9E0C /* Pods_authenticated.framework */; };
 /* End PBXBuildFile section */
@@ -98,11 +96,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55EE12CA2931D81700935069 /* AWSSNS in Frameworks */,
 				551715A7292F4D4A00D78949 /* AWSCognitoIdentity in Frameworks */,
 				551715A9292F4D4A00D78949 /* AWSCognitoIdentityProvider in Frameworks */,
-				551715AF292F4D4A00D78949 /* AWSPinpointEmail in Frameworks */,
-				551715AB292F4D4A00D78949 /* AWSDynamoDB in Frameworks */,
-				551715AD292F4D4A00D78949 /* AWSPinpoint in Frameworks */,
 				F4EB489FC2A1D4D62C3FB7F3 /* Pods_authenticated.framework in Frameworks */,
 				551715A5292F4D4A00D78949 /* AWSAmplify in Frameworks */,
 			);
@@ -228,9 +224,7 @@
 				551715A4292F4D4A00D78949 /* AWSAmplify */,
 				551715A6292F4D4A00D78949 /* AWSCognitoIdentity */,
 				551715A8292F4D4A00D78949 /* AWSCognitoIdentityProvider */,
-				551715AA292F4D4A00D78949 /* AWSDynamoDB */,
-				551715AC292F4D4A00D78949 /* AWSPinpoint */,
-				551715AE292F4D4A00D78949 /* AWSPinpointEmail */,
+				55EE12C92931D81700935069 /* AWSSNS */,
 			);
 			productName = authenticated;
 			productReference = 55E1BD6527E1955900F7ECC6 /* authenticated.app */;
@@ -624,20 +618,10 @@
 			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSCognitoIdentityProvider;
 		};
-		551715AA292F4D4A00D78949 /* AWSDynamoDB */ = {
+		55EE12C92931D81700935069 /* AWSSNS */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSDynamoDB;
-		};
-		551715AC292F4D4A00D78949 /* AWSPinpoint */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSPinpoint;
-		};
-		551715AE292F4D4A00D78949 /* AWSPinpointEmail */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 551715A3292F4D4A00D78949 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSPinpointEmail;
+			productName = AWSSNS;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
