@@ -61,6 +61,8 @@ final class SessionManager: ObservableObject{
     @Published var idsForPastOutingsList: [Int] = []
     @Published var usersInAnOutingList: [UserDetails] = []
     @Published var idsForUsersInAnOutingList: [Int] = []
+    @Published var usersInWaitingList: [UserDetails] = []
+    @Published var idsForUsersInWaitingList: [Int] = []
     
     @Published var authState: AuthState = .login(error: "")
     
@@ -163,6 +165,7 @@ final class SessionManager: ObservableObject{
     
     func changeAuthStateToSeeUsersInEachOutingView(clickedOnOuting: Outing) {
         findUsersInAnOuting(outing: clickedOnOuting)
+        viewUsersOnAWaitingList(outing: clickedOnOuting)
         authState = .seeUsersInEachOutingView(clickedOnOuting: clickedOnOuting)
     }
     
@@ -858,7 +861,8 @@ final class SessionManager: ObservableObject{
             }
     }
     
-    func userWaitingList(username: String) {
+    func viewUsersOnAWaitingList(outing: Outing) {
+
         userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(true))
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completed in
@@ -869,9 +873,15 @@ final class SessionManager: ObservableObject{
                     print("error in adding to the waiting list: \(error)")
                 }
             }, receiveValue: { snapshot in
+                self.usersInWaitingList = []
+                self.idsForUsersInWaitingList = []
+                var id = 0
                 for result in snapshot.items {
-                    if result.userdetails.username == username {
-                        print("\(result.userdetails.username) is on the waiting list for \(result.outing.title)")
+                    if result.outing.id == outing.id {
+                        //add user to a list with the peolpe who are on the waiting list
+                        self.usersInWaitingList.append(result.userdetails)
+                        self.idsForUsersInWaitingList.append(id)
+                        id += 1
                     }
                 }
             })

@@ -158,7 +158,7 @@ struct ViewScheduledOutingsView: View {
                 } else {
                     List(sessionManager.idsForUpcomingOutingsList, id: \.self) { id in
                         Button {
-                            sessionManager.changeAuthStateToSeeUsersInEachOutingView(clickedOnOuting: sessionManager.pastOutings[id])
+                            sessionManager.changeAuthStateToSeeUsersInEachOutingView(clickedOnOuting: sessionManager.upcomingOutings[id])
                         } label: {
                             OutingsRow(title: sessionManager.upcomingOutings[id].title, date: sessionManager.upcomingOutings[id].startDate.iso8601FormattedString(format: .short), time: sessionManager.upcomingOutings[id].startTime.iso8601FormattedString(format: .short))
                         }.padding(.horizontal, 30)
