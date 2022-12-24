@@ -11,6 +11,7 @@ import SwiftUI
 import UserNotifications
 import AWSPinpoint
 import os
+import BackgroundTasks
 
 
 @main
@@ -20,6 +21,8 @@ struct AuthenticatedApp: App{
     
     @ObservedObject var sessionManager = SessionManager()
     @StateObject var notificationCenter = NotificationCenter()
+    @Environment(\.scenePhase) var scenePhase
+    @State private var counter = 0;
 
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
@@ -28,8 +31,6 @@ struct AuthenticatedApp: App{
         sessionManager.getCurrentAuthUser()
         registerForPushNotifications()
     }
-    
-
     
     var body: some Scene{
         WindowGroup{
@@ -88,9 +89,57 @@ struct AuthenticatedApp: App{
             }
 
         }
+        .onChange(of: scenePhase) { newPhase in
+            switch newPhase {
+            case .active:
+                print("active")
+            case .inactive:
+                print("inactive")
+            case .background:
+                print("background")
+                sessionManager.checkForWaitingList()
+                scheduleAppRefresh()
+            }
+        }
+        .backgroundTask(.appRefresh("authAppRefresh")) {
+            await refetch()
+            await scheduleAppRefresh()
+        }
+        
+        
+        
+    }
+
+    private func refetch() async {
+        if await refetchData() {
+            print("refetch done...")
+        }
     }
     
+    private func refetchData() async -> Bool {
+        
+        sessionManager.checkForWaitingList()
+        
+        return true
+    }
+    
+    func scheduleAppRefresh() {
+        //date
+//        let today = Calendar.current.startOfDay(for: .now)
+//        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+//        let nightComp = DateComponents(hour: 0, minute: Int.random(in: 0..<30))
+//        let day = Calendar.current.date(byAdding: nightComp, to: tomorrow)
+        
+        let today = Calendar.current.startOfDay(for: .now)
 
+        let nightComp = DateComponents(minute: 2)
+        let day = Calendar.current.date(byAdding: nightComp, to: today)
+        //sending request to background
+        let request = BGAppRefreshTaskRequest(identifier: "authAppRefresh")
+        request.earliestBeginDate = day
+        try? BGTaskScheduler.shared.submit(request)
+        print("done!")
+    }
     private func configureAmplify(){
         do{
 

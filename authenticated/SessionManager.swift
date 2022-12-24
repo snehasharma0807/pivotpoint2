@@ -76,6 +76,7 @@ final class SessionManager: ObservableObject{
                     print(error)
                 }
             }
+            
             queryOutings(programList: self.currentUserModel.programType, currentUserGroup: self.currentUserModel.userType )
             returnCurrentUserModel(username: Amplify.Auth.getCurrentUser()?.username ?? "")
             print(currentUserModel.userType )
@@ -87,6 +88,7 @@ final class SessionManager: ObservableObject{
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
             }
+            checkForWaitingList()
         } else {
             authState = .login(error: "")
             print("authstate has changed to login")
@@ -799,7 +801,7 @@ final class SessionManager: ObservableObject{
     //view users in an outing
     func findUsersInAnOuting(outing: Outing) {
         
-        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self)
+        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self, where: UserDetailsOuting.keys.isOnWaitingList.eq(false))
             .receive(on: DispatchQueue.main)
             .sink { completed in
                 switch completed {
@@ -811,8 +813,8 @@ final class SessionManager: ObservableObject{
             } receiveValue: { [self] querySnapshot in
                 usersInAnOutingList = []
                 idsForUsersInAnOutingList = []
+                var  id1 = 0
                 for result in querySnapshot.items {
-                    var  id1 = 0
                     if outing.id == result.outing.id {
                         usersInAnOutingList.append(result.userdetails)
                         idsForUsersInAnOutingList.append(id1)
@@ -1077,6 +1079,78 @@ final class SessionManager: ObservableObject{
                 self.changeAuthStateToCalendar()
 
             })
+    }
+//
+//    func pushNotificationForWaitingList() {
+//        let date = Date()
+//        let calendar = Calendar.current
+//        let components = calendar.dateComponents([.year, .month, .day], from: date)
+//        let year = components.year
+//        let day = components.day
+//        let month = components.month
+//
+//        var dateComponents = DateComponents()
+//        dateComponents.year = year
+//        dateComponents.month = month
+//        dateComponents.day = day
+//        dateComponents.hour = 0
+//        dateComponents.minute = 0
+//        dateComponents.second = 0
+//        dateComponents.timeZone = TimeZone.current
+//        let userCalendar = Calendar(identifier: .gregorian)
+//        let finalDate = userCalendar.date(from: dateComponents) ?? Date.now
+//        let number = Int.random(in: -1800..<1800)
+//        let timer = Timer(fireAt: finalDate, interval: TimeInterval(86400 + number), target: self, selector: #selector(checkForWaitingList), userInfo: nil, repeats: true)
+//
+//
+//    }
+    func checkForWaitingList() {
+        userOutingSubscription = Amplify.DataStore.observeQuery(for: UserDetailsOuting.self)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completed in
+                switch completed {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("error in adding to the waiting list: \(error)")
+                }
+            }, receiveValue: { snapshot in
+                for result in snapshot.items {
+                    // if (number of users who have registered for that outing) < (number of spaces total in the outing)
+                    var numUsersInOuting = 0
+                    if (result.outing.startDate.foundationDate > Date.now) && (result.isOnWaitingList == true){
+                        if result.userdetails.username == self.currentUserModel.username {
+                            for user in snapshot.items {
+                                if (user.outing.title == result.outing.title) && (user.isOnWaitingList == false) {
+                                    print(user.userdetails)
+                                    print(user.outing)
+                                    
+                                    numUsersInOuting += 1
+                                }
+                            }
+                            
+                            if numUsersInOuting < result.outing.numClients {
+                                //send push notification to phone
+                                let center = UNUserNotificationCenter.current()
+                                
+                                let content = UNMutableNotificationContent()
+                                content.title = "Exciting news, \(result.userdetails.fullName)!"
+                                content.body = "A space opened up in \(result.outing.title)! Open the app to register for it :)"
+                                content.sound = UNNotificationSound.default
+                                
+                                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                                let request = UNNotificationRequest.init(identifier: "localNotification", content: content, trigger: trigger)
+                                center.add(request, withCompletionHandler: nil)
+                            }
+                        }
+                    }
+                    
+                }
+                
+            })
+    }
+    @objc func fireTimer() {
+        print("Timer fired!")
     }
     
 }

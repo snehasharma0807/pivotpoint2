@@ -61,7 +61,7 @@ struct SeeUsersInEachOutingView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
             }
-            if sessionManager.idsForUsersInAnOutingList.isEmpty {
+            if sessionManager.idsForUsersInAnOutingList.count == 0 {
                 Spacer()
                 Text("No users have signed up for this outing yet.")
                     .italic()
@@ -75,24 +75,25 @@ struct SeeUsersInEachOutingView: View {
                     .foregroundColor(Color("BlueGray"))
                     .padding(.horizontal, 20)
                     .font(.system(size: 15))
+                
                 List(sessionManager.idsForUsersInAnOutingList, id: \.self) { id in
                     ListRow(username: sessionManager.usersInAnOutingList[id].fullName, userType: sessionManager.usersInAnOutingList[id].address, phoneNumber: sessionManager.usersInAnOutingList[id].phoneNumber)
                 }
                 .frame(height: 200, alignment: .center)
                     .padding()
-                if sessionManager.idsForUsersInWaitingList.count != 0 {
-                    Text("Clients on the Waiting List: ")
-                        .bold()
-                        .foregroundColor(Color(red: 0.302, green: 0.008, blue: 0.008))
-                        .padding(.horizontal, 20)
-                        .font(.system(size: 15))
-                    List(sessionManager.idsForUsersInWaitingList, id: \.self) { id in
-                        ListRow(username: sessionManager.usersInWaitingList[id].fullName, userType: "", phoneNumber: sessionManager.usersInWaitingList[id].phoneNumber)
-                    }
-                } else {
-                    Text("There are no users on the waiting list.")
-                        .foregroundColor(.red)
+            }
+            if sessionManager.idsForUsersInWaitingList.count != 0 {
+                Text("Clients on the Waiting List: ")
+                    .bold()
+                    .foregroundColor(Color(red: 0.302, green: 0.008, blue: 0.008))
+                    .padding(.horizontal, 20)
+                    .font(.system(size: 15))
+                List(sessionManager.idsForUsersInWaitingList, id: \.self) { id in
+                    ListRow(username: sessionManager.usersInWaitingList[id].fullName, userType: "", phoneNumber: sessionManager.usersInWaitingList[id].phoneNumber)
                 }
+            } else {
+                Text("There are no users on the waiting list.")
+                    .foregroundColor(.red)
             }
             
             

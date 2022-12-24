@@ -111,7 +111,7 @@ struct ViewScheduledOutingsView: View {
                     List(sessionManager.idsForPastOutingsList, id: \.self) { id in
                         Button {
                             sessionManager.clickedOnOuting = sessionManager.pastOutings[id]
-//                            sessionManager.changeAuthStateToSeeEventDetailsAfterSigningUp()
+                            sessionManager.changeAuthStateToSeeEventDetailsAfterSigningUp()
                             print(id)
                         } label: {
                             OutingsRow(title: sessionManager.pastOutings[id].title, date: sessionManager.pastOutings[id].startDate.iso8601FormattedString(format: .short), time: sessionManager.pastOutings[id].startTime.iso8601FormattedString(format: .short))
