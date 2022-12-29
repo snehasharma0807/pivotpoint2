@@ -12,7 +12,5 @@
 	<array>
 		<string>authAppRefresh</string>
 	</array>
-	<key>UILaunchScreen</key>
-	<dict/>
 </dict>
 </plist>
