@@ -118,7 +118,7 @@ struct UserProfileInformationView: View {
                 }
                 .alert("Are you sure that you want to delete \(sessionManager.clickedOnUserDetails.fullName)?", isPresented: $showingAlert, actions: {
                     Button("Yes, I'm sure.", role: .destructive) {
-                        sessionManager.deleteUser(username: sessionManager.clickedOnUserDetails.username)
+                        sessionManager.deleteUser(username: sessionManager.clickedOnUserDetails.username, userType: sessionManager.currentUserModel.userType)
                         sessionManager.changeAuthStateToCalendar()
                     }}, message: {
                         Text("This cannot be undone.")

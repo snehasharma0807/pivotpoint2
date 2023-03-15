@@ -15,7 +15,6 @@ import AWSCognitoIdentityProvider
 import ClientRuntime
 import AWSClientRuntime
 import UserNotifications
-import AWSSNS
 
 
 
@@ -507,36 +506,60 @@ final class SessionManager: ObservableObject{
     }
     
     //deletes a user's profile information
-    func deleteUser(username: String) {
+    func deleteUser(username: String, userType: UserGroup) {
         let u = UserDetails.keys
-        self.usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: u.username == username)
-            .receive(on: DispatchQueue.main)
-            .sink { completed in
-                switch completed {
-                case .finished:
-                    print("finished")
-                case .failure(let error):
-                    print("Error \(error)")
-                }
-            } receiveValue: { querySnapshot in
-                if querySnapshot.items.count > 1 {
+        
+        Amplify.DataStore.query(UserDetails.self, where: u.username == username) { result in
+            switch result {
+            case .success(let queries):
+                print(queries)
+                if (queries.count != 1) {
                     self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
                 } else {
-                    let userToDelete = querySnapshot.items[0]
+                    let userToDelete = queries[0]
                     Amplify.DataStore.delete(userToDelete) {
                         switch $0 {
                         case .success():
-                            self.deleteUserFromCognito(username: username)
+                            self.deleteUserFromCognito(username: username, userType: userType)
                         case .failure(let error):
                             print("error deleting user: \(error.localizedDescription)")
                         }
                     }
                 }
+            case .failure(let error):
+                print(error.errorDescription)
+                self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
             }
+        }
+//        self.usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: u.username == username)
+//            .receive(on: DispatchQueue.main)
+//            .sink { completed in
+//                switch completed {
+//                case .finished:
+//                    print("finished")
+//                case .failure(let error):
+//                    print("Error \(error)")
+//                }
+//            } receiveValue: { querySnapshot in
+//                print(querySnapshot.items)
+//                if querySnapshot.items.count != 0 {
+//                    self.changeAuthStateToLogin(error: "An error occurred. Please try again.")
+//                } else {
+//                    let userToDelete = querySnapshot.items.first
+//                    Amplify.DataStore.delete(userToDelete!) {
+//                        switch $0 {
+//                        case .success():
+//                            self.deleteUserFromCognito(username: username)
+//                        case .failure(let error):
+//                            print("error deleting user: \(error.localizedDescription)")
+//                        }
+//                    }
+//                }
+//            }
     }
     
     //deletes a user from cognito
-    func deleteUserFromCognito(username: String) {
+    func deleteUserFromCognito(username: String, userType: UserGroup) {
         Task { @MainActor in
             do {
                 let cognitoIdentityClient = try CognitoIdentityProviderClient(region: "us-west-2")
@@ -544,6 +567,9 @@ final class SessionManager: ObservableObject{
                 
                 _ = try await cognitoIdentityClient.adminDeleteUser(input: cognitoInputCall)
                 print("successfully deleted user from cognito!")
+                if userType == UserGroup.client {
+                    self.changeAuthStateToLogin(error: "Your account has been successfully deleted")
+                }
             } catch {
                 print(error)
             }
@@ -630,6 +656,7 @@ final class SessionManager: ObservableObject{
                                 listOfOutingsInOneDay.append(MyTask(title: secondOuting.title, time: secondOuting.startTime.foundationDate, outingModel: secondOuting))
                             }
                         }
+                        print(currentDate)
                         taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
                     }
                     self.authState = .loadingView
@@ -663,11 +690,17 @@ final class SessionManager: ObservableObject{
                             }
                         }
                         taskMetaDataList.append(TaskMetaData(task: listOfOutingsInOneDay, taskDate: currentDate))
+                        print(taskMetaDataList)
                     }
                     self.authState = .loadingView
                     
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
+                        do {
+                            self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
+                        } catch {
+                            self.authState = .login(error: "Sorry, an error occurred. Please try again.")
+                        }
                     }
                 })
             

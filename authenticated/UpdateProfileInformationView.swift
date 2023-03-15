@@ -16,6 +16,8 @@ struct UpdateProfileInformationView: View {
     @State var phoneNumber: String = ""
     @State var address: String = ""
     @State var programType: String = ""
+    @State private var showingAlert = false
+
 
     var body: some View {
         Text("Update Profile Information")
@@ -87,6 +89,25 @@ struct UpdateProfileInformationView: View {
             .padding(.bottom, 20)
 
 
+        Button {
+            showingAlert = true
+        } label: {
+            Text("Delete Your Account")
+                .padding(.horizontal, 100)
+                .padding(.vertical, 10)
+                .foregroundColor(.white)
+                .background(Color(red: 0.729, green: 0, blue: 0.086)) // #ba0016
+                .shadow(color: .gray, radius: 5, x: 4, y: 4)
+                .offset(y: 20)
+                .padding(.bottom, 20)
+        }
+        .alert("Are you sure that you want to delete \(sessionManager.clickedOnUserDetails.fullName)?", isPresented: $showingAlert, actions: {
+            Button("Yes, I'm sure.", role: .destructive) {
+                sessionManager.deleteUser(username: sessionManager.clickedOnUserDetails.username, userType: sessionManager.currentUserModel.userType)
+                sessionManager.changeAuthStateToCalendar()
+            }}, message: {
+                Text("This cannot be undone.")
+            })
         
         Button {
             sessionManager.changeAuthStateToCalendar()
