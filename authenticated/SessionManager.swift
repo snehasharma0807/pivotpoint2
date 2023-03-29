@@ -284,9 +284,9 @@ final class SessionManager: ObservableObject{
             switch result{
             case .success:
                 _ = Amplify.DataStore.clear()
-                DispatchQueue.main.async {
-                    self?.getCurrentAuthUser()
-                }
+//                DispatchQueue.main.async {
+//                    self?.getCurrentAuthUser()
+//                }
                 print("user has been signed out")
             case .failure(let error):
                 print("Sign out error: ", error)
@@ -696,10 +696,10 @@ final class SessionManager: ObservableObject{
                     
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        do {
+                        if (Amplify.Auth.getCurrentUser() != nil) {
                             self.authState = .calendar(user: Amplify.Auth.getCurrentUser()!)
-                        } catch {
-                            self.authState = .login(error: "Sorry, an error occurred. Please try again.")
+                        } else {
+                            self.authState = .login(error: "Please log in again.")
                         }
                     }
                 })
@@ -1069,61 +1069,83 @@ final class SessionManager: ObservableObject{
     
     //lets any user update their full name
     func changeFullName(user: UserDetails, newName: String) {
-        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completed in
-                switch completed {
-                case .finished:
-                    print("finished!!")
-                case .failure(let error):
-                    print(error.localizedDescription)
+        Amplify.DataStore.query(UserDetails.self, where: UserDetails.keys.username.contains(user.username)) { result in
+            switch result {
+            case .success(let x):
+                if (x.count != 1) {
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "An error occured. Please try again.")
+                    }
+                    
+                } else {
+                    var itemToUpdate = x[0]
+                    itemToUpdate.fullName = newName
+                    _ = Amplify.DataStore.save(itemToUpdate)
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "Sign in again to see your updated profile!")
+                    }
+                                        
                 }
-            }, receiveValue: { snapshots in
-                var itemToUpdate = snapshots.items[0]
-                itemToUpdate.fullName = newName
-                _ = Amplify.DataStore.save(itemToUpdate)
-                self.changeAuthStateToCalendar()
-            })
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     //lets any user update their address
     func changeAddress(user: UserDetails, address: String) {
-        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completed in
-                switch completed {
-                case .finished:
-                    print("finished!!")
-                case .failure(let error):
-                    print(error.localizedDescription)
+        Amplify.DataStore.query(UserDetails.self, where: UserDetails.keys.username.contains(user.username)) { result in
+            switch result {
+            case .success(let x):
+                if (x.count != 1) {
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "An error occured. Please try again.")
+                    }
+                    
+                } else {
+                    var itemToUpdate = x[0]
+                    itemToUpdate.address = address
+                    _ = Amplify.DataStore.save(itemToUpdate)
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "Sign in again to see your updated profile!")
+                    }
+                                        
                 }
-            }, receiveValue: { snapshots in
-                var itemToUpdate = snapshots.items[0]
-                itemToUpdate.address = address
-                _ = Amplify.DataStore.save(itemToUpdate)
-                self.changeAuthStateToCalendar()
-
-            })
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     //lets any user update their phonenumber
     func changePhoneNumber(user: UserDetails, phonenumber: String) {
-        usersSubscription = Amplify.DataStore.observeQuery(for: UserDetails.self, where: UserDetails.keys.username.contains(user.username))
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completed in
-                switch completed {
-                case .finished:
-                    print("finished!!")
-                case .failure(let error):
-                    print(error.localizedDescription)
+        Amplify.DataStore.query(UserDetails.self, where: UserDetails.keys.username.contains(user.username)) { result in
+            switch result {
+            case .success(let x):
+                if (x.count != 1) {
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "An error occured. Please try again.")
+                    }
+                    
+                } else {
+                    var itemToUpdate = x[0]
+                    itemToUpdate.phoneNumber = phonenumber
+                    _ = Amplify.DataStore.save(itemToUpdate)
+                    self.signOut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.changeAuthStateToLogin(error: "Sign in again to see your updated profile!")
+                    }
+                                        
                 }
-            }, receiveValue: { snapshots in
-                var itemToUpdate = snapshots.items[0]
-                itemToUpdate.phoneNumber = phonenumber
-                _ = Amplify.DataStore.save(itemToUpdate)
-                self.changeAuthStateToCalendar()
-
-            })
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 //
 //    func pushNotificationForWaitingList() {

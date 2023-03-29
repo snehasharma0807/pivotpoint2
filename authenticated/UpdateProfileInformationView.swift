@@ -34,6 +34,9 @@ struct UpdateProfileInformationView: View {
                 .submitLabel(.done)
             Button {
                 sessionManager.changeFullName(user: sessionManager.currentUserModel, newName: fullName)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    sessionManager.signOut()
+                }
             } label: {
                 Text("Update")
             }
@@ -55,6 +58,9 @@ struct UpdateProfileInformationView: View {
                 .submitLabel(.done)
             Button {
                 sessionManager.changePhoneNumber(user: sessionManager.currentUserModel, phonenumber: phoneNumber)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    sessionManager.signOut()
+                }
             } label: {
                 Text("Update")
             }
@@ -75,7 +81,9 @@ struct UpdateProfileInformationView: View {
                 .submitLabel(.done)
             Button {
                 sessionManager.changeAddress(user: sessionManager.currentUserModel, address: address)
-                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    sessionManager.signOut()
+                }
             } label: {
                 Text("Update")
             }
